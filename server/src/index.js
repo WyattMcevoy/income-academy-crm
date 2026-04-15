@@ -29,13 +29,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// CORS: production locked to incomeacademy.biz; dev allows configured client origin.
+// CORS: production locked to dashboard.incomeacademy.biz; dev allows configured client origin.
 // EXTRA_ORIGIN is an optional extra allowed origin for initial deploy (Vercel preview URL)
 // until DNS cutover. Unset in steady state.
 const allowedOrigins = isProd
   ? [
-      'https://incomeacademy.biz',
-      'https://www.incomeacademy.biz',
+      'https://dashboard.incomeacademy.biz',
       ...(process.env.EXTRA_ORIGIN ? [process.env.EXTRA_ORIGIN] : []),
     ]
   : [process.env.CLIENT_ORIGIN || 'http://localhost:5173'];
