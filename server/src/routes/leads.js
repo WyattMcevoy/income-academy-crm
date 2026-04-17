@@ -192,6 +192,43 @@ router.delete('/:id', async (req, res) => {
   res.status(204).end();
 });
 
+router.post('/:id/convert', async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) return res.status(400).json({ error: 'Invalid id' });
+  const current = await pool.query(
+    'SELECT is_client FROM leads WHERE id = $1 AND user_id = $2',
+    [id, req.user.id]
+  );
+  if (!current.rowCount) return res.status(404).json({ error: 'Not found' });
+  if (current.rows[0].is_client) return res.status(409).json({ error: 'Already a client' });
+  const { rows } = await pool.query(
+    `UPDATE leads
+       SET is_client = TRUE,
+           became_client_at = NOW(),
+           updated_at = NOW()
+     WHERE id = $1 AND user_id = $2
+     RETURNING *`,
+    [id, req.user.id]
+  );
+  res.json(rows[0]);
+});
+
+router.post('/:id/unconvert', async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) return res.status(400).json({ error: 'Invalid id' });
+  // Keep became_client_at as history; only flip the flag.
+  const { rows } = await pool.query(
+    `UPDATE leads
+       SET is_client = FALSE,
+           updated_at = NOW()
+     WHERE id = $1 AND user_id = $2 AND is_client = TRUE
+     RETURNING *`,
+    [id, req.user.id]
+  );
+  if (!rows[0]) return res.status(404).json({ error: 'Not found or not a client' });
+  res.json(rows[0]);
+});
+
 router.post('/:id/notes', async (req, res) => {
   const id = Number(req.params.id);
   if (!Number.isInteger(id)) return res.status(400).json({ error: 'Invalid id' });

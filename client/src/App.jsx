@@ -6,6 +6,7 @@ import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Pipeline from './pages/Pipeline.jsx';
 import LeadDetail from './pages/LeadDetail.jsx';
+import Clients from './pages/Clients.jsx';
 import Expenses from './pages/Expenses.jsx';
 
 function Protected({ children }) {
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/" element={<Protected><Dashboard /></Protected>} />
         <Route path="/leads" element={<Protected><Pipeline /></Protected>} />
         <Route path="/leads/:id" element={<Protected><LeadDetail /></Protected>} />
+        <Route path="/clients" element={<Protected><Clients /></Protected>} />
         <Route path="/expenses" element={<Protected><Expenses /></Protected>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

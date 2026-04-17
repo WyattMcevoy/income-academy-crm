@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import authRouter from './routes/auth.js';
 import leadsRouter from './routes/leads.js';
+import clientsRouter from './routes/clients.js';
 import expensesRouter from './routes/expenses.js';
 import { requireAuth } from './middleware/auth.js';
 
@@ -55,6 +56,7 @@ app.get('/health', (_req, res) => res.json({ ok: true }));
 
 app.use('/api/auth', authRouter);
 app.use('/api/leads', requireAuth, leadsRouter);
+app.use('/api/clients', requireAuth, clientsRouter);
 app.use('/api/expenses', requireAuth, expensesRouter);
 
 app.use((err, _req, res, _next) => {

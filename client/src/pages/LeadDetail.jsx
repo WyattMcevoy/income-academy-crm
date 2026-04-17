@@ -14,6 +14,7 @@ export default function LeadDetail() {
   const [lead, setLead] = useState(null);
   const [note, setNote] = useState('');
   const [err, setErr] = useState('');
+  const [converting, setConverting] = useState(false);
 
   const load = async () => {
     try { setLead(await api(`/api/leads/${id}`, { token: auth.token })); }
@@ -42,18 +43,56 @@ export default function LeadDetail() {
     nav('/leads');
   };
 
+  const convert = async () => {
+    const name = displayName;
+    if (!confirm(`Convert ${name} to a client? They'll move from Leads to Clients.`)) return;
+    setConverting(true);
+    try {
+      await api(`/api/leads/${id}/convert`, { method: 'POST', token: auth.token });
+      nav('/clients');
+    } catch (e) { setErr(e.message); }
+    finally { setConverting(false); }
+  };
+
+  const unconvert = async () => {
+    if (!confirm('Move this client back to Leads? They\'ll need to be reconverted to appear as a client again.')) return;
+    setConverting(true);
+    try {
+      await api(`/api/leads/${id}/unconvert`, { method: 'POST', token: auth.token });
+      nav('/leads');
+    } catch (e) { setErr(e.message); }
+    finally { setConverting(false); }
+  };
+
   if (err && !lead) return <p className="error">{err}</p>;
   if (!lead) return <p>Loading…</p>;
 
   const displayName = [lead.first_name, lead.last_name].filter(Boolean).join(' ') || lead.name;
   const isBusiness = lead.client_type === 'Business';
+  const isClient = lead.is_client;
 
   return (
     <div className="lead-detail">
-      <Link to="/leads">← Pipeline</Link>
+      <Link to={isClient ? '/clients' : '/leads'}>
+        ← {isClient ? 'Clients' : 'Pipeline'}
+      </Link>
       <div className="page-header toolbar">
-        <h1>{displayName}</h1>
-        <button className="danger" onClick={del}>Delete</button>
+        <h1>
+          {displayName}
+          {isClient && <span className="badge badge-green header-badge">Client</span>}
+        </h1>
+        <div className="button-row">
+          {isClient ? (
+            <button onClick={unconvert} disabled={converting}>
+              {converting ? 'Reverting…' : 'Revert to Lead'}
+            </button>
+          ) : (
+            <button className="primary" onClick={convert} disabled={converting}>
+              {converting ? 'Converting…' : 'Convert to Client'}
+            </button>
+          )}
+          <button className="danger" onClick={del}>Delete</button>
+        </div>
       </div>
       {err && <p className="error">{err}</p>}
 
@@ -158,6 +197,11 @@ export default function LeadDetail() {
               onChange={(e) => update({ is_active: e.target.checked })} />
             <span>Active</span>
           </label>
+          {lead.became_client_at && (
+            <div className="meta-inline">
+              Became client: {new Date(lead.became_client_at).toLocaleDateString()}
+            </div>
+          )}
         </div>
       </section>
 

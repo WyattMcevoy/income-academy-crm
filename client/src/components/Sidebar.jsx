@@ -5,7 +5,7 @@ import { useAuth } from '../auth.jsx';
 const NAV_ITEMS = [
   { label: 'Dashboard', path: '/', icon: '🏠', enabled: true },
   { label: 'Leads', path: '/leads', icon: '👤', enabled: true },
-  { label: 'Clients', path: '/clients', icon: '👥', enabled: false, note: 'Phase 4' },
+  { label: 'Clients', path: '/clients', icon: '👥', enabled: true },
   { label: 'Contracts', path: '/contracts', icon: '📄', enabled: false, note: 'Phase 5' },
   { label: 'Invoices', path: '/invoices', icon: '💵', enabled: false, note: 'Phase 6' },
   { label: 'Campaigns', path: '/campaigns', icon: '📧', enabled: false, note: 'Phase 12' },
