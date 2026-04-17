@@ -2,7 +2,7 @@
 body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f6f8; color: #1a1a1a; }
 a { color: #2962ff; text-decoration: none; }
 a:hover { text-decoration: underline; }
-button { cursor: pointer; padding: 8px 14px; border: 1px solid #c5cbd3; background: #fff; border-radius: 6px; font-size: 14px; }
+button { cursor: pointer; padding: 8px 14px; border: 1px solid #c5cbd3; background: #fff; color: #1a1a1a; border-radius: 6px; font-size: 14px; -webkit-appearance: none; appearance: none; }
 button:hover { background: #f0f2f5; }
 button.danger { color: #c62828; border-color: #e8b0b0; }
 input, select, textarea { padding: 8px 10px; border: 1px solid #c5cbd3; border-radius: 6px; font-size: 14px; font-family: inherit; }
