@@ -1,37 +1,114 @@
 import { Router } from 'express';
 import { pool } from '../db/pool.js';
-import { cleanString, isIsoDate, oneOf } from '../validate.js';
+import { cleanString, isIsoDate, isBoolean, oneOf, ENUMS, computeName } from '../validate.js';
 
 const router = Router();
-const STAGES = ['New Lead', 'Contacted', 'Call Booked', 'Closed', 'Lost'];
+
+// Fields that require special write paths (Phase 4+) and are blocked in
+// public PATCH/POST requests. is_client flips via the Convert button (Phase 4),
+// stripe_customer_id is set by Stripe webhooks (Phase 6), etc.
+const WRITE_PROTECTED = new Set([
+  'is_client',
+  'became_client_at',
+  'stripe_customer_id',
+  'contract_status',
+  'name', // never set directly; derived from first/middle/last
+]);
 
 function validateLeadFields(body, { partial = false } = {}) {
   const out = {};
   const errors = [];
 
-  if ('name' in body || !partial) {
-    const name = cleanString(body.name, { max: 200 });
-    if (!name) errors.push('name required');
-    else out.name = name;
+  // Block write-protected fields up front
+  for (const key of Object.keys(body || {})) {
+    if (WRITE_PROTECTED.has(key)) {
+      errors.push(`field '${key}' is not writable via this endpoint`);
+    }
   }
-  if ('email' in body) out.email = body.email ? cleanString(body.email, { max: 254 }) : null;
-  if ('phone' in body) out.phone = body.phone ? cleanString(body.phone, { max: 40 }) : null;
-  if ('source' in body) out.source = body.source ? cleanString(body.source, { max: 100 }) : null;
+  if (errors.length) return { out, errors };
+
+  // Text fields
+  const textFields = [
+    ['first_name', 100],
+    ['middle_initial', 5],
+    ['last_name', 100],
+    ['email', 254],
+    ['phone', 40],
+    ['phone_home', 40],
+    ['phone_work', 40],
+    ['source', 100],
+    ['company_name', 200],
+    ['company_website', 500],
+  ];
+  for (const [field, max] of textFields) {
+    if (field in body) {
+      out[field] = body[field] ? cleanString(body[field], { max }) : null;
+    }
+  }
+
+  // Enum fields
   if ('stage' in body) {
-    if (body.stage != null && !oneOf(body.stage, STAGES)) errors.push('invalid stage');
+    if (body.stage != null && !oneOf(body.stage, ENUMS.STAGE)) errors.push('invalid stage');
     else if (body.stage) out.stage = body.stage;
   }
+  if ('preferred_contact' in body) {
+    if (body.preferred_contact != null && !oneOf(body.preferred_contact, ENUMS.PREFERRED_CONTACT)) {
+      errors.push('invalid preferred_contact');
+    } else {
+      out.preferred_contact = body.preferred_contact || null;
+    }
+  }
+  if ('client_type' in body) {
+    if (body.client_type != null && !oneOf(body.client_type, ENUMS.CLIENT_TYPE)) {
+      errors.push('invalid client_type');
+    } else if (body.client_type) {
+      out.client_type = body.client_type;
+    }
+  }
+
+  // Dates
   if ('follow_up_date' in body) {
     if (body.follow_up_date == null || body.follow_up_date === '') out.follow_up_date = null;
     else if (!isIsoDate(body.follow_up_date)) errors.push('invalid follow_up_date');
     else out.follow_up_date = body.follow_up_date;
   }
+  if ('dob' in body) {
+    if (body.dob == null || body.dob === '') out.dob = null;
+    else if (!isIsoDate(body.dob)) errors.push('invalid dob');
+    else out.dob = body.dob;
+  }
+
+  // Booleans
+  for (const field of ['is_us_citizen', 'is_active']) {
+    if (field in body) {
+      if (body[field] == null) out[field] = null;
+      else if (!isBoolean(body[field])) errors.push(`invalid ${field}`);
+      else out[field] = body[field];
+    }
+  }
+
+  // Require at least a name source on POST
+  if (!partial) {
+    const hasName = out.first_name || out.last_name;
+    if (!hasName) errors.push('first_name or last_name required');
+  }
+
+  // Sync legacy `name` from split fields whenever any of them change
+  if ('first_name' in out || 'middle_initial' in out || 'last_name' in out) {
+    const computed = computeName({
+      first_name: out.first_name,
+      middle_initial: out.middle_initial,
+      last_name: out.last_name,
+    });
+    if (computed) out.name = computed;
+  }
+
   return { out, errors };
 }
 
 router.get('/', async (req, res) => {
   const { rows } = await pool.query(
-    'SELECT * FROM leads WHERE user_id = $1 ORDER BY updated_at DESC',
+    'SELECT * FROM leads WHERE user_id = $1 AND is_client = FALSE ORDER BY updated_at DESC',
     [req.user.id]
   );
   res.json(rows);
@@ -40,10 +117,26 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const { out, errors } = validateLeadFields(req.body || {});
   if (errors.length) return res.status(400).json({ error: errors.join(', ') });
+  if (!out.name) return res.status(400).json({ error: 'name could not be computed' });
+
   const { rows } = await pool.query(
-    `INSERT INTO leads (user_id, name, email, phone, stage, source, follow_up_date)
-     VALUES ($1, $2, $3, $4, COALESCE($5, 'New Lead'), $6, $7) RETURNING *`,
-    [req.user.id, out.name, out.email || null, out.phone || null, out.stage || null, out.source || null, out.follow_up_date || null]
+    `INSERT INTO leads (
+       user_id, name, first_name, middle_initial, last_name,
+       email, phone, phone_home, phone_work, preferred_contact,
+       stage, source, follow_up_date, dob, is_us_citizen,
+       client_type, is_active, company_name, company_website
+     ) VALUES (
+       $1, $2, $3, $4, $5,
+       $6, $7, $8, $9, $10,
+       COALESCE($11, 'New Lead'), $12, $13, $14, $15,
+       COALESCE($16, 'Individual'), COALESCE($17, TRUE), $18, $19
+     ) RETURNING *`,
+    [
+      req.user.id, out.name, out.first_name || null, out.middle_initial || null, out.last_name || null,
+      out.email || null, out.phone || null, out.phone_home || null, out.phone_work || null, out.preferred_contact || null,
+      out.stage || null, out.source || null, out.follow_up_date || null, out.dob || null, out.is_us_citizen ?? null,
+      out.client_type || null, out.is_active ?? null, out.company_name || null, out.company_website || null,
+    ]
   );
   res.status(201).json(rows[0]);
 });

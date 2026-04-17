@@ -32,3 +32,26 @@ export function oneOf(v, allowed) {
 export function isStrongPassword(v) {
   return typeof v === 'string' && v.length >= 8 && v.length <= 200;
 }
+
+export function isBoolean(v) {
+  return typeof v === 'boolean';
+}
+
+export const ENUMS = {
+  STAGE: ['New Lead', 'Contacted', 'Call Booked', 'Closed', 'Lost'],
+  PREFERRED_CONTACT: ['Email', 'Phone', 'SMS'],
+  CLIENT_TYPE: ['Individual', 'Business'],
+  CONTRACT_STATUS: ['Not sent', 'Sent', 'Signed', 'Declined'],
+  REIMBURSEMENT: ['Pending', 'Submitted', 'Reimbursed', 'Denied'],
+};
+
+// Compute the legacy display `name` from split name fields.
+// Returns null if no name components provided.
+export function computeName({ first_name, middle_initial, last_name }) {
+  const parts = [
+    first_name,
+    middle_initial ? `${middle_initial.replace(/\.$/, '')}.` : null,
+    last_name,
+  ].filter(Boolean);
+  return parts.length ? parts.join(' ') : null;
+}

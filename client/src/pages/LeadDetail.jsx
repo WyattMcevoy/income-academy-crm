@@ -4,6 +4,8 @@ import { api } from '../api.js';
 import { useAuth } from '../auth.jsx';
 
 const STAGES = ['New Lead', 'Contacted', 'Call Booked', 'Closed', 'Lost'];
+const PREFERRED_CONTACTS = ['Email', 'Phone', 'SMS'];
+const CLIENT_TYPES = ['Individual', 'Business'];
 
 export default function LeadDetail() {
   const { id } = useParams();
@@ -20,8 +22,10 @@ export default function LeadDetail() {
   useEffect(() => { load(); }, [id]);
 
   const update = async (patch) => {
-    await api(`/api/leads/${id}`, { method: 'PATCH', token: auth.token, body: patch });
-    load();
+    try {
+      await api(`/api/leads/${id}`, { method: 'PATCH', token: auth.token, body: patch });
+      load();
+    } catch (e) { setErr(e.message); }
   };
 
   const addNote = async (e) => {
@@ -38,45 +42,140 @@ export default function LeadDetail() {
     nav('/leads');
   };
 
-  if (err) return <p className="error">{err}</p>;
+  if (err && !lead) return <p className="error">{err}</p>;
   if (!lead) return <p>Loading…</p>;
+
+  const displayName = [lead.first_name, lead.last_name].filter(Boolean).join(' ') || lead.name;
+  const isBusiness = lead.client_type === 'Business';
 
   return (
     <div className="lead-detail">
       <Link to="/leads">← Pipeline</Link>
-      <div className="toolbar">
-        <h1>{lead.name}</h1>
+      <div className="page-header toolbar">
+        <h1>{displayName}</h1>
         <button className="danger" onClick={del}>Delete</button>
       </div>
+      {err && <p className="error">{err}</p>}
 
-      <div className="grid">
-        <label>Stage
-          <select value={lead.stage} onChange={(e) => update({ stage: e.target.value })}>
-            {STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
-          </select>
-        </label>
-        <label>Email<input defaultValue={lead.email || ''} onBlur={(e) => update({ email: e.target.value })} /></label>
-        <label>Phone<input defaultValue={lead.phone || ''} onBlur={(e) => update({ phone: e.target.value })} /></label>
-        <label>Source<input defaultValue={lead.source || ''} onBlur={(e) => update({ source: e.target.value })} /></label>
-        <label>Follow-up date
-          <input type="date" defaultValue={lead.follow_up_date ? lead.follow_up_date.slice(0, 10) : ''}
-            onBlur={(e) => update({ follow_up_date: e.target.value || null })} />
-        </label>
-      </div>
+      <section className="form-section">
+        <h3>Contact Info</h3>
+        <div className="grid">
+          <label>First name
+            <input defaultValue={lead.first_name || ''} key={`fn-${lead.id}`}
+              onBlur={(e) => update({ first_name: e.target.value || null })} />
+          </label>
+          <label>Middle initial
+            <input defaultValue={lead.middle_initial || ''} key={`mi-${lead.id}`} maxLength={5}
+              onBlur={(e) => update({ middle_initial: e.target.value || null })} />
+          </label>
+          <label>Last name
+            <input defaultValue={lead.last_name || ''} key={`ln-${lead.id}`}
+              onBlur={(e) => update({ last_name: e.target.value || null })} />
+          </label>
+          <label>Email
+            <input type="email" defaultValue={lead.email || ''} key={`em-${lead.id}`}
+              onBlur={(e) => update({ email: e.target.value || null })} />
+          </label>
+          <label>Primary phone (cell)
+            <input type="tel" defaultValue={lead.phone || ''} key={`ph-${lead.id}`}
+              onBlur={(e) => update({ phone: e.target.value || null })} />
+          </label>
+          <label>Home phone
+            <input type="tel" defaultValue={lead.phone_home || ''} key={`phh-${lead.id}`}
+              onBlur={(e) => update({ phone_home: e.target.value || null })} />
+          </label>
+          <label>Work phone
+            <input type="tel" defaultValue={lead.phone_work || ''} key={`phw-${lead.id}`}
+              onBlur={(e) => update({ phone_work: e.target.value || null })} />
+          </label>
+          <label>Preferred contact
+            <select value={lead.preferred_contact || ''}
+              onChange={(e) => update({ preferred_contact: e.target.value || null })}>
+              <option value="">—</option>
+              {PREFERRED_CONTACTS.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </label>
+        </div>
+      </section>
 
-      <h2>Notes</h2>
-      <form className="inline-form" onSubmit={addNote}>
-        <textarea placeholder="Add a note…" value={note} onChange={(e) => setNote(e.target.value)} />
-        <button type="submit">Add note</button>
-      </form>
-      <ul className="notes">
-        {lead.notes?.map((n) => (
-          <li key={n.id}>
-            <div className="meta">{new Date(n.created_at).toLocaleString()}</div>
-            <div>{n.body}</div>
-          </li>
-        ))}
-      </ul>
+      <section className="form-section">
+        <h3>Demographics</h3>
+        <div className="grid">
+          <label>Date of birth
+            <input type="date" defaultValue={lead.dob ? lead.dob.slice(0, 10) : ''} key={`dob-${lead.id}`}
+              onBlur={(e) => update({ dob: e.target.value || null })} />
+          </label>
+          <label className="checkbox-row">
+            <input type="checkbox" checked={!!lead.is_us_citizen}
+              onChange={(e) => update({ is_us_citizen: e.target.checked })} />
+            <span>US citizen</span>
+          </label>
+        </div>
+      </section>
+
+      <section className="form-section">
+        <h3>Pipeline</h3>
+        <div className="grid">
+          <label>Stage
+            <select value={lead.stage} onChange={(e) => update({ stage: e.target.value })}>
+              {STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </label>
+          <label>Source
+            <input defaultValue={lead.source || ''} key={`src-${lead.id}`}
+              onBlur={(e) => update({ source: e.target.value || null })} />
+          </label>
+          <label>Follow-up date
+            <input type="date" defaultValue={lead.follow_up_date ? lead.follow_up_date.slice(0, 10) : ''} key={`fud-${lead.id}`}
+              onBlur={(e) => update({ follow_up_date: e.target.value || null })} />
+          </label>
+        </div>
+      </section>
+
+      <section className="form-section">
+        <h3>Client Info</h3>
+        <div className="grid">
+          <label>Type
+            <select value={lead.client_type || 'Individual'}
+              onChange={(e) => update({ client_type: e.target.value })}>
+              {CLIENT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </label>
+          {isBusiness && (
+            <>
+              <label>Company name
+                <input defaultValue={lead.company_name || ''} key={`cn-${lead.id}`}
+                  onBlur={(e) => update({ company_name: e.target.value || null })} />
+              </label>
+              <label>Company website
+                <input defaultValue={lead.company_website || ''} key={`cw-${lead.id}`}
+                  onBlur={(e) => update({ company_website: e.target.value || null })} />
+              </label>
+            </>
+          )}
+          <label className="checkbox-row">
+            <input type="checkbox" checked={lead.is_active}
+              onChange={(e) => update({ is_active: e.target.checked })} />
+            <span>Active</span>
+          </label>
+        </div>
+      </section>
+
+      <section className="form-section">
+        <h3>Notes</h3>
+        <form className="inline-form" onSubmit={addNote}>
+          <textarea placeholder="Add a note…" value={note} onChange={(e) => setNote(e.target.value)} />
+          <button type="submit">Add note</button>
+        </form>
+        <ul className="notes">
+          {lead.notes?.map((n) => (
+            <li key={n.id}>
+              <div className="meta">{new Date(n.created_at).toLocaleString()}</div>
+              <div>{n.body}</div>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }
