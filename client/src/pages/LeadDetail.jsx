@@ -35,7 +35,7 @@ export default function LeadDetail() {
   const del = async () => {
     if (!confirm('Delete this lead?')) return;
     await api(`/api/leads/${id}`, { method: 'DELETE', token: auth.token });
-    nav('/');
+    nav('/leads');
   };
 
   if (err) return <p className="error">{err}</p>;
@@ -43,7 +43,7 @@ export default function LeadDetail() {
 
   return (
     <div className="lead-detail">
-      <Link to="/">← Pipeline</Link>
+      <Link to="/leads">← Pipeline</Link>
       <div className="toolbar">
         <h1>{lead.name}</h1>
         <button className="danger" onClick={del}>Delete</button>
