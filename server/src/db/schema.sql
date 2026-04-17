@@ -1,3 +1,8 @@
+-- Canonical schema for Income Academy CRM.
+-- This reflects the CURRENT state after all migrations are applied.
+-- For fresh installs: run `npm run db:init` — this file creates everything.
+-- For existing installs: run `npm run db:migrate` — see ./migrations/ for incremental changes.
+
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   email TEXT UNIQUE NOT NULL,
@@ -9,13 +14,46 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS leads (
   id SERIAL PRIMARY KEY,
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+
+  -- Legacy display name (kept for backwards compat; populated from first/last by app logic)
   name TEXT NOT NULL,
+
+  -- Split name components
+  first_name TEXT,
+  middle_initial TEXT,
+  last_name TEXT,
+
+  -- Contact
   email TEXT,
-  phone TEXT,
+  phone TEXT,        -- primary phone (typically cell)
+  phone_home TEXT,
+  phone_work TEXT,
+  preferred_contact TEXT CHECK (preferred_contact IN ('Email', 'Phone', 'SMS')),
+
+  -- Demographic
+  dob DATE,
+  is_us_citizen BOOLEAN,
+
+  -- Pipeline
   stage TEXT NOT NULL DEFAULT 'New Lead'
     CHECK (stage IN ('New Lead', 'Contacted', 'Call Booked', 'Closed', 'Lost')),
   source TEXT,
   follow_up_date DATE,
+
+  -- Client type + lifecycle
+  client_type TEXT CHECK (client_type IN ('Individual', 'Business')) DEFAULT 'Individual',
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  is_client BOOLEAN NOT NULL DEFAULT FALSE,
+  became_client_at TIMESTAMPTZ,
+
+  -- Business client fields
+  company_name TEXT,
+  company_website TEXT,
+
+  -- Integration placeholders (populated by Phase 5 / Phase 6)
+  contract_status TEXT CHECK (contract_status IN ('Not sent', 'Sent', 'Signed', 'Declined')),
+  stripe_customer_id TEXT,
+
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -23,6 +61,8 @@ CREATE TABLE IF NOT EXISTS leads (
 CREATE INDEX IF NOT EXISTS leads_user_id_idx ON leads(user_id);
 CREATE INDEX IF NOT EXISTS leads_stage_idx ON leads(stage);
 CREATE INDEX IF NOT EXISTS leads_follow_up_idx ON leads(follow_up_date);
+CREATE INDEX IF NOT EXISTS leads_is_client_idx ON leads(is_client);
+CREATE INDEX IF NOT EXISTS leads_is_active_idx ON leads(is_active);
 
 CREATE TABLE IF NOT EXISTS lead_notes (
   id SERIAL PRIMARY KEY,
@@ -49,3 +89,10 @@ CREATE TABLE IF NOT EXISTS expenses (
 
 CREATE INDEX IF NOT EXISTS expenses_user_id_idx ON expenses(user_id);
 CREATE INDEX IF NOT EXISTS expenses_status_idx ON expenses(reimbursement_status);
+
+-- Migration tracking table (created automatically by migrate.js; included here
+-- so a fresh install has it too).
+CREATE TABLE IF NOT EXISTS _migrations (
+  name TEXT PRIMARY KEY,
+  applied_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
