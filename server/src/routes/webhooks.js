@@ -6,6 +6,7 @@ import { Router } from 'express';
 import express from 'express';
 import Stripe from 'stripe';
 import { pool } from '../db/pool.js';
+import { upsertSubscriber } from '../integrations/mailerlite.js';
 
 const router = Router();
 
@@ -17,7 +18,6 @@ const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 // respond 503 until the env vars are configured.
 const stripe = STRIPE_SECRET ? new Stripe(STRIPE_SECRET) : null;
 
-// Stripe webhook endpoint.
 router.post(
   '/stripe',
   express.raw({ type: 'application/json' }),
@@ -95,6 +95,27 @@ async function handleCheckoutCompleted(session) {
     ON CONFLICT (stripe_session_id) DO NOTHING`,
     [ownerUserId, displayName, firstName, lastName, email, phone, sessionId]
   );
+
+  // Add to MailerLite so their welcome automation fires.
+  // Non-blocking: if MailerLite is unreachable or misconfigured, we log and
+  // continue. The customer's lead is already created; email can be manually
+  // re-triggered later if needed.
+  const mlKey = process.env.MAILERLITE_API_KEY;
+  const mlGroupId = process.env.MAILERLITE_BUYER_GROUP_ID;
+  if (mlKey && email) {
+    try {
+      await upsertSubscriber({
+        apiKey: mlKey,
+        email,
+        firstName,
+        lastName,
+        phone,
+        groupId: mlGroupId || undefined,
+      });
+    } catch (err) {
+      console.error('mailerlite add failed:', err.message || 'unknown');
+    }
+  }
 }
 
 export default router;
