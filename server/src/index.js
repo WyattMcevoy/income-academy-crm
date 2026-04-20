@@ -5,6 +5,7 @@ import authRouter from './routes/auth.js';
 import leadsRouter from './routes/leads.js';
 import clientsRouter from './routes/clients.js';
 import expensesRouter from './routes/expenses.js';
+import webhooksRouter from './routes/webhooks.js';
 import { requireAuth } from './middleware/auth.js';
 
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
@@ -42,13 +43,17 @@ const allowedOrigins = isProd
 
 app.use(cors({
   origin: (origin, cb) => {
-    // Allow same-origin / curl (no Origin header).
+    // Allow same-origin / curl / Stripe webhooks (no Origin header).
     if (!origin) return cb(null, true);
     if (allowedOrigins.includes(origin)) return cb(null, true);
     cb(new Error('Not allowed by CORS'));
   },
   credentials: true,
 }));
+
+// IMPORTANT: webhooks MUST be mounted BEFORE express.json() because Stripe
+// signature verification requires the raw request body.
+app.use('/api/webhooks', webhooksRouter);
 
 app.use(express.json({ limit: '100kb' }));
 

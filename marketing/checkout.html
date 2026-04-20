@@ -3,10 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checkout — Income Academy</title>
+<title>Redirecting to secure checkout — Income Academy</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/styles.css">
+
+<!--
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  PAYMENT LINK URL — replace the two placeholders below with     │
+  │  your Stripe Payment Link URL.                                  │
+  │                                                                 │
+  │  Test mode URLs look like:  https://buy.stripe.com/test_xxxx    │
+  │  Live mode URLs look like:  https://buy.stripe.com/xxxx         │
+  │                                                                 │
+  │  To switch between test and live, just update these two lines.  │
+  └─────────────────────────────────────────────────────────────────┘
+-->
+
+<meta http-equiv="refresh" content="0; url=https://buy.stripe.com/REPLACE_WITH_PAYMENT_LINK">
+<script>
+  window.location.href = 'https://buy.stripe.com/REPLACE_WITH_PAYMENT_LINK';
+</script>
 </head>
 <body>
 
@@ -20,17 +37,16 @@
 </nav>
 
 <div class="checkout-placeholder">
-  <h1>Checkout coming soon</h1>
-  <p>We're finishing the final touches on our secure checkout. Check back in a few days — or leave your email on the homepage to be notified when enrollment opens.</p>
-  <a href="/" class="btn btn-primary">← Back to home</a>
+  <h1>Redirecting to secure checkout…</h1>
+  <p>If you're not redirected automatically, click the button below.</p>
+  <a href="https://buy.stripe.com/REPLACE_WITH_PAYMENT_LINK" class="btn btn-primary">Continue to secure checkout</a>
 </div>
 
 <footer class="footer">
   <div class="footer-bottom container">
-    © <span id="year">2026</span> Income Academy LLC · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a>
+    © <span id="year">2026</span> Income Academy LLC
   </div>
 </footer>
-
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

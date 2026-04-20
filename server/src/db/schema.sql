@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS leads (
   -- Integration placeholders (populated by Phase 5 / Phase 6)
   contract_status TEXT CHECK (contract_status IN ('Not sent', 'Sent', 'Signed', 'Declined')),
   stripe_customer_id TEXT,
+  stripe_session_id TEXT,
 
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -63,6 +64,7 @@ CREATE INDEX IF NOT EXISTS leads_stage_idx ON leads(stage);
 CREATE INDEX IF NOT EXISTS leads_follow_up_idx ON leads(follow_up_date);
 CREATE INDEX IF NOT EXISTS leads_is_client_idx ON leads(is_client);
 CREATE INDEX IF NOT EXISTS leads_is_active_idx ON leads(is_active);
+CREATE UNIQUE INDEX IF NOT EXISTS leads_stripe_session_id_uniq ON leads(stripe_session_id);
 
 CREATE TABLE IF NOT EXISTS lead_notes (
   id SERIAL PRIMARY KEY,
