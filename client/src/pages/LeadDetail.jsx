@@ -103,8 +103,8 @@ export default function LeadDetail() {
             <input defaultValue={lead.first_name || ''} key={`fn-${lead.id}`}
               onBlur={(e) => update({ first_name: e.target.value || null })} />
           </label>
-          <label>Middle initial
-            <input defaultValue={lead.middle_initial || ''} key={`mi-${lead.id}`} maxLength={5}
+          <label>Middle name
+            <input defaultValue={lead.middle_initial || ''} key={`mi-${lead.id}`} maxLength={100}
               onBlur={(e) => update({ middle_initial: e.target.value || null })} />
           </label>
           <label>Last name

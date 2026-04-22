@@ -83,17 +83,33 @@ async function main() {
   for (let i = 0; i < records.length; i++) {
     const row = records[i];
     let firstName = clean(pickCol(row, 'first_name', 'firstname'));
+    let middleName = clean(pickCol(row, 'middle_name', 'middle_initial', 'middle'));
     let lastName = clean(pickCol(row, 'last_name', 'lastname', 'surname'));
 
     // If there's no first/last but there is a single `name` column (e.g.,
-    // "Jon A Smith"), split on first space into first_name + last_name.
-    // "Jon A Smith" -> first="Jon", last="A Smith" (middle initial rides with last).
+    // "Jon A Smith"), split it intelligently:
+    //   1 word:   first only
+    //   2 words:  first, last
+    //   3 words:  first, middle, last
+    //   4+ words: first = 1st, last = last, middle = everything in between
     if (!firstName && !lastName) {
       const fullName = clean(pickCol(row, 'name', 'full_name'));
       if (fullName) {
         const parts = fullName.split(/\s+/);
-        firstName = parts[0];
-        if (parts.length > 1) lastName = parts.slice(1).join(' ');
+        if (parts.length === 1) {
+          firstName = parts[0];
+        } else if (parts.length === 2) {
+          firstName = parts[0];
+          lastName = parts[1];
+        } else if (parts.length === 3) {
+          firstName = parts[0];
+          middleName = middleName || parts[1];
+          lastName = parts[2];
+        } else {
+          firstName = parts[0];
+          middleName = middleName || parts.slice(1, -1).join(' ');
+          lastName = parts[parts.length - 1];
+        }
       }
     }
 
@@ -108,7 +124,9 @@ async function main() {
 
     const emailLower = email ? email.toLowerCase() : null;
     const displayName =
-      [firstName, lastName].filter(Boolean).join(' ') || email || 'Unknown';
+      [firstName, middleName, lastName].filter(Boolean).join(' ') ||
+      email ||
+      'Unknown';
 
     // Dedup by email if present.
     if (emailLower && existingEmails.has(emailLower)) {
@@ -122,9 +140,9 @@ async function main() {
     try {
       await pool.query(
         `INSERT INTO leads
-           (user_id, name, first_name, last_name, email, phone, phone_home, phone_work, source, stage)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'New Lead')`,
-        [OWNER_USER_ID, displayName, firstName, lastName, email, phone, phoneHome, phoneWork, sourceFinal]
+           (user_id, name, first_name, middle_initial, last_name, email, phone, phone_home, phone_work, source, stage)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'New Lead')`,
+        [OWNER_USER_ID, displayName, firstName, middleName, lastName, email, phone, phoneHome, phoneWork, sourceFinal]
       );
       if (emailLower) existingEmails.add(emailLower);
       if (!email) noEmailImported++;

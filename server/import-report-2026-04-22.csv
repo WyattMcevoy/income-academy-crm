@@ -1,0 +1,4 @@
+row,email,status,reason
+2,"testy-import1@example.com",imported,"ok"
+3,"testy-import2@example.com",imported,"ok"
+4,"(none)",imported,"no email"

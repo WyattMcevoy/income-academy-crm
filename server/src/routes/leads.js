@@ -30,7 +30,7 @@ function validateLeadFields(body, { partial = false } = {}) {
   // Text fields
   const textFields = [
     ['first_name', 100],
-    ['middle_initial', 5],
+    ['middle_initial', 100],
     ['last_name', 100],
     ['email', 254],
     ['phone', 40],

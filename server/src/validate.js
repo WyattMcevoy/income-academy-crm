@@ -47,11 +47,15 @@ export const ENUMS = {
 
 // Compute the legacy display `name` from split name fields.
 // Returns null if no name components provided.
+// If middle is 1 char, format as an initial ("A."). Otherwise pass through as a
+// full middle name ("Adam").
 export function computeName({ first_name, middle_initial, last_name }) {
-  const parts = [
-    first_name,
-    middle_initial ? `${middle_initial.replace(/\.$/, '')}.` : null,
-    last_name,
-  ].filter(Boolean);
+  let middle = null;
+  if (middle_initial) {
+    const stripped = String(middle_initial).replace(/\.$/, '').trim();
+    if (stripped.length === 1) middle = `${stripped}.`;
+    else if (stripped.length > 1) middle = stripped;
+  }
+  const parts = [first_name, middle, last_name].filter(Boolean);
   return parts.length ? parts.join(' ') : null;
 }
