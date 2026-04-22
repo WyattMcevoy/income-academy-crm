@@ -106,12 +106,56 @@ function validateLeadFields(body, { partial = false } = {}) {
   return { out, errors };
 }
 
+// Paginated + filterable list.
+//   ?page=1&limit=50&q=smith&stage=New+Lead
+// Response: { leads, total, page, limit, pages }
 router.get('/', async (req, res) => {
-  const { rows } = await pool.query(
-    'SELECT * FROM leads WHERE user_id = $1 AND is_client = FALSE ORDER BY updated_at DESC',
-    [req.user.id]
+  const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 50, 1), 100);
+  const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+  const offset = (page - 1) * limit;
+  const q = req.query.q ? String(req.query.q).trim() : '';
+  const stage = req.query.stage && STAGES.includes(String(req.query.stage))
+    ? String(req.query.stage)
+    : null;
+
+  const filters = ['user_id = $1', 'is_client = FALSE'];
+  const values = [req.user.id];
+
+  if (stage) {
+    values.push(stage);
+    filters.push(`stage = $${values.length}`);
+  }
+
+  if (q) {
+    values.push(`%${q}%`);
+    const i = values.length;
+    filters.push(`(name ILIKE $${i} OR email ILIKE $${i} OR phone ILIKE $${i})`);
+  }
+
+  const whereClause = filters.join(' AND ');
+
+  const countRes = await pool.query(
+    `SELECT COUNT(*)::int AS total FROM leads WHERE ${whereClause}`,
+    values
   );
-  res.json(rows);
+  const total = countRes.rows[0].total;
+
+  values.push(limit, offset);
+  const { rows } = await pool.query(
+    `SELECT * FROM leads
+       WHERE ${whereClause}
+       ORDER BY updated_at DESC
+       LIMIT $${values.length - 1} OFFSET $${values.length}`,
+    values
+  );
+
+  res.json({
+    leads: rows,
+    total,
+    page,
+    limit,
+    pages: Math.max(Math.ceil(total / limit), 1),
+  });
 });
 
 router.post('/', async (req, res) => {
