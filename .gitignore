@@ -7,3 +7,6 @@ build/
 *.log
 .vscode/
 .idea/
+# Local import reports contain lead PII; never commit.
+server/import-report-*.csv
+*-import-report*.csv
