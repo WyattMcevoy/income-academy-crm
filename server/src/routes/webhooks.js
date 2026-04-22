@@ -7,6 +7,7 @@ import express from 'express';
 import Stripe from 'stripe';
 import { pool } from '../db/pool.js';
 import { upsertSubscriber } from '../integrations/mailerlite.js';
+import { upsertContact as ghlUpsertContact } from '../integrations/gohighlevel.js';
 
 const router = Router();
 
@@ -114,6 +115,29 @@ async function handleCheckoutCompleted(session) {
       });
     } catch (err) {
       console.error('mailerlite add failed:', err.message || 'unknown');
+    }
+  }
+
+  // Upsert the contact in GHL and tag them. A workflow inside GHL
+  // (configured via GHL UI, not here) watches for the `stripe-buyer` tag
+  // and enrolls the contact in the course + emails them portal access.
+  // Non-blocking: GHL outage does not fail the webhook.
+  const ghlKey = process.env.GHL_API_KEY;
+  const ghlLocationId = process.env.GHL_LOCATION_ID;
+  if (ghlKey && ghlLocationId && email) {
+    try {
+      await ghlUpsertContact({
+        apiKey: ghlKey,
+        locationId: ghlLocationId,
+        email,
+        firstName,
+        lastName,
+        phone,
+        tags: ['stripe-buyer', 'front-end-buyer'],
+        source: 'Stripe Webhook — $47 Front-End',
+      });
+    } catch (err) {
+      console.error('ghl upsert failed:', err.message || 'unknown');
     }
   }
 }
