@@ -82,10 +82,27 @@ async function main() {
 
   for (let i = 0; i < records.length; i++) {
     const row = records[i];
-    const firstName = clean(pickCol(row, 'first_name', 'firstname'));
-    const lastName = clean(pickCol(row, 'last_name', 'lastname', 'surname'));
+    let firstName = clean(pickCol(row, 'first_name', 'firstname'));
+    let lastName = clean(pickCol(row, 'last_name', 'lastname', 'surname'));
+
+    // If there's no first/last but there is a single `name` column (e.g.,
+    // "Jon A Smith"), split on first space into first_name + last_name.
+    // "Jon A Smith" -> first="Jon", last="A Smith" (middle initial rides with last).
+    if (!firstName && !lastName) {
+      const fullName = clean(pickCol(row, 'name', 'full_name'));
+      if (fullName) {
+        const parts = fullName.split(/\s+/);
+        firstName = parts[0];
+        if (parts.length > 1) lastName = parts.slice(1).join(' ');
+      }
+    }
+
     const email = clean(pickCol(row, 'email', 'email_address'));
-    const phone = clean(pickCol(row, 'phone', 'phone_number', 'mobile', 'cell', 'telephone'));
+    const phone = clean(
+      pickCol(row, 'phone', 'phone_number', 'mobile', 'cell', 'telephone', 'cell_phone')
+    );
+    const phoneHome = clean(pickCol(row, 'home_phone', 'phone_home'));
+    const phoneWork = clean(pickCol(row, 'work_phone', 'phone_work'));
     const leadSource =
       clean(pickCol(row, 'lead_source', 'source', 'lead_origin')) || 'Google Sheet Import';
 
@@ -105,9 +122,9 @@ async function main() {
     try {
       await pool.query(
         `INSERT INTO leads
-           (user_id, name, first_name, last_name, email, phone, source, stage)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, 'New Lead')`,
-        [OWNER_USER_ID, displayName, firstName, lastName, email, phone, sourceFinal]
+           (user_id, name, first_name, last_name, email, phone, phone_home, phone_work, source, stage)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'New Lead')`,
+        [OWNER_USER_ID, displayName, firstName, lastName, email, phone, phoneHome, phoneWork, sourceFinal]
       );
       if (emailLower) existingEmails.add(emailLower);
       if (!email) noEmailImported++;
