@@ -69,6 +69,67 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
+  /* Scorecard */
+  .scorecard {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+  }
+  .scorecard-header {
+    display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px;
+  }
+  .scorecard-number {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--gold); color: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 20px; flex-shrink: 0;
+  }
+  .scorecard-header h3 { font-size: 20px; margin-bottom: 4px; color: var(--navy); }
+  .scorecard-q { color: var(--gray); font-size: 15px; }
+  .scorecard-table {
+    width: 100%; border-collapse: collapse; margin-top: 8px;
+  }
+  .scorecard-table td {
+    padding: 10px 12px; border-bottom: 1px solid var(--border);
+    font-size: 15px; color: var(--navy);
+  }
+  .scorecard-table td.score {
+    width: 40px; text-align: center;
+    background: rgba(245, 158, 11, 0.1); color: var(--gold);
+    font-weight: 800; font-size: 16px; border-radius: 4px;
+  }
+  .scorecard-table tr:last-child td { border-bottom: none; }
+  .scorecard-footer {
+    margin-top: 18px; padding-top: 16px;
+    border-top: 1px dashed var(--border);
+    font-size: 14px; color: var(--gray);
+  }
+  /* Timeline */
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+  .timeline-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 10px; padding: 24px;
+    border-top: 4px solid var(--gold);
+  }
+  .timeline-period {
+    font-size: 12px; color: var(--gold);
+    font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .timeline-card h4 { font-size: 18px; margin-bottom: 10px; color: var(--navy); }
+  .timeline-card p { color: var(--gray); font-size: 14px; line-height: 1.55; margin-bottom: 14px; }
+  .timeline-earnings {
+    font-size: 13px; color: var(--navy);
+    padding-top: 12px; border-top: 1px solid var(--border);
+  }
+  .timeline-earnings strong { color: var(--gold); font-size: 15px; }
 </style>
 </head>
 <body>
@@ -215,6 +276,70 @@
         <li style="padding: 6px 0;">✓ <strong style="color: var(--white);">Income Academy AI Writing Assistant</strong> — custom Claude/GPT that writes post-HCU content that ranks</li>
       </ul>
     </div>
+  </div>
+</section>
+
+<!-- NICHE SCORECARD PREVIEW -->
+<section class="block">
+  <div class="container-narrow">
+    <span class="section-eyebrow">Module 3: niche selection</span>
+    <h2 class="section-title">Before you commit 12 months — score it</h2>
+    <p class="section-sub">Most affiliate sites fail because people pick the wrong niche. The scorecard evaluates any candidate against 5 criteria. Below is the first one — the full scorecard lives inside Module 3.</p>
+
+    <div class="scorecard">
+      <div class="scorecard-header">
+        <span class="scorecard-number">1</span>
+        <div>
+          <h3>Audience Fit</h3>
+          <p class="scorecard-q">Is this an audience I can serve authentically?</p>
+        </div>
+      </div>
+      <table class="scorecard-table">
+        <tr><td class="score">1</td><td>I know nothing about this audience — I'd be faking it</td></tr>
+        <tr><td class="score">2</td><td>I could learn but would struggle to build trust</td></tr>
+        <tr><td class="score">3</td><td>I have some overlap but not strong personal expertise</td></tr>
+        <tr><td class="score">4</td><td>I'm close to this audience (adjacent or past experience)</td></tr>
+        <tr><td class="score">5</td><td>I AM this audience — I naturally understand them</td></tr>
+      </table>
+      <p class="scorecard-footer">Score 3-5 candidate niches across all 5 criteria. Total under 15 = keep looking. You'll save yourself 6-12 wasted months.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REALISTIC TIMELINE -->
+<section class="block block-cream">
+  <div class="container">
+    <span class="section-eyebrow">What to expect, honestly</span>
+    <h2 class="section-title">The 24-month shape of this business</h2>
+    <p class="section-sub">Compounding takes time. Below is the pattern most dedicated builders see. Many take longer. Some plateau. This is not a promise — it's the slope of the curve.</p>
+
+    <div class="timeline-grid">
+      <div class="timeline-card">
+        <div class="timeline-period">Months 1-3</div>
+        <h4>Foundation</h4>
+        <p>Niche selected. Site built. First 10-20 articles written. Affiliate programs applied for.</p>
+        <div class="timeline-earnings">Typical: <strong>$0-$50/mo</strong></div>
+      </div>
+      <div class="timeline-card">
+        <div class="timeline-period">Months 6-12</div>
+        <h4>Traction</h4>
+        <p>Search traffic beginning to grow. Email list warming. First commissions trickling in. Article library deepens.</p>
+        <div class="timeline-earnings">Typical: <strong>$50-$500/mo</strong></div>
+      </div>
+      <div class="timeline-card">
+        <div class="timeline-period">Year 1-2</div>
+        <h4>Acceleration</h4>
+        <p>Compounding kicks in. Older articles keep earning while new ones add on top. Email list becomes a major lever.</p>
+        <div class="timeline-earnings">Typical: <strong>$300-$3,000/mo</strong></div>
+      </div>
+      <div class="timeline-card">
+        <div class="timeline-period">Year 2+</div>
+        <h4>Business</h4>
+        <p>Serious sites with strong niches become real businesses. Content team, systems, scale decisions.</p>
+        <div class="timeline-earnings">Typical: <strong>$1k-$10k+/mo</strong></div>
+      </div>
+    </div>
+    <p style="text-align: center; font-size: 12px; color: var(--gray); margin-top: 30px; padding: 0 24px;">These are typical ranges for dedicated builders putting in 5-10 hrs/week consistently. Many people earn less. Some never succeed. No guarantees. See <a href="/disclaimer">earnings disclaimer</a>.</p>
   </div>
 </section>
 

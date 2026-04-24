@@ -66,6 +66,67 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
+  /* Prompt cards */
+  .prompt-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-bottom: 20px;
+  }
+  .prompt-card-meta {
+    display: flex; gap: 10px; align-items: center; margin-bottom: 10px;
+  }
+  .prompt-code {
+    background: var(--navy); color: var(--gold);
+    padding: 3px 9px; border-radius: 4px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+  }
+  .prompt-category {
+    color: var(--gray); font-size: 12px;
+    letter-spacing: 0.6px; text-transform: uppercase; font-weight: 600;
+  }
+  .prompt-name { font-size: 18px; margin-bottom: 14px; color: var(--navy); }
+  .prompt-body {
+    background: var(--navy); color: #cbd5e1;
+    padding: 16px 18px; border-radius: 6px;
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 13px; line-height: 1.55;
+    white-space: pre-wrap; word-wrap: break-word;
+    overflow-x: auto;
+  }
+  /* Chat preview */
+  .chat-preview {
+    margin-top: 30px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+  }
+  .chat-msg { display: flex; gap: 12px; margin-bottom: 18px; }
+  .chat-msg:last-child { margin-bottom: 0; }
+  .chat-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--gray-light); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+  }
+  .chat-avatar-ai { background: var(--gold); color: var(--navy); }
+  .chat-bubble {
+    background: var(--cream);
+    padding: 12px 16px; border-radius: 12px;
+    font-size: 15px; line-height: 1.5;
+    flex: 1; color: var(--navy);
+  }
+  .chat-bubble-ai {
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+  }
+  .chat-bubble ul { padding-left: 20px; margin: 10px 0; }
+  .chat-bubble li { margin-bottom: 4px; font-size: 14px; }
+  .chat-bubble p { margin-bottom: 10px; }
+  .chat-bubble p:last-child { margin-bottom: 0; }
 </style>
 </head>
 <body>
@@ -183,6 +244,85 @@
         <li>✓ <strong style="color: var(--white);">90-day action workbook</strong> — printable checklist version of your plan</li>
       </ul>
     </div>
+  </div>
+</section>
+
+<!-- PROMPT PREVIEW -->
+<section class="block">
+  <div class="container-narrow">
+    <span class="section-eyebrow">Sample from the library</span>
+    <h2 class="section-title">What a prompt actually looks like</h2>
+    <p class="section-sub">Not theory — the exact kind of prompt you'll copy, fill in, and run on real client work. Two examples from the 200+ inside.</p>
+
+    <div class="prompt-card">
+      <div class="prompt-card-meta">
+        <span class="prompt-code">BW-01</span>
+        <span class="prompt-category">Writing &amp; Editing</span>
+      </div>
+      <h4 class="prompt-name">Blog post first draft</h4>
+      <pre class="prompt-body">You are an experienced blog writer for small businesses in the [INDUSTRY] niche.
+
+Client: [CLIENT NAME / TYPE OF BUSINESS]
+Audience: [READER — age, situation, what they care about]
+Topic: [TOPIC]
+Tone: [warm / professional / conversational / authoritative]
+Length: [WORD COUNT] words
+
+Write a [LENGTH]-word blog post. Structure:
+1. Hook (1-2 sentences)
+2. Why this matters right now
+3. Main content — 3-5 practical points
+4. What to do next
+
+Use one personal anecdote. Avoid cliché phrases like "in today's fast-paced world."</pre>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-meta">
+        <span class="prompt-code">SO-03</span>
+        <span class="prompt-category">Sales &amp; Outreach</span>
+      </div>
+      <h4 class="prompt-name">Cold email for a new client</h4>
+      <pre class="prompt-body">Write a 70-word cold email from a freelance [SERVICE] to a [BUSINESS TYPE].
+
+Goal: book a 15-minute call.
+Tone: warm, direct, not salesy.
+Include: one specific observation about their business (I'll paste their website below). End with a low-friction ask.
+
+Their website:
+[PASTE COPY HERE]</pre>
+    </div>
+
+    <p style="text-align: center; color: var(--gray); font-size: 14px; margin-top: 24px;">Plus 200+ more, organized across 8 categories: writing, bookkeeping, social media, customer service, transcription, sales outreach, research, and productivity.</p>
+  </div>
+</section>
+
+<!-- AI ASSISTANT PREVIEW -->
+<section class="block block-cream">
+  <div class="container-narrow">
+    <span class="section-eyebrow">Included with membership</span>
+    <h2 class="section-title">Your AI assistant knows this course</h2>
+    <p class="section-sub">A custom Claude Project pre-loaded with every module, every prompt, every template. Ask it anything about your side-income journey — answers draw from the course, not the open internet.</p>
+
+    <div class="chat-preview">
+      <div class="chat-msg">
+        <div class="chat-avatar">You</div>
+        <div class="chat-bubble">I got my first client and they want a blog post but I don't know how to quote it. What should I charge?</div>
+      </div>
+      <div class="chat-msg">
+        <div class="chat-avatar chat-avatar-ai">IA</div>
+        <div class="chat-bubble chat-bubble-ai">
+          <p>From Module 6 on pricing: for a first freelance blog client, aim for $150-300 per 1,000 words depending on research depth. For your first client specifically:</p>
+          <ul>
+            <li>Don't undercharge — pricing low signals "low-quality" to their future referrals</li>
+            <li>Quote a single rate, not hourly (avoids scope creep — see Module 7)</li>
+            <li>Use proposal template PT-01 I have loaded — want me to adapt it for this client?</li>
+          </ul>
+          <p>What industry is the client in? I can pull matching prompts from the library.</p>
+        </div>
+      </div>
+    </div>
+    <p style="text-align: center; font-size: 12px; color: var(--gray); margin-top: 20px;">Illustration — actual responses are tailored to your situation.</p>
   </div>
 </section>
 
