@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GHL Upload Helper — AI Side Income Starter Kit — Full Curriculum</title>
+<style>
+  :root {
+    --navy: #0f172a;
+    --navy-light: #1e293b;
+    --gold: #f59e0b;
+    --gold-hover: #d97706;
+    --cream: #f8fafc;
+    --gray: #64748b;
+    --gray-light: #94a3b8;
+    --border: #e2e8f0;
+    --success: #10b981;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 16px; line-height: 1.6; color: var(--navy); background: var(--cream);
+    -webkit-font-smoothing: antialiased;
+  }
+  .header {
+    background: var(--navy); color: var(--white);
+    padding: 24px; border-bottom: 4px solid var(--gold);
+  }
+  .header-inner { max-width: 900px; margin: 0 auto; }
+  .header h1 { color: #fff; font-size: 24px; margin-bottom: 4px; }
+  .header p { color: var(--gray-light); font-size: 14px; }
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+  .toc {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 24px; margin-bottom: 24px;
+  }
+  .toc h2 { font-size: 16px; margin-bottom: 12px; color: var(--navy); }
+  .toc ol { padding-left: 22px; }
+  .toc li { padding: 4px 0; color: var(--navy); font-size: 14px; }
+  .toc li a { color: var(--gold); text-decoration: none; }
+  .toc li a:hover { text-decoration: underline; }
+  .instructions {
+    background: rgba(245, 158, 11, 0.08);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 18px 22px; margin-bottom: 32px;
+    font-size: 14px;
+  }
+  .instructions strong { color: var(--navy); }
+  .module {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    margin-bottom: 24px; overflow: hidden;
+  }
+  .module-header {
+    background: var(--navy); color: #fff;
+    padding: 16px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .module-title-block { flex: 1; min-width: 0; }
+  .module-num {
+    color: var(--gold); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .module-title {
+    color: #fff; font-size: 18px; font-weight: 700;
+  }
+  .copy-btn {
+    background: var(--gold); color: var(--navy); border: none;
+    padding: 8px 16px; border-radius: 6px;
+    font-weight: 700; font-size: 13px; cursor: pointer;
+    transition: background 120ms;
+    white-space: nowrap;
+  }
+  .copy-btn:hover { background: var(--gold-hover); }
+  .copy-btn.copied { background: var(--success); color: #fff; }
+  .module-fields {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--cream);
+  }
+  .field-row {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .field-row:last-child { margin-bottom: 0; }
+  .field-label {
+    font-size: 11px; color: var(--gray);
+    font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    min-width: 70px;
+  }
+  .field-value {
+    flex: 1; min-width: 200px;
+    background: #fff; border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 12px; font-size: 14px; color: var(--navy);
+    font-family: inherit;
+  }
+  .copy-mini {
+    background: transparent; border: 1px solid var(--gold); color: var(--gold);
+    padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700;
+    cursor: pointer;
+  }
+  .copy-mini:hover { background: var(--gold); color: var(--navy); }
+  .copy-mini.copied { background: var(--success); color: #fff; border-color: var(--success); }
+  .module-body { padding: 24px; }
+  .module-body h1, .module-body h2, .module-body h3, .module-body h4 {
+    color: var(--navy); margin-top: 16px; margin-bottom: 8px;
+  }
+  .module-body h3 { font-size: 17px; }
+  .module-body h4 { font-size: 15px; }
+  .module-body p { margin-bottom: 12px; }
+  .module-body ul, .module-body ol { margin-left: 24px; margin-bottom: 12px; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body strong { color: var(--navy); }
+  .module-body code {
+    background: #f1f5f9; padding: 2px 6px; border-radius: 4px;
+    font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 13px;
+  }
+  .module-body pre {
+    background: var(--navy); color: #cbd5e1;
+    padding: 16px 18px; border-radius: 8px;
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 13px; line-height: 1.5;
+    overflow-x: auto; margin: 12px 0;
+  }
+  .module-body pre code {
+    background: none; color: inherit; padding: 0;
+  }
+  .module-body blockquote {
+    border-left: 3px solid var(--gold);
+    padding: 4px 16px; margin: 12px 0; color: var(--gray);
+  }
+  .module-body table {
+    border-collapse: collapse; margin: 12px 0; font-size: 14px;
+  }
+  .module-body th, .module-body td {
+    border: 1px solid var(--border); padding: 8px 12px; text-align: left;
+  }
+  .module-body th { background: var(--cream); font-weight: 700; }
+  .module-body hr { border: none; border-top: 1px dashed var(--border); margin: 16px 0; }
+  .footer {
+    text-align: center; padding: 24px; color: var(--gray); font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <h1>AI Side Income Starter Kit — Full Curriculum</h1>
+    <p>GHL Upload Helper · 9 modules</p>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="instructions">
+    <strong>How to use this page:</strong>
+    Open GHL → Memberships → create a new course titled "<strong>AI Side Income Starter Kit — Full Curriculum</strong>".
+    Then for each module below: in GHL click <em>+ Add Module</em>, paste the module title;
+    click <em>+ Add Lesson</em>, paste the lesson title; in the rich-text editor click the
+    "Source Code" / "&lt;/&gt;" button and paste the lesson body HTML.
+    Click each <strong>Copy</strong> button to copy that field to your clipboard.
+  </div>
+
+  <nav class="toc">
+    <h2>Modules in this course</h2>
+    <ol>
+      <li><a href="#module-0">Module 0 — Welcome + Setup (15 min)</a></li>
+<li><a href="#module-1">Module 1 — Your AI Assistants, Explained (30 min)</a></li>
+<li><a href="#module-2">Module 2 — Talking to AI (The Skill That Makes Everything Work) (45 min)</a></li>
+<li><a href="#module-3">Module 3 — Five AI-Ready Side Hustles That Work for Beginners (60 min)</a></li>
+<li><a href="#module-4">Module 4 — Landing Your First 3 Clients (60 min)</a></li>
+<li><a href="#module-5">Module 5 — Doing the Work (With AI, Not Replaced by AI) (45 min)</a></li>
+<li><a href="#module-6">Module 6 — Pricing Your Time (30 min)</a></li>
+<li><a href="#module-7">Module 7 — Boundaries, Scheduling, and Not Burning Out (20 min)</a></li>
+<li><a href="#module-8">Module 8 — Your 90-Day Plan (30 min)</a></li>
+    </ol>
+  </nav>
+
+  
+<article class="module" id="module-0">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 0</div>
+      <div class="module-title">Welcome + Setup (15 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-0">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-0" value="Module 0 — Welcome + Setup (15 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-0" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-0" value="Welcome + Setup (15 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-0" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-0">
+<p><strong>Goal</strong>: set expectations, establish honesty, get them to open ChatGPT and Claude for the first time.</p>
+<p><strong>Cover</strong>:</p>
+<ul>
+<li>Who this is for (and who it isn't)</li>
+<li>What you will and won't learn</li>
+<li>The honest earnings disclaimer (say it early, get it out of the way)</li>
+<li>Set up ChatGPT (free) + Claude (free tier)</li>
+<li>Brief tour of both interfaces</li>
+</ul>
+<p><strong>Key talking points</strong>:</p>
+<ul>
+<li>"This isn't a shortcut. AI is a tool. Tools require practice."</li>
+<li>"If you're looking for 'make $5k in your first week,' this isn't that course. Refund now — I won't take it personally."</li>
+<li>"If you're looking for real skills you can get paid for, stick around."</li>
+</ul>
+<p><strong>Homework</strong>: Create free accounts on ChatGPT and Claude. Have a conversation with each for 10 minutes about anything.</p>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-1">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 1</div>
+      <div class="module-title">Your AI Assistants, Explained (30 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-1">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-1" value="Module 1 — Your AI Assistants, Explained (30 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-1" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-1" value="Your AI Assistants, Explained (30 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-1" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-1">
+<p><strong>Goal</strong>: demystify what AI tools actually are, so the demo stops being scared of them.</p>
+<p><strong>Cover</strong>:</p>
+<ul>
+<li>What Large Language Models actually do (predict the next word, explained like you're talking to your parent)</li>
+<li>Why they hallucinate (and how to spot it)</li>
+<li>The 3 tools everyone should know: ChatGPT, Claude, Gemini — strengths of each</li>
+<li>What they're good at (writing, summarizing, brainstorming, organizing)</li>
+<li>What they're bad at (current events, math, citing sources without making them up)</li>
+</ul>
+<p><strong>Screen recording demo</strong>:</p>
+<ul>
+<li>Same prompt to ChatGPT, Claude, and Gemini side by side</li>
+<li>Show how answers differ</li>
+<li>Show the "I don't know" test — ask about something obscure, watch the hallucination</li>
+</ul>
+<p><strong>Key talking points</strong>:</p>
+<ul>
+<li>"Think of it as a really confident intern. Useful, not infallible."</li>
+<li>"Always verify facts. Never copy-paste without reading."</li>
+<li>"You're going to make mistakes using it. That's normal."</li>
+</ul>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-2">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 2</div>
+      <div class="module-title">Talking to AI (The Skill That Makes Everything Work) (45 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-2">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-2" value="Module 2 — Talking to AI (The Skill That Makes Everything Work) (45 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-2" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-2" value="Talking to AI (The Skill That Makes Everything Work) (45 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-2" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-2">
+<p><strong>Goal</strong>: teach prompting fundamentals. This is the skill — everything else is application.</p>
+<p><strong>Cover</strong>:</p>
+<ul>
+<li>The 4-part prompt structure: <strong>Role + Context + Task + Format</strong></li>
+<li>Why "write a blog post" gets garbage but "You're a gardening writer with 10 years experience. Write a 500-word beginner's guide to hydrangeas in Zone 7. Use a warm, neighborly tone with one story from personal experience." gets usable output</li>
+<li>The "give it examples" technique (few-shot prompting)</li>
+<li>The "ask it to ask you questions first" trick</li>
+<li>When to start over vs. when to refine</li>
+</ul>
+<p><strong>Screen recording demo</strong>:</p>
+<ul>
+<li>Bad prompt → bad output (show the disappointment)</li>
+<li>Same task with good prompt → good output</li>
+<li>Iterative refinement of a real client email</li>
+</ul>
+<p><strong>Exercises</strong>:</p>
+<ul>
+<li>Rewrite 3 vague prompts from Exercise Sheet 1 using the 4-part structure</li>
+<li>Generate three versions of a cold outreach email and pick the best one</li>
+</ul>
+<p><strong>Key talking points</strong>:</p>
+<ul>
+<li>"Your output is only as good as your input. If you're getting garbage, the problem is on your side."</li>
+<li>"AI won't read your mind. Tell it everything."</li>
+</ul>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-3">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 3</div>
+      <div class="module-title">Five AI-Ready Side Hustles That Work for Beginners (60 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-3">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-3" value="Module 3 — Five AI-Ready Side Hustles That Work for Beginners (60 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-3" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-3" value="Five AI-Ready Side Hustles That Work for Beginners (60 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-3" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-3">
+<p><strong>Goal</strong>: give them 5 real service offerings they can sell, with realistic rates.</p>
+<p><strong>Cover each in depth</strong> (8-10 min per):</p>
+<h3>3.1 Writing & Editing Assistant</h3>
+<ul>
+<li>What it is: helping small businesses with blog posts, newsletters, product descriptions</li>
+<li>Realistic rate: $150-500 per article for a 50+ writer with AI assistance</li>
+<li>Ideal client: a 3-10 person local service business or a solopreneur</li>
+<li>AI tools used: Claude for drafting, Grammarly for polish</li>
+<li>Time per gig: 2-3 hours</li>
+</ul>
+<h3>3.2 Bookkeeping Support (not full bookkeeping)</h3>
+<ul>
+<li>What it is: receipt categorization, expense report drafting, invoice generation for small operators</li>
+<li>Realistic rate: $25-40/hour or $200-400/month retainer</li>
+<li>Ideal client: Etsy seller, freelancer, small contractor</li>
+<li>AI tools used: ChatGPT for categorization, Claude for memo writing, Google Sheets</li>
+<li>Time per gig: 4-8 hours/month per client</li>
+<li>Compliance note: <strong>not CPA work. Not giving tax advice.</strong></li>
+</ul>
+<h3>3.3 Social Media Ghostwriting</h3>
+<ul>
+<li>What it is: drafting LinkedIn/Facebook posts for busy professionals</li>
+<li>Realistic rate: $300-800/month retainer for 12 posts</li>
+<li>Ideal client: realtor, consultant, local attorney</li>
+<li>AI tools used: Claude for voice-matching drafts</li>
+<li>Time per gig: 3-5 hours/week per client</li>
+</ul>
+<h3>3.4 Customer Email Triage</h3>
+<ul>
+<li>What it is: answering repetitive customer service emails for a small business owner</li>
+<li>Realistic rate: $15-25/hour</li>
+<li>Ideal client: Etsy/eBay seller with 20+ emails/day, local service owner</li>
+<li>AI tools used: Claude for draft responses, Gmail, spreadsheet tracker</li>
+<li>Time per gig: 1-2 hours/day per client</li>
+</ul>
+<h3>3.5 Transcription + Note Organization</h3>
+<ul>
+<li>What it is: turning meeting recordings into organized notes, action items, summaries</li>
+<li>Realistic rate: $40-80 per hour of audio</li>
+<li>Ideal client: realtor, therapist, consultant, course creator</li>
+<li>AI tools used: Otter.ai or Whisper for transcription, Claude for summarization</li>
+<li>Time per gig: 30-45 min per audio hour</li>
+</ul>
+<p><strong>Key talking points</strong>:</p>
+<ul>
+<li>"These are all real services real people pay for. You're not inventing anything."</li>
+<li>"Pick one. Don't try to do all five at once."</li>
+<li>"Quality > Volume. Three great clients beats fifteen mediocre ones."</li>
+</ul>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-4">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 4</div>
+      <div class="module-title">Landing Your First 3 Clients (60 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-4">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-4" value="Module 4 — Landing Your First 3 Clients (60 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-4" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-4" value="Landing Your First 3 Clients (60 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-4" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-4">
+<p><strong>Goal</strong>: remove "but I don't know where to find clients" as an excuse.</p>
+<p><strong>Cover</strong>:</p>
+<h3>4.1 The 5 proven places to find your first clients</h3>
+<ol>
+<li><strong>Upwork</strong> — set up a profile (walk them through), bid on 2-3 jobs/day</li>
+<li><strong>Referrals from your existing network</strong> — email template to let your friends/contacts know what you now offer</li>
+<li><strong>Local small business outreach</strong> — pick a niche (chiropractors, plumbers, realtors), find 20 local ones, send a personal email</li>
+<li><strong>Facebook groups for small business owners</strong> — helpful participation → relationships → offers</li>
+<li><strong>Existing clients of accountants, lawyers, designers</strong> — these professionals often know their clients need help, refer if you build a relationship</li>
+</ol>
+<h3>4.2 The anatomy of a good outreach email</h3>
+<p>Template in <code>templates/cold-outreach-sequence.md</code>. Walk through why each line works.</p>
+<h3>4.3 The first discovery call</h3>
+<ul>
+<li>How to show up (calm, curious, not salesy)</li>
+<li>5 questions to ask to understand their real problem</li>
+<li>When to quote a price vs when to hold off</li>
+<li>Script: <code>templates/discovery-call-script.md</code></li>
+</ul>
+<h3>4.4 Handling "how much do you charge?"</h3>
+<ul>
+<li>Why you should almost never be the one to name the first price</li>
+<li>When you do have to, use the range technique</li>
+</ul>
+<p><strong>Screen recording demo</strong>:</p>
+<ul>
+<li>Live Upwork profile walkthrough</li>
+<li>Live bid on a real job with before/after of the proposal</li>
+<li>Rewrite a cold email from a student in the demo audience</li>
+</ul>
+<p><strong>Exercises</strong>:</p>
+<ul>
+<li>Write 3 cold outreach emails to 3 real local businesses</li>
+<li>Complete your Upwork profile by end of week</li>
+</ul>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-5">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 5</div>
+      <div class="module-title">Doing the Work (With AI, Not Replaced by AI) (45 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-5">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-5" value="Module 5 — Doing the Work (With AI, Not Replaced by AI) (45 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-5" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-5" value="Doing the Work (With AI, Not Replaced by AI) (45 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-5" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-5">
+<p><strong>Goal</strong>: show the actual workflow for delivering a paid gig using AI tools.</p>
+<p><strong>Cover</strong>:</p>
+<h3>5.1 The "AI as co-pilot, human as pilot" principle</h3>
+<p>Never submit raw AI output. Always edit. The client is paying for your judgment, not the model's.</p>
+<h3>5.2 Full workflow example: "A blog post for a local chiropractor"</h3>
+<ul>
+<li>Client brief intake (template in <code>templates/client-intake.md</code>)</li>
+<li>Research with Claude + fact-check</li>
+<li>Outline with Claude</li>
+<li>Draft with Claude</li>
+<li>Human edit pass</li>
+<li>Polish with Grammarly</li>
+<li>Client delivery (template in <code>templates/delivery-email.md</code>)</li>
+</ul>
+<h3>5.3 Full workflow example: "A month of LinkedIn posts for a realtor"</h3>
+<ul>
+<li>Voice interview recording (30 min)</li>
+<li>Transcript + pattern extraction with Claude</li>
+<li>Topic brainstorm with Claude</li>
+<li>Draft 12 posts with Claude matching their voice</li>
+<li>Schedule in Buffer or ship as draft list</li>
+</ul>
+<h3>5.4 Quality-control checklist</h3>
+<ul>
+<li>Fact-check every specific claim</li>
+<li>Read aloud — does it sound like the client?</li>
+<li>Did I add genuine value beyond what Claude would have said generically?</li>
+<li>Is there anything a client could object to? (tone, accuracy, style)</li>
+</ul>
+<p><strong>Screen recording demo</strong>:</p>
+<ul>
+<li>Full blog post workflow in real time, ~20 min</li>
+</ul>
+<p><strong>Key talking points</strong>:</p>
+<ul>
+<li>"If your client could have just used ChatGPT themselves, they will eventually. Your job is to add what ChatGPT can't."</li>
+<li>"The human editing pass is 30% of the time and 70% of the quality."</li>
+</ul>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-6">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 6</div>
+      <div class="module-title">Pricing Your Time (30 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-6">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-6" value="Module 6 — Pricing Your Time (30 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-6" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-6" value="Pricing Your Time (30 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-6" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-6">
+<p><strong>Goal</strong>: stop them from undercharging, which is the #1 killer of beginner freelance attempts.</p>
+<p><strong>Cover</strong>:</p>
+<h3>6.1 Three pricing models</h3>
+<ol>
+<li><strong>Hourly</strong> — simple, but caps your income. Good for first month only.</li>
+<li><strong>Project</strong> — most common, most flexible</li>
+<li><strong>Retainer</strong> — the goal. Stable income, lower sales effort.</li>
+</ol>
+<h3>6.2 The beginner pricing mistake</h3>
+<p>Charging $15/hour "because I'm new." Resulting in:</p>
+<ul>
+<li>Clients assume low quality</li>
+<li>You can't afford to deliver quality</li>
+<li>You burn out in 2 months</li>
+</ul>
+<h3>6.3 The confidence ladder</h3>
+<ul>
+<li>Month 1: $30-50/hour project-equivalent</li>
+<li>Month 3: $50-75/hour</li>
+<li>Month 6: $75-100/hour</li>
+<li>Month 12+: $100-150/hour OR retainer $1500-3000/client/month</li>
+</ul>
+<h3>6.4 How to raise rates with existing clients</h3>
+<p>Template in <code>templates/rate-increase-email.md</code>. Walk through the 60-day notice approach.</p>
+<h3>6.5 Value-based pricing primer</h3>
+<p>For advanced use — skip in module 6 unless they ask.</p>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-7">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 7</div>
+      <div class="module-title">Boundaries, Scheduling, and Not Burning Out (20 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-7">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-7" value="Module 7 — Boundaries, Scheduling, and Not Burning Out (20 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-7" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-7" value="Boundaries, Scheduling, and Not Burning Out (20 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-7" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-7">
+<p><strong>Goal</strong>: help semi-retired people actually enjoy this, not turn it into a second full-time job.</p>
+<p><strong>Cover</strong>:</p>
+<ul>
+<li>Setting "office hours" with clients (the Monday-Wednesday-Friday model)</li>
+<li>Saying no to scope creep (script in <code>templates/scope-creep-response.md</code>)</li>
+<li>The "3 clients max" rule for first 90 days</li>
+<li>When to fire a client</li>
+<li>Protecting your weekends aggressively</li>
+</ul>
+<p><strong>Key talking points</strong>:</p>
+<ul>
+<li>"This is supposed to be better than your W-2, not worse."</li>
+<li>"If a client is disrespecting your time, they're not a client. They're a problem."</li>
+</ul>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-8">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 8</div>
+      <div class="module-title">Your 90-Day Plan (30 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-8">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-8" value="Module 8 — Your 90-Day Plan (30 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-8" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-8" value="Your 90-Day Plan (30 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-8" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-8">
+<p><strong>Goal</strong>: end with a concrete week-by-week roadmap.</p>
+<p><strong>Cover — week by week</strong>:</p>
+<h3>Days 1-7</h3>
+<ul>
+<li>Complete Modules 1-3</li>
+<li>Pick ONE service (from module 3) to lead with</li>
+<li>Set up Upwork profile</li>
+<li>List 20 local businesses in your niche</li>
+</ul>
+<h3>Days 8-21</h3>
+<ul>
+<li>Complete Modules 4-5</li>
+<li>Send 3 cold outreach emails per day</li>
+<li>Bid on 2-3 Upwork jobs per day</li>
+<li>Run 2-3 discovery calls per week</li>
+</ul>
+<h3>Days 22-45</h3>
+<ul>
+<li>Land your first client (goal)</li>
+<li>Deliver excellent work (use Module 5 workflow)</li>
+<li>Get a testimonial</li>
+<li>Raise rates for client #2</li>
+</ul>
+<h3>Days 46-90</h3>
+<ul>
+<li>Target: 3 active clients</li>
+<li>Raise rates</li>
+<li>Start saying no</li>
+<li>Consider: add a second service OR double down on first</li>
+</ul>
+<p><strong>Key talking points</strong>:</p>
+<ul>
+<li>"Most people quit at Day 30 because they haven't landed a client yet. The ones who land a client in month 3 are the ones who sent 100 cold emails by then."</li>
+<li>"Reply to the week-12 email. Tell me what happened. I read every one."</li>
+</ul>
+<hr/>
+  </div>
+</article>
+
+</main>
+
+<footer class="footer">
+  <p>Generated from <code>docs/courses/ai-side-income/curriculum.md</code></p>
+</footer>
+
+<script>
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-copy-target]');
+    if (!btn) return;
+    const targetId = btn.getAttribute('data-copy-target');
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    let textToCopy;
+    if (btn.getAttribute('data-is-input') === 'true') {
+      textToCopy = target.value;
+    } else {
+      // Copy the inner HTML (so paste into rich-text editor preserves formatting)
+      textToCopy = target.innerHTML;
+    }
+
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      const originalText = btn.textContent;
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.classList.remove('copied');
+      }, 1500);
+    } catch (err) {
+      alert('Copy failed — your browser may require manual selection. Triple-click the field and Cmd+C.');
+      console.error(err);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GHL Upload Helper — Honest Affiliate Marketing Starter — Full Curriculum</title>
+<style>
+  :root {
+    --navy: #0f172a;
+    --navy-light: #1e293b;
+    --gold: #f59e0b;
+    --gold-hover: #d97706;
+    --cream: #f8fafc;
+    --gray: #64748b;
+    --gray-light: #94a3b8;
+    --border: #e2e8f0;
+    --success: #10b981;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 16px; line-height: 1.6; color: var(--navy); background: var(--cream);
+    -webkit-font-smoothing: antialiased;
+  }
+  .header {
+    background: var(--navy); color: var(--white);
+    padding: 24px; border-bottom: 4px solid var(--gold);
+  }
+  .header-inner { max-width: 900px; margin: 0 auto; }
+  .header h1 { color: #fff; font-size: 24px; margin-bottom: 4px; }
+  .header p { color: var(--gray-light); font-size: 14px; }
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+  .toc {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 24px; margin-bottom: 24px;
+  }
+  .toc h2 { font-size: 16px; margin-bottom: 12px; color: var(--navy); }
+  .toc ol { padding-left: 22px; }
+  .toc li { padding: 4px 0; color: var(--navy); font-size: 14px; }
+  .toc li a { color: var(--gold); text-decoration: none; }
+  .toc li a:hover { text-decoration: underline; }
+  .instructions {
+    background: rgba(245, 158, 11, 0.08);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 18px 22px; margin-bottom: 32px;
+    font-size: 14px;
+  }
+  .instructions strong { color: var(--navy); }
+  .module {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    margin-bottom: 24px; overflow: hidden;
+  }
+  .module-header {
+    background: var(--navy); color: #fff;
+    padding: 16px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .module-title-block { flex: 1; min-width: 0; }
+  .module-num {
+    color: var(--gold); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .module-title {
+    color: #fff; font-size: 18px; font-weight: 700;
+  }
+  .copy-btn {
+    background: var(--gold); color: var(--navy); border: none;
+    padding: 8px 16px; border-radius: 6px;
+    font-weight: 700; font-size: 13px; cursor: pointer;
+    transition: background 120ms;
+    white-space: nowrap;
+  }
+  .copy-btn:hover { background: var(--gold-hover); }
+  .copy-btn.copied { background: var(--success); color: #fff; }
+  .module-fields {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--cream);
+  }
+  .field-row {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .field-row:last-child { margin-bottom: 0; }
+  .field-label {
+    font-size: 11px; color: var(--gray);
+    font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    min-width: 70px;
+  }
+  .field-value {
+    flex: 1; min-width: 200px;
+    background: #fff; border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 12px; font-size: 14px; color: var(--navy);
+    font-family: inherit;
+  }
+  .copy-mini {
+    background: transparent; border: 1px solid var(--gold); color: var(--gold);
+    padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700;
+    cursor: pointer;
+  }
+  .copy-mini:hover { background: var(--gold); color: var(--navy); }
+  .copy-mini.copied { background: var(--success); color: #fff; border-color: var(--success); }
+  .module-body { padding: 24px; }
+  .module-body h1, .module-body h2, .module-body h3, .module-body h4 {
+    color: var(--navy); margin-top: 16px; margin-bottom: 8px;
+  }
+  .module-body h3 { font-size: 17px; }
+  .module-body h4 { font-size: 15px; }
+  .module-body p { margin-bottom: 12px; }
+  .module-body ul, .module-body ol { margin-left: 24px; margin-bottom: 12px; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body strong { color: var(--navy); }
+  .module-body code {
+    background: #f1f5f9; padding: 2px 6px; border-radius: 4px;
+    font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 13px;
+  }
+  .module-body pre {
+    background: var(--navy); color: #cbd5e1;
+    padding: 16px 18px; border-radius: 8px;
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 13px; line-height: 1.5;
+    overflow-x: auto; margin: 12px 0;
+  }
+  .module-body pre code {
+    background: none; color: inherit; padding: 0;
+  }
+  .module-body blockquote {
+    border-left: 3px solid var(--gold);
+    padding: 4px 16px; margin: 12px 0; color: var(--gray);
+  }
+  .module-body table {
+    border-collapse: collapse; margin: 12px 0; font-size: 14px;
+  }
+  .module-body th, .module-body td {
+    border: 1px solid var(--border); padding: 8px 12px; text-align: left;
+  }
+  .module-body th { background: var(--cream); font-weight: 700; }
+  .module-body hr { border: none; border-top: 1px dashed var(--border); margin: 16px 0; }
+  .footer {
+    text-align: center; padding: 24px; color: var(--gray); font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <h1>Honest Affiliate Marketing Starter — Full Curriculum</h1>
+    <p>GHL Upload Helper · 9 modules</p>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="instructions">
+    <strong>How to use this page:</strong>
+    Open GHL → Memberships → create a new course titled "<strong>Honest Affiliate Marketing Starter — Full Curriculum</strong>".
+    Then for each module below: in GHL click <em>+ Add Module</em>, paste the module title;
+    click <em>+ Add Lesson</em>, paste the lesson title; in the rich-text editor click the
+    "Source Code" / "&lt;/&gt;" button and paste the lesson body HTML.
+    Click each <strong>Copy</strong> button to copy that field to your clipboard.
+  </div>
+
+  <nav class="toc">
+    <h2>Modules in this course</h2>
+    <ol>
+      <li><a href="#module-0">Module 0 — Welcome + Reality Check (20 min)</a></li>
+<li><a href="#module-1">Module 1 — How Affiliate Marketing Actually Works (30 min)</a></li>
+<li><a href="#module-2">Module 2 — The 3 Honest Paths (45 min)</a></li>
+<li><a href="#module-3">Module 3 — Picking a Niche You Can Live With for 2 Years (60 min)</a></li>
+<li><a href="#module-4">Module 4 — Your First Affiliate Partner (Amazon Associates Walkthrough) (45 min)</a></li>
+<li><a href="#module-5">Module 5 — Beyond Amazon — Higher-Commission Programs (45 min)</a></li>
+<li><a href="#module-6">Module 6 — Creating Content That Actually Helps People (60 min)</a></li>
+<li><a href="#module-7">Module 7 — Getting Traffic (The Slow-and-Steady Way) (60 min)</a></li>
+<li><a href="#module-8">Module 8 — Measuring, Compliance, and Scaling Honestly (30 min)</a></li>
+    </ol>
+  </nav>
+
+  
+<article class="module" id="module-0">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 0</div>
+      <div class="module-title">Welcome + Reality Check (20 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-0">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-0" value="Module 0 — Welcome + Reality Check (20 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-0" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-0" value="Welcome + Reality Check (20 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-0" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-0">
+<p><strong>Goal</strong>: reset expectations. Most affiliate courses sell a fantasy. Ours sells a real business with a real learning curve.</p>
+<p><strong>Cover</strong>:</p>
+<ul>
+<li>What affiliate marketing actually is (passing through commerce, earning commissions for referrals)</li>
+<li>What it is NOT (a magic button, a loophole, an overnight income stream)</li>
+<li>Realistic timelines: 6-12 months to first meaningful commissions, 12-24 months to significant income</li>
+<li>The earnings disclaimer — said plainly, once, early</li>
+<li>Who succeeds (patient, research-oriented, comfortable with slow compounding)</li>
+<li>Who doesn't (people looking for shortcuts)</li>
+</ul>
+<p><strong>Key talking points</strong>:</p>
+<ul>
+<li>"You're going to hear a lot of noise about affiliate marketing. Most of it is nonsense. Some of it is fraud. The real version is: you build something useful, people trust it, you recommend products, you get paid. Period."</li>
+<li>"If you quit your job expecting this to replace your income in 90 days, you will be disappointed and broke. If you treat it like a real small business that compounds over 2-3 years, you'll be fine."</li>
+</ul>
+<p><strong>Homework</strong>: Write a 1-paragraph "why" statement. Why are you actually doing this? Tape it above your desk.</p>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-1">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 1</div>
+      <div class="module-title">How Affiliate Marketing Actually Works (30 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-1">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-1" value="Module 1 — How Affiliate Marketing Actually Works (30 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-1" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-1" value="How Affiliate Marketing Actually Works (30 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-1" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-1">
+<p><strong>Goal</strong>: demystify the mechanics. No mystery, no magic.</p>
+<p><strong>Cover</strong>:</p>
+<ul>
+<li>The 4 parties: merchant → network → affiliate → customer</li>
+<li>How tracking works (cookies, attribution windows, last-click)</li>
+<li>What "commission" actually means (8%, 30%, or $X flat — all normal)</li>
+<li>How you actually get paid (monthly payouts, thresholds, methods)</li>
+<li>Cookie windows explained (24 hours, 30 days, 60 days — what each means for your earnings)</li>
+</ul>
+<p><strong>Screen recording demo</strong>:</p>
+<ul>
+<li>Walk through Amazon Associates report → show a real affiliate sale → show the commission → show when it paid out</li>
+<li>(Use your own account or a sandboxed dummy account)</li>
+</ul>
+<p><strong>Key talking points</strong>:</p>
+<ul>
+<li>"If you understand how a gift card at a store works, you understand affiliate marketing. The store pays the referrer a tiny cut. Online, we've just automated that."</li>
+</ul>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-2">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 2</div>
+      <div class="module-title">The 3 Honest Paths (45 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-2">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-2" value="Module 2 — The 3 Honest Paths (45 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-2" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-2" value="The 3 Honest Paths (45 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-2" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-2">
+<p><strong>Goal</strong>: help them choose ONE path before they try all three and fail at all three.</p>
+<p><strong>Cover</strong> — with honest pros/cons for each:</p>
+<h3>2.1 Content Site / Blog</h3>
+<ul>
+<li>What it is: write helpful articles on a topic, recommend products within them, earn commissions when readers buy</li>
+<li>Strengths: compounds over time, works while you sleep (literally — in the sense Google sends traffic 24/7), no face on camera</li>
+<li>Weaknesses: SEO is harder than it used to be (post-HCU), slow to see results (6-12 months), requires consistency</li>
+<li>Time to first $: 6-12 months typical</li>
+<li>Time to $1,000/mo: 12-24 months typical</li>
+<li>Best fit: patient writers, researchers, organized people</li>
+</ul>
+<h3>2.2 YouTube Channel</h3>
+<ul>
+<li>What it is: make videos on a topic, mention/review products, link to them in descriptions</li>
+<li>Strengths: visual trust builds faster, YouTube algorithm is friendlier to niche creators than Google SEO</li>
+<li>Weaknesses: requires being on camera (dealbreaker for some), equipment/editing learning curve, consistency pressure</li>
+<li>Time to first $: 3-9 months typical</li>
+<li>Time to $1,000/mo: 9-18 months typical</li>
+<li>Best fit: comfortable on camera, willing to learn editing, patient</li>
+</ul>
+<h3>2.3 Email Newsletter</h3>
+<ul>
+<li>What it is: build an email list in a niche, send helpful content regularly, recommend products when relevant</li>
+<li>Strengths: direct relationship with readers (no algorithm risk), high trust = high conversions, manageable at any size</li>
+<li>Weaknesses: starting from zero subscribers, requires consistent writing, deliverability challenges</li>
+<li>Time to first $: 6-18 months typical</li>
+<li>Time to $1,000/mo: 12-24 months typical</li>
+<li>Best fit: good writers, willing to be patient with list growth</li>
+</ul>
+<p><strong>The other paths we DON'T cover</strong> (and why):</p>
+<ul>
+<li>Paid traffic to affiliate offers: high-risk, easy way to burn money</li>
+<li>Instagram/TikTok: trend-heavy, hard for older demographic, low commissions relative to effort</li>
+<li>"Email blasting": violates most affiliate terms, gets accounts banned</li>
+</ul>
+<p><strong>Choosing between the three</strong>: Decision framework in video: answer 5 questions honestly, see which path maps to you.</p>
+<p><strong>Homework</strong>: Pick ONE path. Write it at the top of your notebook. Don't change it for 6 months.</p>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-3">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 3</div>
+      <div class="module-title">Picking a Niche You Can Live With for 2 Years (60 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-3">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-3" value="Module 3 — Picking a Niche You Can Live With for 2 Years (60 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-3" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-3" value="Picking a Niche You Can Live With for 2 Years (60 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-3" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-3">
+<p><strong>Goal</strong>: niche selection is the #1 reason beginners fail. Get this right.</p>
+<p><strong>Cover</strong>:</p>
+<h3>3.1 The niche fit test</h3>
+<p>A good niche has:</p>
+<ul>
+<li><strong>Genuine interest</strong> from you (you'd read about it for free)</li>
+<li><strong>Existing commercial activity</strong> (products to sell, not just information)</li>
+<li><strong>Depth</strong> (enough to write/film 100+ pieces about)</li>
+<li><strong>Reasonable competition</strong> (not dominated by 10 gigantic sites)</li>
+<li><strong>Decent affiliate programs</strong> in the space</li>
+</ul>
+<h3>3.2 The 5 niche evaluation criteria (with research walkthrough)</h3>
+<ol>
+<li>Search volume: is anyone looking for this?</li>
+<li>Commercial intent: do searchers want to buy?</li>
+<li>Commission potential: are there real affiliate programs?</li>
+<li>Competition level: can a small site compete?</li>
+<li>Your staying power: will you still care in 2 years?</li>
+</ol>
+<h3>3.3 Niche examples that still work in 2026</h3>
+<p><strong>Evergreen winners</strong> (tested, durable):</p>
+<ul>
+<li>Home gardening tools and supplies</li>
+<li>RV and camper accessories</li>
+<li>Pet care (specific — "senior dog nutrition," not "pets")</li>
+<li>Fishing gear for specific species or regions</li>
+<li>Kitchen equipment for specific cooking styles (air fryer, sous vide, etc.)</li>
+<li>Home office and standing desk accessories</li>
+<li>Hobby niches (woodworking, knitting, model trains, etc.)</li>
+<li>Senior-specific tools (mobility aids, easy-grip kitchen tools, etc.)</li>
+</ul>
+<p><strong>Rising niches</strong> (still open as of 2026):</p>
+<ul>
+<li>AI tool reviews for specific professions</li>
+<li>Sustainable/eco product roundups</li>
+<li>Specialty coffee/tea gear</li>
+<li>Home fitness equipment for older adults</li>
+<li>Grandparenting tools and activities</li>
+</ul>
+<p><strong>Saturated/declining niches</strong> (avoid or extra hard):</p>
+<ul>
+<li>General tech reviews (dominated by huge sites)</li>
+<li>Best credit card guides (Bankrate owns this)</li>
+<li>Weight loss supplements (FTC-heavy)</li>
+<li>Crypto/trading anything</li>
+<li>"Make money online" meta-niche (yes, ironic — don't compete with the course you're buying)</li>
+</ul>
+<h3>3.4 Screen recording: niche research walkthrough</h3>
+<ul>
+<li>Open Google Keyword Planner (free)</li>
+<li>Show search volume research for 3 candidate niches</li>
+<li>Show how to check affiliate programs for each</li>
+<li>Show how to eyeball competition (top 10 Google results — are they all massive sites?)</li>
+</ul>
+<h3>3.5 Exercise: the 3-niche bake-off</h3>
+<ul>
+<li>Pick 3 candidate niches</li>
+<li>Run each through the 5 criteria</li>
+<li>Score each 1-5 per criterion</li>
+<li>Commit to the highest scorer for 6+ months</li>
+</ul>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-4">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 4</div>
+      <div class="module-title">Your First Affiliate Partner (Amazon Associates Walkthrough) (45 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-4">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-4" value="Module 4 — Your First Affiliate Partner (Amazon Associates Walkthrough) (45 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-4" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-4" value="Your First Affiliate Partner (Amazon Associates Walkthrough) (45 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-4" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-4">
+<p><strong>Goal</strong>: get them signed up for Amazon Associates. It's the beginner's training wheels.</p>
+<p><strong>Cover</strong>:</p>
+<h3>4.1 Why start with Amazon</h3>
+<ul>
+<li>Low barrier to entry</li>
+<li>Huge catalog (you can link to almost anything)</li>
+<li>Cookie applies to everything — referral earns you commission on any purchase in the window</li>
+<li>BUT: commissions are low (1-10%), approval requires a site with content</li>
+</ul>
+<h3>4.2 Amazon Associates signup walkthrough (screen recording)</h3>
+<ul>
+<li>The application</li>
+<li>Preferred account name</li>
+<li>Payment method setup</li>
+<li>The 180-day initial requirement (3 qualifying sales in 180 days, or they kick you out)</li>
+<li>The "operating agreement" — key rules to follow</li>
+</ul>
+<h3>4.3 Key Amazon compliance rules</h3>
+<ul>
+<li>Must disclose affiliate relationships prominently</li>
+<li>Must use their approved images / their tools (not scrape)</li>
+<li>Can't use Amazon links in email directly (they hate this — use your site as intermediary)</li>
+<li>Can't display prices in a stale way (they change)</li>
+<li>Can't buy through your own links</li>
+<li>Can't incentivize clicks ("click to help me out!")</li>
+</ul>
+<h3>4.4 Creating your first 10 Amazon links</h3>
+<ul>
+<li>Show the SiteStripe tool</li>
+<li>Creating a product link</li>
+<li>Shortening with their tool</li>
+<li>Using a plugin (AAWP for WordPress) if applicable</li>
+</ul>
+<h3>4.5 Realistic Amazon income</h3>
+<ul>
+<li>Months 1-3: $0-10</li>
+<li>Months 4-6: $5-50 (if content is live and ranking)</li>
+<li>Months 7-12: $30-300 (depending on niche + traffic)</li>
+<li>Year 2+: $300-3,000 (for a dedicated niche site with 50+ well-ranked posts)</li>
+</ul>
+<p>These are typical. Some make more. Most make less. That's the honest range.</p>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-5">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 5</div>
+      <div class="module-title">Beyond Amazon — Higher-Commission Programs (45 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-5">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-5" value="Module 5 — Beyond Amazon — Higher-Commission Programs (45 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-5" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-5" value="Beyond Amazon — Higher-Commission Programs (45 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-5" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-5">
+<p><strong>Goal</strong>: teach them where the real money is, with care.</p>
+<p><strong>Cover</strong>:</p>
+<h3>5.1 Why Amazon's 1-10% isn't the whole story</h3>
+<p>Software subscriptions pay 30-50%. Info products 40-60%. Finance products often $100-500 per acquisition. Higher commissions exist — you just have to know where to look.</p>
+<h3>5.2 The 5 main affiliate networks</h3>
+<p><strong>ShareASale</strong></p>
+<ul>
+<li>Large, mature network</li>
+<li>Lots of B2B and SMB programs</li>
+<li>Payments reliable</li>
+<li>Approval easier than some</li>
+</ul>
+<p><strong>Impact</strong></p>
+<ul>
+<li>Premium brands</li>
+<li>Great reporting</li>
+<li>Harder approval but worth it</li>
+</ul>
+<p><strong>CJ Affiliate (formerly Commission Junction)</strong></p>
+<ul>
+<li>Old guard, large</li>
+<li>Lots of mainstream brands</li>
+<li>Their UI is dated but inventory is good</li>
+</ul>
+<p><strong>PartnerStack</strong></p>
+<ul>
+<li>Focused on SaaS</li>
+<li>20-30% recurring commissions common</li>
+<li>Good for tech-adjacent niches</li>
+</ul>
+<p><strong>Direct affiliate programs</strong></p>
+<ul>
+<li>Many brands run their own (e.g., Canva, Bluehost, ConvertKit)</li>
+<li>Higher commissions but more programs to manage</li>
+<li>Usually found via their "affiliates" or "partners" page in footer</li>
+</ul>
+<h3>5.3 The "recurring commission" gold mine</h3>
+<p>Software/SaaS programs often pay 20-40% recurring — meaning you earn every month that customer stays subscribed. 10 referrals × $20/mo × 30% = $60/mo × indefinitely. Do this 20 times and you have a meaningful income stream.</p>
+<h3>5.4 Vetting an affiliate program before you promote</h3>
+<ul>
+<li>Cookie duration (30+ days is good)</li>
+<li>Payment threshold (how much do you have to earn before they pay out)</li>
+<li>Payment method (PayPal, check, wire — which works for you)</li>
+<li>Payment schedule (monthly, net-30, net-60)</li>
+<li>Commission structure (flat vs percentage vs tiered)</li>
+<li>Reputation (search "[program name] affiliate reviews" — look for payout complaints)</li>
+<li>Do they disclose clearly? (Bad affiliate programs hide terms.)</li>
+</ul>
+<h3>5.5 The rule of "only promote what you'd use"</h3>
+<ul>
+<li>If you wouldn't buy it yourself, don't recommend it</li>
+<li>If it's a bad product, your readers won't trust you anymore</li>
+<li>Trust compounds. Bad recommendations destroy it in one shot.</li>
+</ul>
+<h3>5.6 Compliance watchouts</h3>
+<ul>
+<li>Every piece of content with an affiliate link must have disclosure</li>
+<li>Most networks require you to display specific disclosure language</li>
+<li>FTC has explicit rules: disclosure must be "clear and conspicuous" — not buried in footer</li>
+<li>Don't mislead about your relationship with brands</li>
+</ul>
+<p><strong>Screen recording</strong>: Applying to ShareASale, finding 3 programs in a specific niche, reading their terms.</p>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-6">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 6</div>
+      <div class="module-title">Creating Content That Actually Helps People (60 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-6">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-6" value="Module 6 — Creating Content That Actually Helps People (60 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-6" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-6" value="Creating Content That Actually Helps People (60 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-6" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-6">
+<p><strong>Goal</strong>: teach them to write for readers, not Google. Post-HCU SEO rewards this.</p>
+<p><strong>Cover</strong>:</p>
+<h3>6.1 The 3 content types that work for affiliate sites</h3>
+<p><strong>Product reviews</strong> (honest, detailed)</p>
+<ul>
+<li>Deep dive on ONE product</li>
+<li>Pros AND cons (no fake-positive only content)</li>
+<li>Compared to 2-3 alternatives</li>
+<li>Personal perspective if you have one (did you use it? would you buy it again?)</li>
+<li>Length: 1,500-3,000 words typical</li>
+</ul>
+<p><strong>Roundup posts</strong> ("Best X for Y")</p>
+<ul>
+<li>5-10 products serving a specific need</li>
+<li>Short descriptions for each</li>
+<li>Clear criteria for ranking</li>
+<li>Length: 2,000-4,000 words typical</li>
+</ul>
+<p><strong>Problem-solving guides</strong> (tutorials, how-tos)</p>
+<ul>
+<li>Solve a specific reader problem</li>
+<li>Recommend relevant products in context (not forced)</li>
+<li>Can rank for long-tail searches</li>
+<li>Length: 1,000-2,500 words typical</li>
+</ul>
+<h3>6.2 The 2026 content quality bar</h3>
+<p>Post-HCU, Google ruthlessly de-ranks:</p>
+<ul>
+<li>Thin content (under 600 words)</li>
+<li>AI-generated fluff</li>
+<li>Copy-paste reviews (same info as 100 other sites)</li>
+<li>Missing expertise/experience signals</li>
+<li>No personal voice</li>
+</ul>
+<p>What wins:</p>
+<ul>
+<li>Demonstrated hands-on experience (photos of you with the product, specific details only an owner would know)</li>
+<li>Unique perspectives (here's what I learned that the manual doesn't say)</li>
+<li>Helpful comparisons (not just spec sheets)</li>
+<li>Clear voice, not generic "SEO voice"</li>
+</ul>
+<h3>6.3 Using AI writing tools responsibly</h3>
+<ul>
+<li>AI as a first-draft assistant: yes</li>
+<li>AI as a final-draft generator: no (Google can tell, and more importantly, readers can tell)</li>
+<li>Your human editing pass is 40-60% of the value</li>
+<li>Always fact-check AI output (hallucinations are common)</li>
+</ul>
+<h3>6.4 Writing your first 10 posts</h3>
+<ul>
+<li>Pick your 10 "seed" topics</li>
+<li>Research each (Module 7 covers keyword research)</li>
+<li>Write an outline first</li>
+<li>First drafts can be AI-assisted</li>
+<li>Human edit pass</li>
+<li>Add your own experience/examples</li>
+<li>Include the right affiliate links, naturally</li>
+</ul>
+<h3>6.5 The FTC disclosure (non-negotiable)</h3>
+<p>Every post with affiliate links needs disclosure above the fold. Example:</p>
+<blockquote>
+<p>"This post contains affiliate links. If you purchase through these links, I may earn a small commission at no extra cost to you. I only recommend products I've personally used or would use myself."</p>
+</blockquote>
+<p>More on this in Module 8.</p>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-7">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 7</div>
+      <div class="module-title">Getting Traffic (The Slow-and-Steady Way) (60 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-7">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-7" value="Module 7 — Getting Traffic (The Slow-and-Steady Way) (60 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-7" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-7" value="Getting Traffic (The Slow-and-Steady Way) (60 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-7" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-7">
+<p><strong>Goal</strong>: realistic expectations for traffic growth + the 3 channels that actually work.</p>
+<p><strong>Cover</strong>:</p>
+<h3>7.1 The 3 traffic channels worth learning</h3>
+<p><strong>Search (SEO)</strong></p>
+<ul>
+<li>Slowest but compounds best</li>
+<li>6-12 months to initial traction</li>
+<li>Highest trust signal</li>
+<li>Most durable long-term</li>
+<li>Best fit for written content</li>
+</ul>
+<p><strong>Direct/newsletter</strong></p>
+<ul>
+<li>Building your own email list</li>
+<li>Requires active subscriber acquisition</li>
+<li>Highly converting when done right</li>
+<li>Not dependent on any platform's algorithm</li>
+</ul>
+<p><strong>YouTube search</strong></p>
+<ul>
+<li>Faster than Google search in many niches</li>
+<li>Visual trust</li>
+<li>Best for reviews and tutorials</li>
+<li>Requires video creation capacity</li>
+</ul>
+<h3>7.2 SEO basics for 2026 (post-HCU)</h3>
+<p><strong>Keyword research with free tools</strong>:</p>
+<ul>
+<li>Google Keyword Planner (free with Google Ads account)</li>
+<li>Google autocomplete</li>
+<li>AnswerThePublic (free tier)</li>
+<li>Ahrefs/SEMrush free trials</li>
+</ul>
+<p><strong>What to research</strong>:</p>
+<ul>
+<li>Commercial intent keywords ("best X," "X review," "X vs Y")</li>
+<li>Question-based keywords ("how to X," "is X worth it")</li>
+<li>Long-tail specificity ("best cordless lawn mower for small yards")</li>
+</ul>
+<p><strong>Avoiding Google penalties</strong>:</p>
+<ul>
+<li>Don't copy content from other sites</li>
+<li>Don't stuff keywords unnaturally</li>
+<li>Don't publish thin content at volume</li>
+<li>Don't buy backlinks (this is a fast way to get penalized)</li>
+<li>Build links naturally through guest posts, genuine outreach</li>
+</ul>
+<h3>7.3 The "100 Day Content Sprint" (recommended first-year plan)</h3>
+<ul>
+<li><strong>Month 1</strong>: research + outline 10-15 topics, write first 5</li>
+<li><strong>Month 2-3</strong>: publish 1-2 posts per week, focus on quality</li>
+<li><strong>Month 4-6</strong>: 50+ posts live, start seeing initial rankings</li>
+<li><strong>Month 6-12</strong>: optimize winners, expand depth, consistent 1-2 posts/week</li>
+<li><strong>Month 12+</strong>: reap compounding results</li>
+</ul>
+<h3>7.4 Link building the ethical way</h3>
+<ul>
+<li>Guest posts on other niche blogs</li>
+<li>HARO (Help A Reporter Out) responses</li>
+<li>Genuine networking with other creators</li>
+<li>Resource pages that want to link to you</li>
+<li>Being quoted in articles (requires being an expert, not a just-starting-out bot)</li>
+</ul>
+<h3>7.5 YouTube SEO basics</h3>
+<ul>
+<li>Thumbnails matter MORE than titles (~60% of click decisions)</li>
+<li>Titles: include the keyword naturally</li>
+<li>First 30 seconds determine if they stay</li>
+<li>Description: links, chapters, keywords</li>
+<li>End screens to drive more views</li>
+</ul>
+<h3>7.6 Email list building</h3>
+<ul>
+<li>Every piece of content should have an email opt-in</li>
+<li>Lead magnets that actually deliver (not generic PDFs)</li>
+<li>Welcome sequence that builds trust before you promote anything</li>
+<li>MailerLite free tier works up to 1,000 subscribers</li>
+<li>Beehiiv is newer but growing fast, also has free tier</li>
+</ul>
+<hr/>
+  </div>
+</article>
+
+<article class="module" id="module-8">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 8</div>
+      <div class="module-title">Measuring, Compliance, and Scaling Honestly (30 min)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-8">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-8" value="Module 8 — Measuring, Compliance, and Scaling Honestly (30 min)" readonly>
+      <button class="copy-mini" data-copy-target="title-8" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-8" value="Measuring, Compliance, and Scaling Honestly (30 min)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-8" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-8">
+<p><strong>Goal</strong>: close the loop with the boring-but-critical stuff that keeps you out of trouble.</p>
+<p><strong>Cover</strong>:</p>
+<h3>8.1 Metrics that actually matter</h3>
+<ul>
+<li>Clicks on affiliate links (leading indicator)</li>
+<li>Conversion rate (what % of clicks become sales)</li>
+<li>EPC (earnings per click) — per program</li>
+<li>Traffic (separately: organic / referral / direct)</li>
+<li>Email subscribers (if newsletter path)</li>
+</ul>
+<p>Metrics that don't matter at first:</p>
+<ul>
+<li>Social shares (vanity)</li>
+<li>Time on page (unless you're comparing variants)</li>
+<li>Bounce rate (often misinterpreted)</li>
+</ul>
+<h3>8.2 Tracking tools</h3>
+<ul>
+<li>Google Analytics 4 (free, basic)</li>
+<li>Google Search Console (free, SEO focus)</li>
+<li>Link tracking: most affiliate networks have their own</li>
+<li>Spreadsheet for rolling up monthly totals by program</li>
+</ul>
+<h3>8.3 The FTC disclosure deep-dive</h3>
+<ul>
+<li>Must be "clear and conspicuous"</li>
+<li>Must appear before the affiliate link (ideally top of article)</li>
+<li>Must be readable (not white text on white background)</li>
+<li>Must apply to specific posts (not just a footer link)</li>
+<li>Applies to social media too (Instagram, X, YouTube, TikTok)</li>
+</ul>
+<p><strong>Recommended disclosure language</strong>:</p>
+<p>For website:</p>
+<blockquote>
+<p>"Disclosure: This post contains affiliate links. If you purchase through one of these links, I may earn a commission at no extra cost to you. I only recommend products I've personally tried or would be comfortable recommending to a friend."</p>
+</blockquote>
+<p>For YouTube video description:</p>
+<blockquote>
+<p>"Some of the links in this description are affiliate links. If you purchase through them, I may earn a small commission at no additional cost to you."</p>
+</blockquote>
+<p>For newsletter:</p>
+<blockquote>
+<p>"Some of the links in this email are affiliate links. Details at the footer."</p>
+</blockquote>
+<h3>8.4 Tax treatment</h3>
+<ul>
+<li>Affiliate income is self-employment income</li>
+<li>Quarterly estimated taxes apply</li>
+<li>Keep receipts for business expenses (hosting, tools, software)</li>
+<li>Consult a CPA especially in your first year</li>
+<li>Forming an LLC becomes worth considering around $20-30k/year in earnings</li>
+</ul>
+<h3>8.5 Scaling without burning out</h3>
+<ul>
+<li>Year 1: one site, build it well</li>
+<li>Year 2: expand deeply (more content, better posts) or start a second site/channel (careful — spreads attention thin)</li>
+<li>Year 3: hire a writer, an editor, or an assistant</li>
+<li>Year 4+: consider selling the site (affiliate sites can sell for 30-50× monthly earnings)</li>
+</ul>
+<h3>8.6 When to quit and when to push through</h3>
+<ul>
+<li>If you're 6 months in with consistent effort and zero traffic: reassess your niche and content quality</li>
+<li>If you're 12 months in and earning under $100/mo despite 50+ posts: niche probably wrong</li>
+<li>If you're 18 months in with 500+ monthly visitors and $0: content quality issue</li>
+<li>If you're 2 years in and $500/mo and rising: keep going, you've cracked it</li>
+</ul>
+<hr/>
+  </div>
+</article>
+
+</main>
+
+<footer class="footer">
+  <p>Generated from <code>docs/courses/affiliate-marketing/curriculum.md</code></p>
+</footer>
+
+<script>
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-copy-target]');
+    if (!btn) return;
+    const targetId = btn.getAttribute('data-copy-target');
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    let textToCopy;
+    if (btn.getAttribute('data-is-input') === 'true') {
+      textToCopy = target.value;
+    } else {
+      // Copy the inner HTML (so paste into rich-text editor preserves formatting)
+      textToCopy = target.innerHTML;
+    }
+
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      const originalText = btn.textContent;
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.classList.remove('copied');
+      }, 1500);
+    } catch (err) {
+      alert('Copy failed — your browser may require manual selection. Triple-click the field and Cmd+C.');
+      console.error(err);
+    }
+  });
+</script>
+
+</body>
+</html>
