@@ -1,6 +1,18 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "ai.incomeacademy.biz" }],
+      "destination": "/ai/index.html"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "affiliate.incomeacademy.biz" }],
+      "destination": "/affiliate/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
