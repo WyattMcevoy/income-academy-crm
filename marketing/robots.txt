@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Don't index private/internal paths
+Disallow: /members
+Disallow: /apply-ebay
+Disallow: /success
+Disallow: /checkout
+
+# Don't index the preview subdomains (middleware returns 401 anyway, but be explicit)
+# These are separate domains — each would have its own robots.txt served
+# by the same Vercel project. The middleware already noindex's them.
+
+Sitemap: https://incomeacademy.biz/sitemap.xml

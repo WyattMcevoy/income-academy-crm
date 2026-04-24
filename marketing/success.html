@@ -3,10 +3,118 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Welcome to Income Academy</title>
+<title>Welcome to Income Academy — Your Foundation Pass is Active</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/styles.css">
+
+<style>
+  .success-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: var(--white);
+    padding: 80px 24px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .success-hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.15), transparent 50%);
+    pointer-events: none;
+  }
+  .success-hero-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+  .success-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid var(--success);
+    color: var(--success);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .success-hero h1 {
+    font-size: clamp(32px, 5vw, 44px);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .success-hero h1 .accent { color: var(--gold); }
+  .success-hero p.sub {
+    color: var(--gray-light);
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .next-steps {
+    max-width: 720px;
+    margin: -40px auto 40px;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+  .steps-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+  }
+  .steps-card h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    color: var(--navy);
+  }
+  .steps-card > p.intro {
+    color: var(--gray);
+    margin-bottom: 28px;
+    font-size: 15px;
+  }
+  .step {
+    display: flex; gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 36px; height: 36px;
+    background: var(--gold); color: var(--navy);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 15px;
+    flex-shrink: 0;
+  }
+  .step-body { flex: 1; }
+  .step-body strong {
+    display: block;
+    color: var(--navy);
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  .step-body p {
+    color: var(--gray);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .step-body a {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .help-row {
+    max-width: 720px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+    text-align: center;
+    color: var(--gray);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .help-row a { color: var(--gold); font-weight: 600; }
+</style>
 </head>
 <body>
 
@@ -19,37 +127,50 @@
   </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-inner">
-    <span class="hero-eyebrow">You're in</span>
-    <h1>🎉 Welcome to <span class="accent">Income Academy</span></h1>
-    <p class="hero-sub">Your purchase was successful. Check your email in the next few minutes for your member portal login and your starter instructions.</p>
-    <p class="hero-guarantee">If you don't see the email in 10 minutes, check Promotions / Spam. Still nothing? Email <a href="mailto:support@incomeacademy.biz" style="color: var(--gold);">support@incomeacademy.biz</a>.</p>
+<section class="success-hero">
+  <div class="success-hero-inner">
+    <span class="success-badge">✓ Payment confirmed</span>
+    <h1>Welcome to <span class="accent">the Foundation Pass</span></h1>
+    <p class="sub">Your 7-day free trial on the $19/mo membership just started. You have instant access to all 4 courses, the AI Writing Assistant, and the community. Here's what to do next.</p>
   </div>
 </section>
 
-<section class="block">
-  <div class="container-narrow">
-    <span class="section-eyebrow">What happens next</span>
-    <h2 class="section-title">Three things to expect</h2>
-    <div class="benefits-grid" style="grid-template-columns: 1fr;">
-      <div class="pain-item">
-        <div class="pain-item-icon">1</div>
-        <h4>Your login, delivered to your inbox</h4>
-        <p>You'll receive a welcome email with your member portal login within a few minutes. Save it — you'll use it every time you come back.</p>
+<section class="next-steps">
+  <div class="steps-card">
+    <h2>Your next 3 steps</h2>
+    <p class="intro">Check your email in the next 5 minutes for your member portal login. In the meantime:</p>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Check your email</strong>
+        <p>We just sent you your member portal login details. If it's not in your inbox in 5 minutes, check Promotions / Spam. Still nothing after 15? Email <a href="mailto:support@incomeacademy.biz">support@incomeacademy.biz</a> and we'll fix it same-day.</p>
       </div>
-      <div class="pain-item">
-        <div class="pain-item-icon">2</div>
-        <h4>A short kickoff video</h4>
-        <p>Start with the kickoff video in Module 1 — it maps out the full framework and tells you exactly what to focus on first.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>Bookmark your Members Area</strong>
+        <p><a href="/members">incomeacademy.biz/members</a> — your branded overview of all 4 courses + resources. Open it now in another tab and bookmark it.</p>
       </div>
-      <div class="pain-item">
-        <div class="pain-item-icon">3</div>
-        <h4>An optional strategy call</h4>
-        <p>Somewhere in your first week, a member of our team will reach out to offer a free strategy call. Say yes or no — your choice. Either way, you have everything you need in the portal.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>Pick one course and start Module 0</strong>
+        <p>Don't try to do all 4 at once. Pick whichever course feels most like you (AI Side Income, Honest Affiliate Marketing, Estate Sale Sourcing, or Bookkeeping for Over-55s), watch Module 0 today (15-20 min), and close the laptop. Come back tomorrow for Module 1. Slow beats fast — especially at our age.</p>
       </div>
     </div>
   </div>
+</section>
+
+<section class="help-row">
+  <p>
+    Need help? Email <a href="mailto:support@incomeacademy.biz">support@incomeacademy.biz</a> — we read every reply.<br>
+    Changed your mind? <a href="/refund">7-day money-back guarantee</a> · Cancel membership in one click from your Account page.
+  </p>
 </section>
 
 <footer class="footer">
@@ -76,6 +197,10 @@
     © <span id="year">2026</span> Income Academy LLC. All rights reserved.
   </div>
 </footer>
+
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+<!-- GHL_CHAT_WIDGET_PLACEHOLDER — see docs/chat-widget-setup.md -->
+
 </body>
 </html>
