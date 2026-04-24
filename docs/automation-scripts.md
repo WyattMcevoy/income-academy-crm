@@ -32,6 +32,22 @@ Batch-converts every SVG in `marketing/brand/` to PNG at recommended sizes (favi
 **When**: before uploading to GHL (which often requires PNG) or before platforms that reject SVG
 **Time saved**: ~30 min of manual cloudconvert uploads per batch
 
+### `setup-stripe-bundle.js`
+Creates the Foundation Pass product + Prices ($47 one-time + $19/mo with 7-day trial) + Payment Link in Stripe via API. **Dry-run by default** — no API calls unless you pass `--live`.
+
+**Run (dry-run, safe)**: `STRIPE_SECRET_KEY=sk_test_xxx node server/src/tools/setup-stripe-bundle.js`
+**Run (live)**: `STRIPE_SECRET_KEY=sk_test_xxx node server/src/tools/setup-stripe-bundle.js --live`
+**When**: after LLC is filed + Stripe Live mode flipped
+**Time saved**: ~15 min of manual dashboard clicking + eliminates configuration errors
+
+### `e2e-smoke-test.js`
+End-to-end smoke test that verifies every critical URL responds correctly. Catches deployment regressions, middleware breaks, DNS/SSL issues, content drift.
+
+**Run**: `node server/src/tools/e2e-smoke-test.js`
+**When**: after any merge to main, or scheduled (cron, CI)
+**Time saved**: catches broken deploys before members do
+**Exit codes**: 0 = all pass, 1 = at least one failure
+
 ### `import-leads.js` (pre-existing)
 Imports leads from a CSV file into the Neon database.
 
