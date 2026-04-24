@@ -3,27 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Redirecting to secure checkout — Income Academy</title>
+<title>Secure Checkout — Income Academy</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/styles.css">
 
 <!--
   ┌─────────────────────────────────────────────────────────────────┐
-  │  PAYMENT LINK URL — replace the two placeholders below with     │
-  │  your Stripe Payment Link URL.                                  │
+  │  PAYMENT LINK URLS                                              │
   │                                                                 │
-  │  Test mode URLs look like:  https://buy.stripe.com/test_xxxx    │
-  │  Live mode URLs look like:  https://buy.stripe.com/xxxx         │
+  │  Stripe (primary):                                              │
+  │   - Test: https://buy.stripe.com/test_xxxx                      │
+  │   - Live: https://buy.stripe.com/xxxx                           │
   │                                                                 │
-  │  To switch between test and live, just update these two lines.  │
+  │  PayPal (backup):                                               │
+  │   - Payment Link: https://www.paypal.com/ncp/payment/XXXXX      │
+  │     (create in PayPal Business dashboard — see                  │
+  │      docs/paypal-setup.md for full instructions)                │
+  │                                                                 │
+  │  To switch Stripe between test/live, update the href below.     │
+  │  To activate PayPal backup, replace PAYPAL_LINK_PLACEHOLDER.    │
   └─────────────────────────────────────────────────────────────────┘
 -->
 
-<meta http-equiv="refresh" content="0; url=https://buy.stripe.com/test_00w14g7eD9nY1t5co26wE00">
-<script>
-  window.location.href = 'https://buy.stripe.com/test_00w14g7eD9nY1t5co26wE00';
-</script>
+<style>
+  .checkout-page {
+    max-width: 640px;
+    margin: 60px auto;
+    padding: 0 24px;
+  }
+  .checkout-header { text-align: center; margin-bottom: 40px; }
+  .checkout-header h1 { font-size: 32px; margin-bottom: 8px; }
+  .checkout-header p { color: var(--gray); font-size: 17px; }
+  .order-summary {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 32px;
+  }
+  .order-summary-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0;
+  }
+  .order-summary-row.total {
+    border-top: 1px solid var(--border);
+    margin-top: 10px; padding-top: 14px;
+    font-weight: 700; font-size: 18px;
+  }
+  .order-summary .order-note {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px dashed var(--border);
+    font-size: 13px; color: var(--gray);
+  }
+  .pay-primary {
+    background: var(--gold); color: var(--navy);
+    padding: 18px 24px; border-radius: 8px;
+    font-weight: 700; font-size: 18px;
+    text-decoration: none; display: block; text-align: center;
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.25);
+    transition: transform 120ms, box-shadow 120ms;
+  }
+  .pay-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.35);
+    color: var(--navy); text-decoration: none;
+  }
+  .pay-primary .pay-icon { margin-right: 8px; font-size: 14px; }
+  .pay-divider {
+    text-align: center; margin: 18px 0; position: relative;
+    color: var(--gray); font-size: 13px; letter-spacing: 0.5px;
+  }
+  .pay-divider::before,
+  .pay-divider::after {
+    content: ''; position: absolute; top: 50%;
+    width: calc(50% - 30px); height: 1px; background: var(--border);
+  }
+  .pay-divider::before { left: 0; }
+  .pay-divider::after { right: 0; }
+  .pay-secondary {
+    display: block; text-align: center;
+    padding: 14px 24px;
+    background: var(--white);
+    border: 2px solid #003087;
+    color: #003087;
+    border-radius: 8px;
+    font-weight: 600; font-size: 16px;
+    text-decoration: none;
+    transition: background 120ms;
+  }
+  .pay-secondary:hover { background: #f0f4ff; color: #003087; text-decoration: none; }
+  .pay-secondary strong { font-style: italic; }
+  .pay-secondary .paypal-i { color: #009cde; }
+  .pay-notes {
+    margin-top: 28px; font-size: 13px; color: var(--gray);
+    text-align: center; line-height: 1.6;
+  }
+  .pay-notes a { color: var(--gold); }
+</style>
 </head>
 <body>
 
@@ -36,17 +113,64 @@
   </div>
 </nav>
 
-<div class="checkout-placeholder">
-  <h1>Redirecting to secure checkout…</h1>
-  <p>If you're not redirected automatically, click the button below.</p>
-  <a href="https://buy.stripe.com/test_00w14g7eD9nY1t5co26wE00" class="btn btn-primary">Continue to secure checkout</a>
-</div>
+<main class="checkout-page">
+  <div class="checkout-header">
+    <h1>You're almost in</h1>
+    <p>Choose how you'd like to pay. Both options are secure.</p>
+  </div>
+
+  <div class="order-summary">
+    <div class="order-summary-row">
+      <span>Starter Training Program</span>
+      <span>$47.00</span>
+    </div>
+    <div class="order-summary-row total">
+      <span>Total today</span>
+      <span>$47.00</span>
+    </div>
+    <p class="order-note">✓ Instant access · ✓ 7-day money-back guarantee · Your optional $19/mo membership begins on a 7-day free trial after purchase and can be cancelled in one click.</p>
+  </div>
+
+  <!-- PRIMARY: Stripe (card, Apple Pay, Google Pay) -->
+  <a href="https://buy.stripe.com/test_00w14g7eD9nY1t5co26wE00" class="pay-primary" id="stripe-cta">
+    <span class="pay-icon">🔒</span>Pay $47 with card
+  </a>
+
+  <div class="pay-divider">or</div>
+
+  <!-- BACKUP: PayPal -->
+  <!-- Replace PAYPAL_LINK_PLACEHOLDER with your PayPal Payment Link URL from the PayPal Business dashboard. -->
+  <a href="PAYPAL_LINK_PLACEHOLDER" class="pay-secondary" id="paypal-cta">
+    Pay with <strong>Pay<span class="paypal-i">Pal</span></strong>
+  </a>
+
+  <p class="pay-notes">
+    Card payments processed securely by <a href="https://stripe.com" target="_blank" rel="noopener">Stripe</a>.<br>
+    PayPal payments processed by <a href="https://paypal.com" target="_blank" rel="noopener">PayPal</a>.<br>
+    Problems? Email <a href="mailto:support@incomeacademy.biz">support@incomeacademy.biz</a>.
+  </p>
+</main>
 
 <footer class="footer">
   <div class="footer-bottom container">
-    © <span id="year">2026</span> Income Academy LLC
+    © <span id="year">2026</span> Income Academy LLC. All rights reserved.
   </div>
 </footer>
-<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Hide PayPal button if the placeholder hasn't been replaced yet.
+  (function() {
+    var pp = document.getElementById('paypal-cta');
+    if (!pp) return;
+    var href = pp.getAttribute('href') || '';
+    if (href.indexOf('PAYPAL_LINK_PLACEHOLDER') !== -1 || href === '' || href === '#') {
+      pp.style.display = 'none';
+      var divider = document.querySelector('.pay-divider');
+      if (divider) divider.style.display = 'none';
+    }
+  })();
+</script>
 </body>
 </html>
