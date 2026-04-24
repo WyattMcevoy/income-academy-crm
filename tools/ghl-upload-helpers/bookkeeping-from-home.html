@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GHL Upload Helper — Bookkeeping From Home for Over-55s — Curriculum</title>
+<style>
+  :root {
+    --navy: #0f172a;
+    --navy-light: #1e293b;
+    --gold: #f59e0b;
+    --gold-hover: #d97706;
+    --cream: #f8fafc;
+    --gray: #64748b;
+    --gray-light: #94a3b8;
+    --border: #e2e8f0;
+    --success: #10b981;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 16px; line-height: 1.6; color: var(--navy); background: var(--cream);
+    -webkit-font-smoothing: antialiased;
+  }
+  .header {
+    background: var(--navy); color: var(--white);
+    padding: 24px; border-bottom: 4px solid var(--gold);
+  }
+  .header-inner { max-width: 900px; margin: 0 auto; }
+  .header h1 { color: #fff; font-size: 24px; margin-bottom: 4px; }
+  .header p { color: var(--gray-light); font-size: 14px; }
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+  .toc {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 24px; margin-bottom: 24px;
+  }
+  .toc h2 { font-size: 16px; margin-bottom: 12px; color: var(--navy); }
+  .toc ol { padding-left: 22px; }
+  .toc li { padding: 4px 0; color: var(--navy); font-size: 14px; }
+  .toc li a { color: var(--gold); text-decoration: none; }
+  .toc li a:hover { text-decoration: underline; }
+  .instructions {
+    background: rgba(245, 158, 11, 0.08);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 18px 22px; margin-bottom: 32px;
+    font-size: 14px;
+  }
+  .instructions strong { color: var(--navy); }
+  .module {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    margin-bottom: 24px; overflow: hidden;
+  }
+  .module-header {
+    background: var(--navy); color: #fff;
+    padding: 16px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .module-title-block { flex: 1; min-width: 0; }
+  .module-num {
+    color: var(--gold); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .module-title {
+    color: #fff; font-size: 18px; font-weight: 700;
+  }
+  .copy-btn {
+    background: var(--gold); color: var(--navy); border: none;
+    padding: 8px 16px; border-radius: 6px;
+    font-weight: 700; font-size: 13px; cursor: pointer;
+    transition: background 120ms;
+    white-space: nowrap;
+  }
+  .copy-btn:hover { background: var(--gold-hover); }
+  .copy-btn.copied { background: var(--success); color: #fff; }
+  .module-fields {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--cream);
+  }
+  .field-row {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .field-row:last-child { margin-bottom: 0; }
+  .field-label {
+    font-size: 11px; color: var(--gray);
+    font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    min-width: 70px;
+  }
+  .field-value {
+    flex: 1; min-width: 200px;
+    background: #fff; border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 12px; font-size: 14px; color: var(--navy);
+    font-family: inherit;
+  }
+  .copy-mini {
+    background: transparent; border: 1px solid var(--gold); color: var(--gold);
+    padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700;
+    cursor: pointer;
+  }
+  .copy-mini:hover { background: var(--gold); color: var(--navy); }
+  .copy-mini.copied { background: var(--success); color: #fff; border-color: var(--success); }
+  .module-body { padding: 24px; }
+  .module-body h1, .module-body h2, .module-body h3, .module-body h4 {
+    color: var(--navy); margin-top: 16px; margin-bottom: 8px;
+  }
+  .module-body h3 { font-size: 17px; }
+  .module-body h4 { font-size: 15px; }
+  .module-body p { margin-bottom: 12px; }
+  .module-body ul, .module-body ol { margin-left: 24px; margin-bottom: 12px; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body strong { color: var(--navy); }
+  .module-body code {
+    background: #f1f5f9; padding: 2px 6px; border-radius: 4px;
+    font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 13px;
+  }
+  .module-body pre {
+    background: var(--navy); color: #cbd5e1;
+    padding: 16px 18px; border-radius: 8px;
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 13px; line-height: 1.5;
+    overflow-x: auto; margin: 12px 0;
+  }
+  .module-body pre code {
+    background: none; color: inherit; padding: 0;
+  }
+  .module-body blockquote {
+    border-left: 3px solid var(--gold);
+    padding: 4px 16px; margin: 12px 0; color: var(--gray);
+  }
+  .module-body table {
+    border-collapse: collapse; margin: 12px 0; font-size: 14px;
+  }
+  .module-body th, .module-body td {
+    border: 1px solid var(--border); padding: 8px 12px; text-align: left;
+  }
+  .module-body th { background: var(--cream); font-weight: 700; }
+  .module-body hr { border: none; border-top: 1px dashed var(--border); margin: 16px 0; }
+  .footer {
+    text-align: center; padding: 24px; color: var(--gray); font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <h1>Bookkeeping From Home for Over-55s — Curriculum</h1>
+    <p>GHL Upload Helper · 9 modules</p>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="instructions">
+    <strong>How to use this page:</strong>
+    Open GHL → Memberships → create a new course titled "<strong>Bookkeeping From Home for Over-55s — Curriculum</strong>".
+    Then for each module below: in GHL click <em>+ Add Module</em>, paste the module title;
+    click <em>+ Add Lesson</em>, paste the lesson title; in the rich-text editor click the
+    "Source Code" / "&lt;/&gt;" button and paste the lesson body HTML.
+    Click each <strong>Copy</strong> button to copy that field to your clipboard.
+  </div>
+
+  <nav class="toc">
+    <h2>Modules in this course</h2>
+    <ol>
+      <li><a href="#module-0">Module 0 — Welcome + Reality Check</a></li>
+<li><a href="#module-1">Module 1 — Bookkeeping vs. Accounting vs. Tax Prep (The Line You Don&#39;t Cross)</a></li>
+<li><a href="#module-2">Module 2 — Your Software Stack (QBO, Xero, FreshBooks)</a></li>
+<li><a href="#module-3">Module 3 — The 5 Services You Can Offer (Pick 2-3)</a></li>
+<li><a href="#module-4">Module 4 — Landing Your First 3 Clients (The Honest Way)</a></li>
+<li><a href="#module-5">Module 5 — Pricing That Doesn&#39;t Burn You Out</a></li>
+<li><a href="#module-6">Module 6 — Engagement Letters + Legal Boundaries</a></li>
+<li><a href="#module-7">Module 7 — Running It Efficiently with AI (The Included AI Assistant)</a></li>
+<li><a href="#module-8">Module 8 — Your 90-Day Plan</a></li>
+    </ol>
+  </nav>
+
+  
+<article class="module" id="module-0">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 0</div>
+      <div class="module-title">Welcome + Reality Check</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-0">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-0" value="Module 0 — Welcome + Reality Check" readonly>
+      <button class="copy-mini" data-copy-target="title-0" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-0" value="Welcome + Reality Check" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-0" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-0">
+<p><strong>Runtime</strong>: 20 min <strong>Objective</strong>: Set honest expectations. Filter out wrong-fit buyers early.</p>
+<ul>
+<li>What this course is: how to run a part-time bookkeeping service with 3-5 clients from home</li>
+<li>What this course is NOT: how to become a CPA, how to build an agency, how to do tax prep</li>
+<li>Realistic numbers (live 2026 market data):</li>
+<li>Time commitment: <strong>~2 weeks of concentrated work per month</strong> (week mid-month + week end-of-month)</li>
+<li>Who succeeds: comfortable with numbers, reliable, patient with messy client books</li>
+<li>Who fails: needs to learn bookkeeping basics from scratch (get Intuit Academy free first), wants to scale to 30+ clients (wrong course)</li>
+</ul>
+  </div>
+</article>
+
+<article class="module" id="module-1">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 1</div>
+      <div class="module-title">Bookkeeping vs. Accounting vs. Tax Prep (The Line You Don&#39;t Cross)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-1">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-1" value="Module 1 — Bookkeeping vs. Accounting vs. Tax Prep (The Line You Don't Cross)" readonly>
+      <button class="copy-mini" data-copy-target="title-1" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-1" value="Bookkeeping vs. Accounting vs. Tax Prep (The Line You Don't Cross)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-1" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-1">
+<p><strong>Runtime</strong>: 30 min</p>
+<ul>
+<li>The legal distinctions (no state requires bookkeeping licensure as of 2026, but lines matter):</li>
+<li>FTC Safeguards Rule (updated 2023): generally applies to financial institutions, not bookkeepers — but cross into tax prep and you may be caught. Clean line matters.</li>
+<li>State variations to confirm before launch: LA, NV, WV have had narrow licensing discussions historically. As of 2026, none require bookkeeping license.</li>
+<li>When to refer out: the three scenarios where you hand the client back to their CPA</li>
+</ul>
+  </div>
+</article>
+
+<article class="module" id="module-2">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 2</div>
+      <div class="module-title">Your Software Stack (QBO, Xero, FreshBooks)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-2">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-2" value="Module 2 — Your Software Stack (QBO, Xero, FreshBooks)" readonly>
+      <button class="copy-mini" data-copy-target="title-2" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-2" value="Your Software Stack (QBO, Xero, FreshBooks)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-2" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-2">
+<p><strong>Runtime</strong>: 60 min</p>
+<ul>
+<li><strong>QuickBooks Online (QBO)</strong> — the market leader, 80% of small biz bookkeeping clients use it. Certification path.</li>
+<li><strong>Xero</strong> — growing, especially in tech-forward businesses and international clients</li>
+<li><strong>FreshBooks</strong> — simpler, solopreneur-focused, underrated for the tiny-client niche</li>
+<li>Which platform(s) to learn first (answer: QBO, then either Xero or FreshBooks)</li>
+<li><strong>QBO ProAdvisor program</strong> (free) — badge + discounted subscriptions for your clients</li>
+<li>Xero Advisor certification (free) — same concept</li>
+<li>The "single-platform specialist" vs "multi-platform generalist" choice (specialist is better for this niche)</li>
+</ul>
+  </div>
+</article>
+
+<article class="module" id="module-3">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 3</div>
+      <div class="module-title">The 5 Services You Can Offer (Pick 2-3)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-3">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-3" value="Module 3 — The 5 Services You Can Offer (Pick 2-3)" readonly>
+      <button class="copy-mini" data-copy-target="title-3" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-3" value="The 5 Services You Can Offer (Pick 2-3)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-3" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-3">
+<p><strong>Runtime</strong>: 45 min</p>
+<p>Full menu — but don't try to offer all of them. Specialize.</p>
+<ol>
+<li><strong>Monthly reconciliation + financials</strong> (core offering, every client needs this)</li>
+<li><strong>Accounts Receivable management</strong> (invoicing, collections reminders)</li>
+<li><strong>Accounts Payable</strong> (bill payment, vendor management)</li>
+<li><strong>Payroll coordination</strong> (NOT payroll filing — that's payroll companies. Coordination between QBO and their payroll provider)</li>
+<li><strong>QBO cleanup projects</strong> (one-time engagements, $500-$2,000 flat — great entry point)</li>
+</ol>
+<p><strong>Recommended starter package</strong>: monthly reconciliation + financials + AR management for 1 industry (contractors, realtors, e-commerce, consultants — pick one).</p>
+  </div>
+</article>
+
+<article class="module" id="module-4">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 4</div>
+      <div class="module-title">Landing Your First 3 Clients (The Honest Way)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-4">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-4" value="Module 4 — Landing Your First 3 Clients (The Honest Way)" readonly>
+      <button class="copy-mini" data-copy-target="title-4" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-4" value="Landing Your First 3 Clients (The Honest Way)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-4" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-4">
+<p><strong>Runtime</strong>: 60 min</p>
+<ul>
+<li><strong>Where the clients are</strong> (by frequency of hiring):</li>
+<li><strong>CPA referral network strategy</strong> — most CPAs hate bookkeeping work and happily refer out if you're reliable. 1 good CPA relationship = 3-5 client introductions per year.</li>
+<li><strong>Cold outreach template for 55-75 voice</strong> (not "hey 👋 I see you're crushing it") — use the AI Writing Assistant to draft, your voice to edit</li>
+<li><strong>The free "books review" offer</strong> — 15-minute look at their QBO file, identify 3 issues, $0 cost. Converts at ~40%.</li>
+<li><strong>First client in 30 days = realistic</strong> if you do 5 CPA outreaches + 10 local network introductions per week.</li>
+</ul>
+  </div>
+</article>
+
+<article class="module" id="module-5">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 5</div>
+      <div class="module-title">Pricing That Doesn&#39;t Burn You Out</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-5">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-5" value="Module 5 — Pricing That Doesn't Burn You Out" readonly>
+      <button class="copy-mini" data-copy-target="title-5" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-5" value="Pricing That Doesn't Burn You Out" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-5" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-5">
+<p><strong>Runtime</strong>: 40 min</p>
+<ul>
+<li><strong>Three pricing models</strong>:</li>
+<li><strong>The price-your-time formula</strong>: target hours/month per client × your target hourly rate × 1.2 (buffer) = monthly retainer</li>
+<li><strong>Raising prices on existing clients</strong>: the 90-day value-review template (scripted conversation)</li>
+<li><strong>When to fire a client</strong>: the "3 signs you're underpricing by a lot and they won't agree to raise" checklist</li>
+<li><strong>Stop charging for scope creep</strong>: the boundary scripts</li>
+</ul>
+  </div>
+</article>
+
+<article class="module" id="module-6">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 6</div>
+      <div class="module-title">Engagement Letters + Legal Boundaries</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-6">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-6" value="Module 6 — Engagement Letters + Legal Boundaries" readonly>
+      <button class="copy-mini" data-copy-target="title-6" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-6" value="Engagement Letters + Legal Boundaries" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-6" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-6">
+<p><strong>Runtime</strong>: 40 min</p>
+<ul>
+<li><strong>Why every engagement needs a written letter</strong> (scope, fees, deliverables, termination, confidentiality)</li>
+<li><strong>Template engagement letter</strong> included (NOT legal advice — recommend attorney review for your specific state, but covers 95% of common arrangements)</li>
+<li><strong>E&O (Errors and Omissions) insurance</strong> — optional but recommended for >$2,000/mo in billable work. Typical cost: $300-$600/year.</li>
+<li><strong>Data privacy / FTC Safeguards Rule review</strong> — when it applies to you (usually it doesn't, but the one scenario where it might)</li>
+<li><strong>The "I'm not your tax preparer" letter</strong> — required language that protects you when clients try to pull you across the line</li>
+<li><strong>Password management</strong> — never email credentials; use 1Password, LastPass, or Bitwarden shared vaults</li>
+</ul>
+  </div>
+</article>
+
+<article class="module" id="module-7">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 7</div>
+      <div class="module-title">Running It Efficiently with AI (The Included AI Assistant)</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-7">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-7" value="Module 7 — Running It Efficiently with AI (The Included AI Assistant)" readonly>
+      <button class="copy-mini" data-copy-target="title-7" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-7" value="Running It Efficiently with AI (The Included AI Assistant)" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-7" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-7">
+<p><strong>Runtime</strong>: 45 min</p>
+<ul>
+<li>Your included <strong>Income Academy AI Writing Assistant</strong> (custom Claude Project, shared across the bundle) — now preloaded with bookkeeping-specific workflows:</li>
+<li>The <strong>one thing NOT to use AI for</strong>: categorization decisions on live transactions. Review every one. AI is for drafting, not judging.</li>
+<li>Prompt templates library (included with course — to be fleshed out in future content pass)</li>
+</ul>
+  </div>
+</article>
+
+<article class="module" id="module-8">
+  <div class="module-header">
+    <div class="module-title-block">
+      <div class="module-num">Module 8</div>
+      <div class="module-title">Your 90-Day Plan</div>
+    </div>
+    <button class="copy-btn" data-copy-target="lesson-body-8">📋 Copy Lesson Body</button>
+  </div>
+  <div class="module-fields">
+    <div class="field-row">
+      <span class="field-label">Module title</span>
+      <input class="field-value" id="title-8" value="Module 8 — Your 90-Day Plan" readonly>
+      <button class="copy-mini" data-copy-target="title-8" data-is-input="true">Copy</button>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Lesson title</span>
+      <input class="field-value" id="lesson-title-8" value="Your 90-Day Plan" readonly>
+      <button class="copy-mini" data-copy-target="lesson-title-8" data-is-input="true">Copy</button>
+    </div>
+  </div>
+  <div class="module-body" id="lesson-body-8">
+<p><strong>Runtime</strong>: 30 min</p>
+<p><strong>Days 1-14 (Foundation)</strong></p>
+<ul>
+<li>Complete QBO ProAdvisor certification (free)</li>
+<li>Pick your client niche (1 industry) and service package (2-3 services)</li>
+<li>Set up your business entity (sole prop or LLC — covered in Module 6)</li>
+<li>Write your engagement letter + pricing sheet</li>
+</ul>
+<p><strong>Days 15-30 (Outreach)</strong></p>
+<ul>
+<li>10 CPA firm outreaches + 10 local network introductions per week</li>
+<li>Free "books review" offer as the lead magnet</li>
+<li>Goal: first client by Day 30</li>
+</ul>
+<p><strong>Days 31-60 (First Client, Second Outreach)</strong></p>
+<ul>
+<li>Deliver Month 1 for your first client — build the habit, refine the process</li>
+<li>Continue outreach for client 2</li>
+<li>Goal: second client by Day 60</li>
+</ul>
+<p><strong>Days 61-90 (Stabilize)</strong></p>
+<ul>
+<li>Running Month 2 for client 1, Month 1 for client 2</li>
+<li>Third client prospecting</li>
+<li>Evaluate: do you want 3 clients and stop? 5? More? (Most of our members target 3-5.)</li>
+</ul>
+<hr/>
+  </div>
+</article>
+
+</main>
+
+<footer class="footer">
+  <p>Generated from <code>docs/courses/bookkeeping-from-home/curriculum.md</code></p>
+</footer>
+
+<script>
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-copy-target]');
+    if (!btn) return;
+    const targetId = btn.getAttribute('data-copy-target');
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    let textToCopy;
+    if (btn.getAttribute('data-is-input') === 'true') {
+      textToCopy = target.value;
+    } else {
+      // Copy the inner HTML (so paste into rich-text editor preserves formatting)
+      textToCopy = target.innerHTML;
+    }
+
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      const originalText = btn.textContent;
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.classList.remove('copied');
+      }, 1500);
+    } catch (err) {
+      alert('Copy failed — your browser may require manual selection. Triple-click the field and Cmd+C.');
+      console.error(err);
+    }
+  });
+</script>
+
+</body>
+</html>
