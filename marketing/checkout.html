@@ -3,32 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Secure Checkout — Income Academy</title>
+<title>Foundation Pass Checkout — Income Academy</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/styles.css">
 
 <!--
   ┌─────────────────────────────────────────────────────────────────┐
-  │  PAYMENT LINK URLS                                              │
+  │  PAYMENT LINK URLS — Foundation Pass ($47 + $19/mo w/ trial)    │
   │                                                                 │
   │  Stripe (primary):                                              │
-  │   - Test: https://buy.stripe.com/test_xxxx                      │
-  │   - Live: https://buy.stripe.com/xxxx                           │
+  │   Create a Stripe Payment Link with:                            │
+  │     - $47 one-time product                                      │
+  │     - $19/mo subscription with 7-day free trial                 │
+  │   Test URL form: https://buy.stripe.com/test_xxxx               │
+  │   Live URL form: https://buy.stripe.com/xxxx                    │
+  │   Replace the href on #stripe-cta below.                        │
   │                                                                 │
   │  PayPal (backup):                                               │
-  │   - Payment Link: https://www.paypal.com/ncp/payment/XXXXX      │
-  │     (create in PayPal Business dashboard — see                  │
-  │      docs/paypal-setup.md for full instructions)                │
+  │   PayPal Payment Links don't support subscriptions cleanly.     │
+  │   Option A: PayPal charges only the $47 one-time; membership    │
+  │             sign-up goes via GHL portal after purchase.         │
+  │   Option B: skip PayPal for bundle, keep only for single-course │
+  │             future purchases.                                   │
+  │   Current state: PayPal button hidden until URL is set.         │
+  │   Replace PAYPAL_LINK_PLACEHOLDER when ready.                   │
   │                                                                 │
-  │  To switch Stripe between test/live, update the href below.     │
-  │  To activate PayPal backup, replace PAYPAL_LINK_PLACEHOLDER.    │
+  │  See docs/paypal-setup.md for full setup instructions.          │
   └─────────────────────────────────────────────────────────────────┘
 -->
 
 <style>
   .checkout-page {
-    max-width: 640px;
+    max-width: 680px;
     margin: 60px auto;
     padding: 0 24px;
   }
@@ -39,22 +46,37 @@
     background: var(--cream);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 24px 28px;
+    padding: 26px 30px;
     margin-bottom: 32px;
   }
-  .order-summary-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 8px 0;
+  .order-summary h3 {
+    font-size: 18px; margin-bottom: 16px; color: var(--navy);
+    padding-bottom: 12px; border-bottom: 1px solid var(--border);
   }
-  .order-summary-row.total {
+  .order-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 10px 0;
+    gap: 16px;
+  }
+  .order-row-label { flex: 1; }
+  .order-row-label strong { color: var(--navy); display: block; margin-bottom: 2px; }
+  .order-row-label span { color: var(--gray); font-size: 13px; line-height: 1.5; }
+  .order-row-price {
+    color: var(--navy); font-weight: 700; font-size: 17px;
+    white-space: nowrap;
+  }
+  .order-row-price .gold { color: var(--gold); }
+  .order-row.total {
     border-top: 1px solid var(--border);
-    margin-top: 10px; padding-top: 14px;
-    font-weight: 700; font-size: 18px;
+    margin-top: 10px; padding-top: 16px;
+    font-size: 16px;
   }
-  .order-summary .order-note {
-    margin-top: 14px; padding-top: 14px;
+  .order-row.total strong { color: var(--navy); font-size: 18px; }
+  .order-note {
+    margin-top: 16px; padding-top: 14px;
     border-top: 1px dashed var(--border);
     font-size: 13px; color: var(--gray);
+    line-height: 1.6;
   }
   .pay-primary {
     background: var(--gold); color: var(--navy);
@@ -116,32 +138,45 @@
 <main class="checkout-page">
   <div class="checkout-header">
     <h1>You're almost in</h1>
-    <p>Choose how you'd like to pay. Both options are secure.</p>
+    <p>Get the Foundation Pass. Choose how you'd like to pay.</p>
   </div>
 
   <div class="order-summary">
-    <div class="order-summary-row">
-      <span>Starter Training Program</span>
-      <span>$47.00</span>
+    <h3>Order summary</h3>
+    <div class="order-row">
+      <div class="order-row-label">
+        <strong>Income Academy Foundation Pass</strong>
+        <span>Instant access to all 4 courses + AI Writing Assistant + community + monthly Q&amp;As</span>
+      </div>
+      <div class="order-row-price">$47.00</div>
     </div>
-    <div class="order-summary-row total">
-      <span>Total today</span>
-      <span>$47.00</span>
+    <div class="order-row">
+      <div class="order-row-label">
+        <strong>Ongoing membership</strong>
+        <span>Starts after 7-day free trial · Cancel anytime in one click · New content + community access</span>
+      </div>
+      <div class="order-row-price"><span class="gold">$19</span>/mo</div>
     </div>
-    <p class="order-note">✓ Instant access · ✓ 7-day money-back guarantee · Your optional $19/mo membership begins on a 7-day free trial after purchase and can be cancelled in one click.</p>
+    <div class="order-row total">
+      <div class="order-row-label"><strong>Today's charge</strong></div>
+      <div class="order-row-price"><strong>$47.00</strong></div>
+    </div>
+    <p class="order-note">
+      ✓ 7-day money-back guarantee on the $47 · ✓ Your $19/mo membership starts on a 7-day free trial (you pay $0 for the first week) · ✓ Cancel the membership in one click from your member portal · ✓ eBay Reselling Done-With-You program is separate, by application only — not charged today
+    </p>
   </div>
 
   <!-- PRIMARY: Stripe (card, Apple Pay, Google Pay) -->
   <a href="https://buy.stripe.com/test_00w14g7eD9nY1t5co26wE00" class="pay-primary" id="stripe-cta">
-    <span class="pay-icon">🔒</span>Pay $47 with card
+    <span class="pay-icon">🔒</span>Pay $47 now — start 7-day trial
   </a>
 
   <div class="pay-divider">or</div>
 
-  <!-- BACKUP: PayPal -->
-  <!-- Replace PAYPAL_LINK_PLACEHOLDER with your PayPal Payment Link URL from the PayPal Business dashboard. -->
+  <!-- BACKUP: PayPal (one-time $47 only; membership via portal) -->
   <a href="PAYPAL_LINK_PLACEHOLDER" class="pay-secondary" id="paypal-cta">
-    Pay with <strong>Pay<span class="paypal-i">Pal</span></strong>
+    Pay $47 with <strong>Pay<span class="paypal-i">Pal</span></strong>
+    <span style="display: block; font-size: 12px; color: var(--gray); font-weight: 400; margin-top: 4px;">(Membership setup continues in your member portal after purchase)</span>
   </a>
 
   <p class="pay-notes">
@@ -160,7 +195,7 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Hide PayPal button if the placeholder hasn't been replaced yet.
+  // Hide PayPal button if placeholder isn't replaced yet.
   (function() {
     var pp = document.getElementById('paypal-cta');
     if (!pp) return;
@@ -172,5 +207,8 @@
     }
   })();
 </script>
+
+<!-- GHL_CHAT_WIDGET_PLACEHOLDER — see docs/chat-widget-setup.md -->
+
 </body>
 </html>
