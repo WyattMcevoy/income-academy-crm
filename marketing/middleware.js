@@ -58,7 +58,7 @@ export default function middleware(request) {
     url.pathname.startsWith('/ai/') || url.pathname.startsWith('/affiliate/');
 
   if (isRoot && !alreadyProductPath) {
-    const destinationPath = isAiSubdomain ? '/ai/index.html' : '/affiliate/index.html';
+    const destinationPath = isAiSubdomain ? '/ai' : '/affiliate';
     const rewriteUrl = new URL(destinationPath, url.origin);
     console.log(`[preview-auth] ${host} allow -> ${destinationPath}`);
     return new Response(null, {
