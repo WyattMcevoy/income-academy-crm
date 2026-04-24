@@ -1,0 +1,17 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Income Academy">
+  <title>Income Academy — IA Mark (Color)</title>
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="shimmer" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.12"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="512" height="512" rx="80" fill="url(#bgGradient)"/>
+  <rect x="0" y="0" width="512" height="512" rx="80" fill="url(#shimmer)"/>
+  <text x="256" y="332" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif" font-weight="900" font-size="260" fill="#f59e0b" text-anchor="middle" letter-spacing="-8">IA</text>
+  <rect x="176" y="376" width="160" height="10" rx="5" fill="#f59e0b"/>
+</svg>
