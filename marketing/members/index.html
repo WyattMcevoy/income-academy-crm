@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Foundation Pass — Income Academy Members Area</title>
+<meta name="description" content="Your Income Academy member dashboard. All 4 courses, resources, and the AI Writing Assistant in one place.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/styles.css">
+
+<!--
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  MEMBER DASHBOARD (hybrid: pretty landing on Vercel,            │
+  │                    course content in GHL)                       │
+  │                                                                 │
+  │  Each course card's "Continue Learning" button links to the     │
+  │  specific GHL course URL for that course. Replace the           │
+  │  GHL_COURSE_URL_* placeholders with actual GHL URLs from your   │
+  │  GHL Courses settings:                                          │
+  │                                                                 │
+  │   - GHL_COURSE_URL_AI         → AI Side Income course URL       │
+  │   - GHL_COURSE_URL_AFFILIATE  → Affiliate Marketing course URL  │
+  │   - GHL_COURSE_URL_ESTATE     → Estate Sale Sourcing course URL │
+  │   - GHL_COURSE_URL_BOOKKEEPING → Bookkeeping course URL         │
+  │   - GHL_PORTAL_BASE_URL       → Main GHL member portal URL      │
+  │                                                                 │
+  │  To get these URLs:                                             │
+  │    GHL → Memberships → click course → copy "share URL"          │
+  │  See docs/ghl-portal-customization.md for setup details.        │
+  └─────────────────────────────────────────────────────────────────┘
+-->
+
+<style>
+  .dashboard-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: var(--white);
+    padding: 60px 24px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .dashboard-hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.12), transparent 50%);
+    pointer-events: none;
+  }
+  .dashboard-hero-inner {
+    position: relative; z-index: 1;
+    max-width: 800px; margin: 0 auto;
+  }
+  .dashboard-badge {
+    display: inline-block;
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--gold);
+    padding: 6px 14px; border-radius: 16px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .dashboard-hero h1 {
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .dashboard-hero p {
+    color: var(--gray-light);
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .dashboard-main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+  .course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .course-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 150ms, box-shadow 150ms;
+    display: flex;
+    flex-direction: column;
+  }
+  .course-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+  }
+  .course-thumb {
+    height: 160px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .course-thumb-ai {
+    background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+  }
+  .course-thumb-aff {
+    background: linear-gradient(135deg, #0f172a 0%, #065f46 100%);
+  }
+  .course-thumb-estate {
+    background: linear-gradient(135deg, #0f172a 0%, #7c2d12 100%);
+  }
+  .course-thumb-bk {
+    background: linear-gradient(135deg, #0f172a 0%, #581c87 100%);
+  }
+  .course-thumb-label {
+    color: var(--gold);
+    font-weight: 800;
+    font-size: 48px;
+    letter-spacing: -1px;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', Roboto, sans-serif;
+    line-height: 1;
+  }
+  .course-thumb-subtitle {
+    position: absolute;
+    bottom: 16px; left: 20px;
+    color: var(--white);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .course-body { padding: 24px 24px 20px; flex: 1; display: flex; flex-direction: column; }
+  .course-body h3 {
+    font-size: 20px;
+    color: var(--navy);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .course-body p {
+    color: var(--gray);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+    flex: 1;
+  }
+  .course-stats {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .course-stat {
+    font-size: 12px;
+    color: var(--gray);
+  }
+  .course-stat strong { color: var(--navy); font-weight: 700; display: block; font-size: 15px; }
+  .course-cta {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px;
+    background: var(--gold); color: var(--navy);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 120ms, transform 120ms;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .course-cta:hover {
+    background: var(--gold-hover);
+    color: var(--navy);
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+
+  /* Locked eBay tile */
+  .course-card-locked {
+    background: var(--navy);
+    color: var(--white);
+    border-color: rgba(245, 158, 11, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .course-card-locked::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 85% 15%, rgba(245, 158, 11, 0.15), transparent 50%);
+    pointer-events: none;
+  }
+  .course-card-locked .course-thumb {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+  }
+  .course-card-locked .course-thumb-label { opacity: 0.4; }
+  .course-card-locked .course-body h3 { color: var(--white); position: relative; z-index: 1; }
+  .course-card-locked .course-body p { color: var(--gray-light); position: relative; z-index: 1; }
+  .course-card-locked .course-stats {
+    border-bottom-color: rgba(245, 158, 11, 0.2);
+  }
+  .course-card-locked .course-stat { color: var(--gray-light); }
+  .course-card-locked .course-stat strong { color: var(--white); }
+  .locked-chip {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--gold);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+
+  /* Resource section */
+  .resources-section {
+    background: var(--cream);
+    border-radius: 14px;
+    padding: 32px;
+    margin-bottom: 40px;
+  }
+  .resources-section h2 {
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 20px;
+  }
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .resource-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    text-decoration: none;
+    transition: border-color 120ms, transform 120ms;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .resource-item:hover {
+    border-color: var(--gold);
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+  .resource-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .resource-text { flex: 1; }
+  .resource-text strong {
+    color: var(--navy);
+    font-size: 14px;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .resource-text span {
+    color: var(--gray);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  /* Account row */
+  .account-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .account-info strong { color: var(--navy); font-size: 15px; display: block; margin-bottom: 4px; }
+  .account-info span { color: var(--gray); font-size: 13px; }
+  .account-links { display: flex; gap: 18px; flex-wrap: wrap; }
+  .account-links a { color: var(--gold); font-size: 14px; font-weight: 600; }
+  .account-links a:hover { color: var(--gold-hover); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <span class="logo-mark">IA</span>
+      Income Academy
+    </a>
+    <a href="GHL_PORTAL_BASE_URL" class="nav-cta">Go to Lessons Portal →</a>
+  </div>
+</nav>
+
+<section class="dashboard-hero">
+  <div class="dashboard-hero-inner">
+    <span class="dashboard-badge">Foundation Pass · Members Area</span>
+    <h1>Welcome to your Foundation Pass</h1>
+    <p>All 4 courses, the AI Writing Assistant, and ongoing community — in one place. Click any course to continue where you left off.</p>
+  </div>
+</section>
+
+<main class="dashboard-main">
+
+  <!-- COURSE GRID -->
+  <div class="course-grid">
+
+    <!-- AI Side Income -->
+    <article class="course-card">
+      <div class="course-thumb course-thumb-ai">
+        <div class="course-thumb-label">AI</div>
+        <div class="course-thumb-subtitle">COURSE 1</div>
+      </div>
+      <div class="course-body">
+        <h3>AI Side Income Starter Kit</h3>
+        <p>Real skills for using AI tools to land 2-3 paid gigs from home. Freelance services with AI as your assistant.</p>
+        <div class="course-stats">
+          <div class="course-stat"><strong>8</strong>modules</div>
+          <div class="course-stat"><strong>200+</strong>prompts</div>
+          <div class="course-stat"><strong>~4h</strong>runtime</div>
+        </div>
+        <a href="GHL_COURSE_URL_AI" class="course-cta">Continue Learning →</a>
+      </div>
+    </article>
+
+    <!-- Affiliate Marketing -->
+    <article class="course-card">
+      <div class="course-thumb course-thumb-aff">
+        <div class="course-thumb-label">AM</div>
+        <div class="course-thumb-subtitle">COURSE 2</div>
+      </div>
+      <div class="course-body">
+        <h3>Honest Affiliate Marketing</h3>
+        <p>Post-HCU content business strategies that still work in 2026. Commissions over time — no get-rich fantasies.</p>
+        <div class="course-stats">
+          <div class="course-stat"><strong>9</strong>modules</div>
+          <div class="course-stat"><strong>30+</strong>templates</div>
+          <div class="course-stat"><strong>~5h</strong>runtime</div>
+        </div>
+        <a href="GHL_COURSE_URL_AFFILIATE" class="course-cta">Continue Learning →</a>
+      </div>
+    </article>
+
+    <!-- Estate Sale Sourcing -->
+    <article class="course-card">
+      <div class="course-thumb course-thumb-estate">
+        <div class="course-thumb-label">ES</div>
+        <div class="course-thumb-subtitle">COURSE 3</div>
+      </div>
+      <div class="course-body">
+        <h3>Estate Sale Sourcing Academy</h3>
+        <p>Turn Saturday-morning estate sales into a real reselling income. Feeds into the eBay DWY graduation tier.</p>
+        <div class="course-stats">
+          <div class="course-stat"><strong>9</strong>modules</div>
+          <div class="course-stat"><strong>7</strong>category guides</div>
+          <div class="course-stat"><strong>~4h</strong>runtime</div>
+        </div>
+        <a href="GHL_COURSE_URL_ESTATE" class="course-cta">Continue Learning →</a>
+      </div>
+    </article>
+
+    <!-- Bookkeeping -->
+    <article class="course-card">
+      <div class="course-thumb course-thumb-bk">
+        <div class="course-thumb-label">BK</div>
+        <div class="course-thumb-subtitle">COURSE 4</div>
+      </div>
+      <div class="course-body">
+        <h3>Bookkeeping From Home for Over-55s</h3>
+        <p>3-5 clients. $1,500-$2,500/mo recurring. Not an agency — a relaxed retirement income.</p>
+        <div class="course-stats">
+          <div class="course-stat"><strong>9</strong>modules</div>
+          <div class="course-stat"><strong>7</strong>templates</div>
+          <div class="course-stat"><strong>~6h</strong>runtime</div>
+        </div>
+        <a href="GHL_COURSE_URL_BOOKKEEPING" class="course-cta">Continue Learning →</a>
+      </div>
+    </article>
+
+    <!-- eBay Done-With-You (Locked) -->
+    <article class="course-card course-card-locked">
+      <span class="locked-chip">🔒 Graduation</span>
+      <div class="course-thumb">
+        <div class="course-thumb-label">eBay</div>
+        <div class="course-thumb-subtitle" style="color: var(--gold);">BY APPLICATION</div>
+      </div>
+      <div class="course-body">
+        <h3>eBay Reselling — Done With You</h3>
+        <p>Our high-touch graduation program. We warehouse, photograph, list, and ship your inventory while you focus on sourcing.</p>
+        <div class="course-stats">
+          <div class="course-stat"><strong>—</strong>phone consult</div>
+          <div class="course-stat"><strong>—</strong>by application</div>
+          <div class="course-stat"><strong>—</strong>warehouse</div>
+        </div>
+        <a href="/apply-ebay" class="course-cta">Apply to Unlock →</a>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- AI WRITING ASSISTANT + RESOURCES -->
+  <section class="resources-section">
+    <h2>Your included tools &amp; resources</h2>
+    <div class="resources-grid">
+      <a href="#" class="resource-item">
+        <div class="resource-icon">🤖</div>
+        <div class="resource-text">
+          <strong>AI Writing Assistant</strong>
+          <span>Custom Claude Project preloaded with every course</span>
+        </div>
+      </a>
+      <a href="#" class="resource-item">
+        <div class="resource-icon">📥</div>
+        <div class="resource-text">
+          <strong>Prompt Library</strong>
+          <span>200+ prompts organized by service type</span>
+        </div>
+      </a>
+      <a href="#" class="resource-item">
+        <div class="resource-icon">📄</div>
+        <div class="resource-text">
+          <strong>Template Pack</strong>
+          <span>Contracts, proposals, engagement letters, more</span>
+        </div>
+      </a>
+      <a href="#" class="resource-item">
+        <div class="resource-icon">💬</div>
+        <div class="resource-text">
+          <strong>Members Community</strong>
+          <span>Private group + monthly Q&amp;A</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ACCOUNT ROW -->
+  <div class="account-row">
+    <div class="account-info">
+      <strong>Your account</strong>
+      <span>Foundation Pass member · Subscription active · Cancel anytime</span>
+    </div>
+    <div class="account-links">
+      <a href="GHL_PORTAL_BASE_URL">Open lessons portal →</a>
+      <a href="/refund">Refund policy</a>
+      <a href="mailto:support@incomeacademy.biz">Support</a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="logo">
+        <span class="logo-mark">IA</span>
+        Income Academy
+      </a>
+      <p>Your Foundation Pass members area. Welcome in.</p>
+    </div>
+    <div class="footer-links">
+      <h5>Quick links</h5>
+      <ul>
+        <li><a href="/">Main site</a></li>
+        <li><a href="/apply-ebay">eBay Reselling DWY Application</a></li>
+        <li><a href="/refund">Refund Policy</a></li>
+        <li><a href="mailto:support@incomeacademy.biz">Contact support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom container">
+    © <span id="year">2026</span> Income Academy LLC. All rights reserved.
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // If GHL URLs haven't been configured yet, disable the CTAs gracefully
+  // so members don't click into broken links.
+  (function() {
+    var ctas = document.querySelectorAll('.course-cta, .nav-cta, .account-links a');
+    ctas.forEach(function(cta) {
+      var href = cta.getAttribute('href') || '';
+      if (href.indexOf('GHL_') === 0 || href === 'GHL_COURSE_URL_AI' || href === 'GHL_COURSE_URL_AFFILIATE' || href === 'GHL_COURSE_URL_ESTATE' || href === 'GHL_COURSE_URL_BOOKKEEPING' || href === 'GHL_PORTAL_BASE_URL') {
+        cta.addEventListener('click', function(e) {
+          e.preventDefault();
+          alert('Lessons portal is being set up — please check back shortly or email support@incomeacademy.biz.');
+        });
+        cta.style.opacity = '0.7';
+      }
+    });
+  })();
+</script>
+
+<!-- GHL_CHAT_WIDGET_PLACEHOLDER — see docs/chat-widget-setup.md -->
+
+</body>
+</html>
