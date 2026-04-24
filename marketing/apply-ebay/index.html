@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apply: eBay Reselling Done-With-You — Income Academy</title>
+<meta name="description" content="Apply for the Income Academy eBay Reselling Done-With-You program. Phone consultation required. Not a fit for everyone.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/styles.css">
+
+<!--
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  APPLY FORM — wires to GoHighLevel (GHL)                        │
+  │                                                                 │
+  │  The form currently posts to a placeholder endpoint. To wire    │
+  │  it to GHL:                                                     │
+  │   1. In GHL: Sites → Forms → Create form with fields matching   │
+  │      this HTML (name, email, phone, experience, reason, income) │
+  │   2. Copy the form's embed/endpoint URL from GHL                │
+  │   3. Replace the form action below with the GHL URL             │
+  │      OR replace the whole <form> block with GHL's embed iframe  │
+  │                                                                 │
+  │  Fallback: form currently mailto-forwards to                    │
+  │  support@incomeacademy.biz if JS fails.                         │
+  │                                                                 │
+  │  See docs/ebay-apply-setup.md for full GHL wiring instructions. │
+  └─────────────────────────────────────────────────────────────────┘
+-->
+
+<style>
+  .apply-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+  .apply-hero {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .apply-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--gold);
+    padding: 6px 14px; border-radius: 16px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .apply-hero h1 {
+    font-size: clamp(28px, 4vw, 38px);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .apply-hero p {
+    color: var(--gray);
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 620px; margin: 0 auto;
+  }
+  .apply-section {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+  }
+  .apply-section h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: var(--navy);
+  }
+  .apply-section ul { padding-left: 20px; margin: 0; }
+  .apply-section li {
+    color: var(--navy);
+    padding: 6px 0;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .apply-form {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 36px 32px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+  }
+  .apply-form h2 {
+    font-size: 24px; margin-bottom: 8px;
+  }
+  .apply-form p.form-intro {
+    color: var(--gray); font-size: 15px; margin-bottom: 28px;
+  }
+  .form-row { margin-bottom: 20px; }
+  .form-row label {
+    display: block;
+    color: var(--navy);
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+  .form-row label .required { color: #dc2626; }
+  .form-row input[type="text"],
+  .form-row input[type="email"],
+  .form-row input[type="tel"],
+  .form-row select,
+  .form-row textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+    color: var(--navy);
+    font-family: inherit;
+    background: var(--white);
+    transition: border-color 120ms;
+  }
+  .form-row input:focus,
+  .form-row select:focus,
+  .form-row textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+  }
+  .form-row textarea { min-height: 100px; resize: vertical; }
+  .form-row .hint {
+    font-size: 12px;
+    color: var(--gray);
+    margin-top: 6px;
+  }
+  .submit-btn {
+    background: var(--gold); color: var(--navy);
+    padding: 16px 32px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+    width: 100%;
+    transition: transform 120ms, box-shadow 120ms;
+  }
+  .submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
+  }
+  .form-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--gray);
+    margin-top: 20px;
+    line-height: 1.5;
+  }
+  .success-message {
+    display: none;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid var(--success);
+    border-radius: 10px;
+    padding: 24px;
+    color: var(--navy);
+    text-align: center;
+  }
+  .success-message h3 { color: var(--success); margin-bottom: 10px; }
+  .back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--gold);
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <span class="logo-mark">IA</span>
+      Income Academy
+    </a>
+    <a href="/" class="nav-cta">← Back to Foundation Pass</a>
+  </div>
+</nav>
+
+<main class="apply-page">
+
+  <div class="apply-hero">
+    <span class="apply-badge">🔒 Graduation Tier · By Application Only</span>
+    <h1>eBay Reselling — Done With You</h1>
+    <p>Our high-touch program for members who've outgrown solo sourcing. We warehouse your inventory, photograph professionally, list on your behalf, and handle shipping + returns. You focus on finding great inventory — we scale it.</p>
+  </div>
+
+  <div class="apply-section">
+    <h3>Who this is for</h3>
+    <ul>
+      <li>You're already consistently sourcing $1,500+ in inventory per month</li>
+      <li>You're spending more time on photography, listing, and shipping than on actual sourcing</li>
+      <li>You want to expand beyond your local sourcing radius</li>
+      <li>You're ready to treat this as a business, not a side hustle</li>
+    </ul>
+  </div>
+
+  <div class="apply-section">
+    <h3>Who this is NOT for</h3>
+    <ul>
+      <li>Anyone just starting out with reselling (take the Estate Sale Sourcing course in the Foundation Pass first)</li>
+      <li>People looking for a passive income shortcut (this is not that — you still do the sourcing)</li>
+      <li>People unwilling to ship inventory to our warehouse</li>
+      <li>People not open to a 30-minute phone consultation</li>
+    </ul>
+  </div>
+
+  <div class="apply-section">
+    <h3>What happens after you apply</h3>
+    <ul>
+      <li>Within 1-2 business days, we'll review your application</li>
+      <li>If it looks like a fit, we'll email you with 2-3 available consultation slots</li>
+      <li>30-minute phone call to confirm fit on both sides (no pressure — if we're not right for you, we'll say so)</li>
+      <li>If we mutually move forward, we'll walk through the program details and pricing together</li>
+    </ul>
+  </div>
+
+  <form class="apply-form" id="apply-form" method="post" action="https://api.leadconnectorhq.com/widget/form/FORM_ID_PLACEHOLDER">
+    <h2>Application</h2>
+    <p class="form-intro">This takes about 3 minutes. All fields help us understand if we're a fit.</p>
+
+    <div class="form-row">
+      <label for="name">Full name <span class="required">*</span></label>
+      <input type="text" id="name" name="full_name" required>
+    </div>
+
+    <div class="form-row">
+      <label for="email">Email <span class="required">*</span></label>
+      <input type="email" id="email" name="email" required>
+    </div>
+
+    <div class="form-row">
+      <label for="phone">Phone <span class="required">*</span></label>
+      <input type="tel" id="phone" name="phone" required>
+      <p class="hint">We'll call from a US number. You'll receive a text first to confirm a time.</p>
+    </div>
+
+    <div class="form-row">
+      <label for="experience">Reselling experience <span class="required">*</span></label>
+      <select id="experience" name="experience_level" required>
+        <option value="">Select one…</option>
+        <option value="brand_new">Brand new — I haven't sold on eBay yet</option>
+        <option value="hobbyist">Hobbyist — I sell a few items per month</option>
+        <option value="part_time">Part-time — I sell $500-$1,500/mo</option>
+        <option value="serious">Serious — I sell $1,500-$5,000+/mo</option>
+        <option value="full_time">Full-time — this is my main income</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label for="monthly_sourcing">Estimated inventory sourced per month (USD)</label>
+      <input type="text" id="monthly_sourcing" name="monthly_sourcing" placeholder="e.g., $1,200">
+    </div>
+
+    <div class="form-row">
+      <label for="reason">Why do you think you're a fit for our Done-With-You program? <span class="required">*</span></label>
+      <textarea id="reason" name="fit_reason" required placeholder="What you source, what your bottleneck is, and what success looks like to you."></textarea>
+    </div>
+
+    <div class="form-row">
+      <label for="member">Are you a current Income Academy Foundation Pass member?</label>
+      <select id="member" name="current_member">
+        <option value="not_yet">Not yet — applying as a prospect</option>
+        <option value="yes">Yes — active member</option>
+        <option value="trial">I'm in my 7-day free trial</option>
+      </select>
+      <p class="hint">Not required to apply — but current members are prioritized.</p>
+    </div>
+
+    <button type="submit" class="submit-btn">Submit Application →</button>
+
+    <p class="form-note">
+      By submitting, you consent to us contacting you by phone, text, or email to schedule a consultation. See our <a href="/privacy">Privacy Policy</a>. You can opt out anytime.
+    </p>
+  </form>
+
+  <div class="success-message" id="success-message">
+    <h3>✓ Application Received</h3>
+    <p>Thanks — we'll review this within 1-2 business days and email you with next steps.</p>
+    <a href="/" class="back-link">← Back to Foundation Pass</a>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-bottom container">
+    © <span id="year">2026</span> Income Academy LLC. All rights reserved.
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // If the form action is still a placeholder, intercept submit and show success message
+  // instead of posting to a broken endpoint. User wires to GHL via docs/ebay-apply-setup.md.
+  (function() {
+    var form = document.getElementById('apply-form');
+    if (!form) return;
+    var action = form.getAttribute('action') || '';
+    if (action.indexOf('FORM_ID_PLACEHOLDER') !== -1) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        form.style.display = 'none';
+        document.getElementById('success-message').style.display = 'block';
+        console.log('[apply-ebay] form submission intercepted — GHL form URL not yet configured');
+        // Optionally: POST via fetch to a backup endpoint, or mailto fallback.
+      });
+    }
+  })();
+</script>
+
+<!-- GHL_CHAT_WIDGET_PLACEHOLDER — see docs/chat-widget-setup.md -->
+
+</body>
+</html>

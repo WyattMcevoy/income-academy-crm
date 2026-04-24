@@ -3,30 +3,318 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Income Academy — Real Skills for Modern Online Entrepreneurs</title>
-<meta name="description" content="Discover the foundational online business skills smart entrepreneurs use to build multiple income streams. Get instant access to our starter training for $47.">
+<title>Income Academy — 4 Honest Ways to Earn Money From Home</title>
+<meta name="description" content="The Foundation Pass: 4 proven income paths for adults 50+. AI-powered freelancing, affiliate marketing, estate sale reselling, part-time bookkeeping. $47 one-time + $19/mo membership. 7-day free trial.">
 <meta name="robots" content="index,follow">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="canonical" href="https://incomeacademy.biz/">
 
-<!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Income Academy — Real Skills for Modern Online Entrepreneurs">
-<meta property="og:description" content="Discover the foundational online business skills smart entrepreneurs use to build multiple income streams.">
+<meta property="og:title" content="Income Academy — Foundation Pass: 4 Honest Income Paths for Adults 50+">
+<meta property="og:description" content="Four proven ways to earn money from home — then one real business if you want to go bigger. $47 + $19/mo. 7-day free trial.">
 <meta property="og:url" content="https://incomeacademy.biz/">
 
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Income Academy — Real Skills for Modern Online Entrepreneurs">
-<meta name="twitter:description" content="Discover the foundational online business skills smart entrepreneurs use to build multiple income streams.">
-
-<!-- Meta Pixel: paste ID here when ready -->
-<!-- <script>!function(...){...}('YOUR_PIXEL_ID');</script> -->
-
-<!-- Google Analytics: paste ID here when ready -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script> -->
+<meta name="twitter:title" content="Income Academy — Foundation Pass">
+<meta name="twitter:description" content="Four honest ways to earn money from home — then one real business if you want to go bigger.">
 
 <link rel="stylesheet" href="/styles.css">
+<style>
+  /* Tabbed Members Area */
+  .members-area {
+    background: var(--cream);
+    padding: 80px 24px;
+  }
+  .members-area .container { max-width: 1100px; }
+  .members-area-header { text-align: center; margin-bottom: 40px; }
+  .members-area-header h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    margin-bottom: 12px;
+  }
+  .members-area-header p {
+    color: var(--gray);
+    font-size: 18px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* Tab strip using radio buttons (no JS) */
+  .tabs {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+  .tabs input[type="radio"] { display: none; }
+  .tab-labels {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    background: var(--navy);
+    border-bottom: 1px solid var(--navy-light);
+  }
+  .tab-label {
+    padding: 18px 12px;
+    text-align: center;
+    cursor: pointer;
+    color: var(--gray-light);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    transition: background 120ms, color 120ms;
+    border-right: 1px solid var(--navy-light);
+    line-height: 1.3;
+  }
+  .tab-label:last-child { border-right: none; }
+  .tab-label:hover { background: var(--navy-light); color: var(--white); }
+  .tab-label-num {
+    display: block;
+    color: var(--gold);
+    font-size: 11px;
+    margin-bottom: 4px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  .tab-label.locked { background: rgba(245, 158, 11, 0.1); }
+  .tab-label.locked .tab-label-num { color: var(--gold); }
+  .tab-label.locked:hover { background: rgba(245, 158, 11, 0.2); }
+
+  /* Selected tab state */
+  #tab-ai:checked ~ .tab-labels [for="tab-ai"],
+  #tab-aff:checked ~ .tab-labels [for="tab-aff"],
+  #tab-estate:checked ~ .tab-labels [for="tab-estate"],
+  #tab-bk:checked ~ .tab-labels [for="tab-bk"],
+  #tab-ebay:checked ~ .tab-labels [for="tab-ebay"] {
+    background: var(--gold);
+    color: var(--navy);
+  }
+  #tab-ai:checked ~ .tab-labels [for="tab-ai"] .tab-label-num,
+  #tab-aff:checked ~ .tab-labels [for="tab-aff"] .tab-label-num,
+  #tab-estate:checked ~ .tab-labels [for="tab-estate"] .tab-label-num,
+  #tab-bk:checked ~ .tab-labels [for="tab-bk"] .tab-label-num,
+  #tab-ebay:checked ~ .tab-labels [for="tab-ebay"] .tab-label-num { color: var(--navy); }
+
+  .tab-panels { position: relative; }
+  .tab-panel { display: none; padding: 40px 36px; }
+  #tab-ai:checked ~ .tab-panels #panel-ai,
+  #tab-aff:checked ~ .tab-panels #panel-aff,
+  #tab-estate:checked ~ .tab-panels #panel-estate,
+  #tab-bk:checked ~ .tab-panels #panel-bk,
+  #tab-ebay:checked ~ .tab-panels #panel-ebay { display: block; }
+
+  .tab-panel h3 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: var(--navy);
+  }
+  .tab-panel .panel-eyebrow {
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .tab-panel .panel-subhead {
+    color: var(--gray);
+    font-size: 16px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .module-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .module-pill {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--navy);
+  }
+  .module-pill strong { color: var(--gold); margin-right: 6px; }
+  .panel-cta-row {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .panel-cta-link {
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .panel-cta-link:hover { color: var(--gold-hover); }
+
+  /* Locked eBay tile */
+  .locked-panel {
+    position: relative;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: var(--white);
+    border-radius: 10px;
+    padding: 44px 36px;
+    overflow: hidden;
+  }
+  .locked-panel::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 85% 15%, rgba(245, 158, 11, 0.2), transparent 50%);
+    pointer-events: none;
+  }
+  .locked-panel-inner { position: relative; z-index: 1; }
+  .locked-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--gold);
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .locked-panel h3 { color: var(--white); font-size: 26px; margin-bottom: 10px; }
+  .locked-panel p { color: var(--gray-light); font-size: 16px; line-height: 1.6; margin-bottom: 18px; }
+  .locked-panel ul { list-style: none; padding: 0; margin-bottom: 26px; }
+  .locked-panel li {
+    padding: 6px 0; padding-left: 24px;
+    color: var(--gray-light);
+    position: relative;
+    font-size: 15px;
+  }
+  .locked-panel li::before {
+    content: '🔒';
+    position: absolute; left: 0;
+    font-size: 12px; opacity: 0.6;
+  }
+  .locked-cta {
+    display: inline-block;
+    background: var(--gold); color: var(--navy);
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    transition: transform 120ms, box-shadow 120ms;
+  }
+  .locked-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
+    color: var(--navy);
+    text-decoration: none;
+  }
+
+  /* Bundle pricing block */
+  .pricing-block {
+    background: var(--navy);
+    color: var(--white);
+    padding: 60px 24px;
+    text-align: center;
+  }
+  .pricing-card {
+    background: var(--navy-light);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 16px;
+    padding: 44px 36px;
+    max-width: 560px;
+    margin: 0 auto;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  }
+  .pricing-eyebrow {
+    display: inline-block;
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--gold);
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .pricing-card h2 { color: var(--white); font-size: 28px; margin-bottom: 10px; }
+  .pricing-card > p.tagline { color: var(--gray-light); font-size: 16px; margin-bottom: 30px; }
+  .pricing-breakdown {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 28px;
+    text-align: left;
+  }
+  .price-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .price-row:last-child { border-bottom: none; }
+  .price-label { color: var(--gray-light); font-size: 15px; }
+  .price-label strong { color: var(--white); font-weight: 600; }
+  .price-amount { color: var(--white); font-weight: 700; font-size: 18px; }
+  .price-amount .gold { color: var(--gold); }
+  .price-note { color: var(--gray); font-size: 12px; margin-top: 4px; }
+  .pricing-cta {
+    display: inline-block;
+    background: var(--gold); color: var(--navy);
+    padding: 18px 40px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 18px;
+    text-decoration: none;
+    transition: transform 120ms, box-shadow 120ms;
+    margin-bottom: 14px;
+  }
+  .pricing-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .pricing-guarantee {
+    color: var(--gray-light);
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  /* Bundle summary strip */
+  .bundle-strip {
+    background: var(--white);
+    padding: 40px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .bundle-strip-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
+  .bundle-item {
+    display: flex; gap: 14px;
+    align-items: flex-start;
+  }
+  .bundle-item-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--gold); color: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px;
+    flex-shrink: 0;
+  }
+  .bundle-item h5 { font-size: 14px; margin-bottom: 4px; color: var(--navy); }
+  .bundle-item p { color: var(--gray); font-size: 12px; line-height: 1.4; }
+
+  @media (max-width: 720px) {
+    .tab-labels { grid-template-columns: repeat(2, 1fr); }
+    .tab-label { font-size: 12px; padding: 14px 8px; }
+    .tab-panel { padding: 28px 22px; }
+  }
+</style>
 </head>
 <body>
 
@@ -37,20 +325,212 @@
       <span class="logo-mark">IA</span>
       Income Academy
     </a>
-    <a href="/checkout" class="nav-cta">Get Started — $47</a>
+    <a href="/checkout" class="nav-cta">Get the Pass — $47 + $19/mo</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <span class="hero-eyebrow">For aspiring online entrepreneurs</span>
-    <h1>Learn the <span class="accent">4 Foundational Skills</span><br>Modern Online Entrepreneurs Use Every Day</h1>
-    <p class="hero-sub">Stop jumping from one "make money online" course to the next. Get the proven, no-hype framework we teach to every new member — the same foundational skills that power real, sustainable online businesses.</p>
+    <span class="hero-eyebrow">Foundation Pass — for adults 50+</span>
+    <h1>Four Honest Ways to <span class="accent">Earn Money From Home</span> — Then One Real Business If You Want to Go Bigger</h1>
+    <p class="hero-sub">Not another hype-filled "make money online" pitch. Four practical income paths in one pass — AI-powered freelancing, honest affiliate marketing, estate-sale reselling, and part-time bookkeeping. Pick what fits your life. Graduate to our Done-With-You eBay program when you're ready to scale.</p>
     <div class="hero-cta-row">
-      <a href="/checkout" class="btn btn-primary btn-large">Get Instant Access — $47</a>
+      <a href="/checkout" class="btn btn-primary btn-large">Get Instant Access — $47 + $19/mo</a>
     </div>
-    <p class="hero-guarantee">✓ Instant access · ✓ 7-day money-back guarantee · ✓ No subscription trap</p>
+    <p class="hero-guarantee">✓ 7-day money-back guarantee · ✓ $19/mo membership starts on a 7-day free trial · ✓ Cancel anytime in one click</p>
+  </div>
+</section>
+
+<!-- BUNDLE STRIP -->
+<section class="bundle-strip">
+  <div class="bundle-strip-inner">
+    <div class="bundle-item">
+      <div class="bundle-item-num">1</div>
+      <div>
+        <h5>AI Side Income</h5>
+        <p>Freelance services with AI as your assistant</p>
+      </div>
+    </div>
+    <div class="bundle-item">
+      <div class="bundle-item-num">2</div>
+      <div>
+        <h5>Affiliate Marketing</h5>
+        <p>A real content business that compounds</p>
+      </div>
+    </div>
+    <div class="bundle-item">
+      <div class="bundle-item-num">3</div>
+      <div>
+        <h5>Estate Sale Sourcing</h5>
+        <p>Saturday-morning reselling income</p>
+      </div>
+    </div>
+    <div class="bundle-item">
+      <div class="bundle-item-num">4</div>
+      <div>
+        <h5>Bookkeeping From Home</h5>
+        <p>3-5 clients. Recurring retainer income.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERS AREA (Tabbed) -->
+<section class="members-area">
+  <div class="container">
+    <div class="members-area-header">
+      <span class="section-eyebrow">What's Included</span>
+      <h2>Inside the Foundation Pass</h2>
+      <p>Tap a course below to see what's inside. The 5th is our Done-With-You program — by application only, for members who graduate.</p>
+    </div>
+
+    <div class="tabs">
+      <input type="radio" name="course-tab" id="tab-ai" checked>
+      <input type="radio" name="course-tab" id="tab-aff">
+      <input type="radio" name="course-tab" id="tab-estate">
+      <input type="radio" name="course-tab" id="tab-bk">
+      <input type="radio" name="course-tab" id="tab-ebay">
+
+      <div class="tab-labels">
+        <label for="tab-ai" class="tab-label"><span class="tab-label-num">Course 1</span>AI Side Income</label>
+        <label for="tab-aff" class="tab-label"><span class="tab-label-num">Course 2</span>Affiliate Marketing</label>
+        <label for="tab-estate" class="tab-label"><span class="tab-label-num">Course 3</span>Estate Sale Sourcing</label>
+        <label for="tab-bk" class="tab-label"><span class="tab-label-num">Course 4</span>Bookkeeping</label>
+        <label for="tab-ebay" class="tab-label locked"><span class="tab-label-num">🔒 Graduation</span>eBay Done-With-You</label>
+      </div>
+
+      <div class="tab-panels">
+        <!-- AI Side Income -->
+        <div class="tab-panel" id="panel-ai">
+          <span class="panel-eyebrow">Service work · Fast cash · AI-powered</span>
+          <h3>AI Side Income Starter Kit</h3>
+          <p class="panel-subhead">Real skills for adults 50+ who want to use AI tools to land 2-3 paid gigs from home — without being "techy." No hype. The FTC just banned the "passive income + AI does everything + high upfront fee" scams. This is the honest version.</p>
+          <div class="module-list">
+            <div class="module-pill"><strong>1</strong>Your AI Assistants, Explained</div>
+            <div class="module-pill"><strong>2</strong>Talking to AI (the real skill)</div>
+            <div class="module-pill"><strong>3</strong>5 AI-Ready Side Hustles</div>
+            <div class="module-pill"><strong>4</strong>Landing Your First 3 Clients</div>
+            <div class="module-pill"><strong>5</strong>Doing the Work</div>
+            <div class="module-pill"><strong>6</strong>Pricing Your Time</div>
+            <div class="module-pill"><strong>7</strong>Boundaries</div>
+            <div class="module-pill"><strong>8</strong>Your 90-Day Plan</div>
+          </div>
+          <div class="panel-cta-row">
+            <a href="https://ai.incomeacademy.biz" class="panel-cta-link" target="_blank" rel="noopener">See the full AI Side Income landing page →</a>
+          </div>
+        </div>
+
+        <!-- Affiliate Marketing -->
+        <div class="tab-panel" id="panel-aff">
+          <span class="panel-eyebrow">Content business · Compounds · 6-24 months</span>
+          <h3>Honest Affiliate Marketing Starter</h3>
+          <p class="panel-subhead">Build a real content business that earns commissions over time. Authority Hacker's flagship course closed in December 2024 citing Google's Helpful Content Update. We teach post-HCU affiliate marketing — the version that still works when everyone else is writing AI slop.</p>
+          <div class="module-list">
+            <div class="module-pill"><strong>0</strong>Welcome + Reality Check</div>
+            <div class="module-pill"><strong>1</strong>How It Actually Works</div>
+            <div class="module-pill"><strong>2</strong>The 3 Honest Paths</div>
+            <div class="module-pill"><strong>3</strong>Picking a Niche</div>
+            <div class="module-pill"><strong>4</strong>Amazon Associates Walkthrough</div>
+            <div class="module-pill"><strong>5</strong>Higher-Commission Programs</div>
+            <div class="module-pill"><strong>6</strong>Writing That Helps People</div>
+            <div class="module-pill"><strong>7</strong>Getting Traffic</div>
+            <div class="module-pill"><strong>8</strong>Measuring, Compliance, Scaling</div>
+          </div>
+          <div class="panel-cta-row">
+            <a href="https://affiliate.incomeacademy.biz" class="panel-cta-link" target="_blank" rel="noopener">See the full Affiliate Marketing landing page →</a>
+          </div>
+        </div>
+
+        <!-- Estate Sale Sourcing -->
+        <div class="tab-panel" id="panel-estate">
+          <span class="panel-eyebrow">Reselling · Saturday hobby to income · Tangible</span>
+          <h3>Estate Sale & Garage Sale Sourcing Academy</h3>
+          <p class="panel-subhead">Turn Saturday-morning estate sales into a real reselling income — without becoming a hoarder. Monetizes the Saturday habit you already have, then graduates into our eBay Done-With-You program when you're ready for scale.</p>
+          <div class="module-list">
+            <div class="module-pill"><strong>0</strong>Reality Check</div>
+            <div class="module-pill"><strong>1</strong>The Ecosystem</div>
+            <div class="module-pill"><strong>2</strong>Finding Sales Near You</div>
+            <div class="module-pill"><strong>3</strong>The 7 High-ROI Categories</div>
+            <div class="module-pill"><strong>4</strong>Pricing &amp; Negotiation</div>
+            <div class="module-pill"><strong>5</strong>Sale to Profit Pipeline</div>
+            <div class="module-pill"><strong>6</strong>When to Graduate to eBay DWY</div>
+            <div class="module-pill"><strong>7</strong>Taxes &amp; Tracking</div>
+            <div class="module-pill"><strong>8</strong>90-Day Plan</div>
+          </div>
+          <div class="panel-cta-row">
+            <span class="panel-cta-link" style="color: var(--gray); cursor: default;">Full landing page coming soon</span>
+          </div>
+        </div>
+
+        <!-- Bookkeeping -->
+        <div class="tab-panel" id="panel-bk">
+          <span class="panel-eyebrow">Recurring retainer · 3-5 clients · Part-time</span>
+          <h3>Bookkeeping From Home for Over-55s</h3>
+          <p class="panel-subhead">3-5 clients. $1,500-$2,500/mo recurring. Not an agency — a relaxed retirement income. Bookkeeper Launch costs $3,000 to teach you a career change. We teach 3-5 clients and 2 weeks of work per month, for $47 + $19/mo with everything else in the bundle.</p>
+          <div class="module-list">
+            <div class="module-pill"><strong>0</strong>Reality Check</div>
+            <div class="module-pill"><strong>1</strong>Bookkeeping vs. Accounting vs. Tax</div>
+            <div class="module-pill"><strong>2</strong>Your Software Stack (QBO, Xero)</div>
+            <div class="module-pill"><strong>3</strong>The 5 Services to Offer</div>
+            <div class="module-pill"><strong>4</strong>Landing Your First 3 Clients</div>
+            <div class="module-pill"><strong>5</strong>Pricing That Doesn't Burn You Out</div>
+            <div class="module-pill"><strong>6</strong>Engagement Letters + Legal</div>
+            <div class="module-pill"><strong>7</strong>Running It Efficiently with AI</div>
+            <div class="module-pill"><strong>8</strong>90-Day Plan</div>
+          </div>
+          <div class="panel-cta-row">
+            <span class="panel-cta-link" style="color: var(--gray); cursor: default;">Full landing page coming soon</span>
+          </div>
+        </div>
+
+        <!-- eBay DWY — Locked -->
+        <div class="tab-panel" id="panel-ebay">
+          <div class="locked-panel">
+            <div class="locked-panel-inner">
+              <span class="locked-badge">🔒 Graduation Tier · By Application Only</span>
+              <h3>eBay Reselling — Done With You</h3>
+              <p>Our high-touch program for members who've outgrown solo sourcing. We warehouse your inventory, photograph professionally, list on your behalf with expert titling, and handle shipping and returns. You focus on finding the inventory — we scale it.</p>
+              <ul>
+                <li>Warehouse + shipping logistics handled for you</li>
+                <li>Professional photography + SEO-optimized listings</li>
+                <li>Expert titling increases average sale price</li>
+                <li>Returns and customer service managed</li>
+                <li>Phone consultation required — not everyone is a fit</li>
+              </ul>
+              <a href="/apply-ebay" class="locked-cta">Apply to Unlock →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING BLOCK -->
+<section class="pricing-block" id="pricing">
+  <div class="pricing-card">
+    <span class="pricing-eyebrow">Foundation Pass</span>
+    <h2>Get All 4 Courses + Ongoing Membership</h2>
+    <p class="tagline">Four honest income paths. One pass. One price.</p>
+
+    <div class="pricing-breakdown">
+      <div class="price-row">
+        <span class="price-label"><strong>Today</strong>: instant access to all 4 courses + community</span>
+        <span class="price-amount">$47</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Then after your <strong>7-day free trial</strong>: membership begins</span>
+        <span class="price-amount"><span class="gold">$19</span>/mo</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">eBay Reselling Done-With-You program</span>
+        <span class="price-amount">By Application</span>
+      </div>
+    </div>
+
+    <a href="/checkout" class="pricing-cta">Get the Foundation Pass →</a>
+    <p class="pricing-guarantee">7-day money-back guarantee on the $47 · Cancel $19/mo membership anytime in one click</p>
   </div>
 </section>
 
@@ -67,8 +547,8 @@
       </div>
       <div class="pain-item">
         <div class="pain-item-icon">📚</div>
-        <h4>Courses that over-promise, under-deliver</h4>
-        <p>You've bought training before. It was long on hype and short on actual skills. You finished no closer to starting than when you began.</p>
+        <h4>Courses that over-promise</h4>
+        <p>You've bought training before. It was long on hype, short on skills. The FTC just banned a wave of "passive income + AI" scams. Enough.</p>
       </div>
       <div class="pain-item">
         <div class="pain-item-icon">⏳</div>
@@ -79,61 +559,61 @@
   </div>
 </section>
 
-<!-- WHAT'S INSIDE -->
+<!-- WHY BUNDLE -->
 <section class="block block-dark">
   <div class="container">
-    <span class="section-eyebrow">What's inside</span>
-    <h2 class="section-title">Everything you need to build real online skills</h2>
-    <p class="section-sub">Four proven modules. Practical frameworks. No fluff.</p>
+    <span class="section-eyebrow">Why a bundle, not a single course</span>
+    <h2 class="section-title">Four paths so you can pick what fits your life</h2>
+    <p class="section-sub">Not every income path fits every person. One of you enjoys writing. One of you loves the hunt at estate sales. One has 30 years of business experience worth consulting on. The Foundation Pass gives you all four so you can try them, pick the one that clicks, and go deeper.</p>
     <div class="benefits-grid">
       <div class="benefit-item">
         <span class="benefit-number">1</span>
-        <h4>The 4-Stream Framework</h4>
-        <p>An overview of the four online business models that actually work in 2026 — and how to tell which one fits your personality, time, and starting capital.</p>
+        <h4>Fast-cash path</h4>
+        <p>AI-powered freelancing pays you in weeks — clients hire you now.</p>
       </div>
       <div class="benefit-item">
         <span class="benefit-number">2</span>
-        <h4>The Starter Playbook</h4>
-        <p>Step-by-step walkthrough for each stream. Not theory — the exact early actions we take with every member in their first 7 days.</p>
+        <h4>Compounding path</h4>
+        <p>Honest affiliate marketing builds an asset that earns while you sleep — 12-24 months to real income.</p>
       </div>
       <div class="benefit-item">
         <span class="benefit-number">3</span>
-        <h4>Tool &amp; Resource Library</h4>
-        <p>Our curated list of the tools, platforms, and learning resources we actually use. No sponsored picks. No affiliate fluff.</p>
+        <h4>Tangible path</h4>
+        <p>Estate sale sourcing monetizes the Saturday habit you already have. Hands-on. Real stuff.</p>
       </div>
       <div class="benefit-item">
         <span class="benefit-number">4</span>
-        <h4>Private Member Dashboard</h4>
-        <p>Your own login. Track your progress through each module. Revisit lessons anytime. See what to focus on next.</p>
+        <h4>Recurring path</h4>
+        <p>Bookkeeping for 3-5 part-time clients. $1,500-$2,500/mo predictable recurring income.</p>
       </div>
       <div class="benefit-item">
         <span class="benefit-number">5</span>
-        <h4>Community Access</h4>
-        <p>Join other members working the same material. Ask questions, share progress, learn from what's working for people who started alongside you.</p>
+        <h4>AI Writing Assistant</h4>
+        <p>A custom Claude Project included with the membership — preloaded with every module. Works across all 4 paths.</p>
       </div>
       <div class="benefit-item">
         <span class="benefit-number">6</span>
-        <h4>Optional Strategy Call</h4>
-        <p>Want to go deeper? Every member gets the option to book a free call with our team to map out a personalized path forward.</p>
+        <h4>Community + updates</h4>
+        <p>Monthly Q&amp;A, new content as AI/affiliate/eBay landscapes shift, private members community.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- WHO IS / ISN'T IT FOR -->
+<!-- FIT CHECK -->
 <section class="block">
   <div class="container">
     <span class="section-eyebrow">Honest fit check</span>
-    <h2 class="section-title">Is this for you?</h2>
+    <h2 class="section-title">Is the Foundation Pass for you?</h2>
     <div class="fit-grid">
       <div class="fit-card fit-yes">
         <h3><span class="fit-icon">✓</span> You're a fit if…</h3>
         <ul>
-          <li>You're serious about learning a real skill, not chasing shortcuts</li>
-          <li>You're willing to put in the work — even 30 minutes a day counts</li>
-          <li>You want a framework you can follow, not random advice to piece together</li>
-          <li>You're open to feedback from a community that's further along</li>
-          <li>You'd rather make $0 today and have real skills, than chase get-rich-quick promises</li>
+          <li>You're serious about learning real skills, not chasing shortcuts</li>
+          <li>You're 50+ and want part-time income that fits retirement life</li>
+          <li>You want to try a few paths before committing to one</li>
+          <li>You'd rather make $0 today and learn real skills than chase hype</li>
+          <li>You'll do the work — AI is the assistant, not the replacement</li>
         </ul>
       </div>
       <div class="fit-card fit-no">
@@ -142,8 +622,8 @@
           <li>You want overnight results — this is education, not a lottery ticket</li>
           <li>You're expecting guaranteed income (see our <a href="/disclaimer">earnings disclaimer</a>)</li>
           <li>You won't do any of the work yourself</li>
-          <li>You're allergic to being part of a community</li>
-          <li>You want to be told exactly what to do without learning why</li>
+          <li>You want a fully passive, automated system</li>
+          <li>You'd rather buy expensive single-course hype than bundled honest education</li>
         </ul>
       </div>
     </div>
@@ -160,69 +640,50 @@
       <div class="founder-body">
         <h3>[YOUR NAME], Founder of Income Academy</h3>
         <p><strong>[PLACEHOLDER — replace with your story]</strong></p>
-        <p>Example framing: "I started [X years ago] when [relatable origin]. After [Y] years of trial and error, I figured out the skills that actually matter. Income Academy is the training I wish I'd had when I was starting out."</p>
-        <p>Replace this block with your real background, credibility, and why you built this. Keep it honest and specific.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section class="block">
-  <div class="container">
-    <span class="section-eyebrow">What members say</span>
-    <h2 class="section-title">Real reactions from real students</h2>
-    <p class="section-sub">Testimonials below are placeholders until you have real ones. Please fill them in after a few real members go through the program.</p>
-    <div class="testimonial-grid">
-      <div class="testimonial testimonial-placeholder">
-        <p>[TESTIMONIAL 1 PLACEHOLDER]</p>
-        <p style="margin-top: 10px; font-size: 13px;">Replace with a real customer quote, their first name + last initial, and their context.</p>
-      </div>
-      <div class="testimonial testimonial-placeholder">
-        <p>[TESTIMONIAL 2 PLACEHOLDER]</p>
-        <p style="margin-top: 10px; font-size: 13px;">Three total recommended. One short (1 sentence), one medium, one longer with specifics.</p>
-      </div>
-      <div class="testimonial testimonial-placeholder">
-        <p>[TESTIMONIAL 3 PLACEHOLDER]</p>
-        <p style="margin-top: 10px; font-size: 13px;">Remember: FTC requires disclaimers if testimonials feature income. Use non-income-focused wins when possible.</p>
+        <p>I started Income Academy because I kept watching smart, hard-working people in their 50s and 60s get circled by AI hype, affiliate marketing snake oil, and "push-button profit" courses. Real income paths still exist — they've just been buried under a decade of bad marketing.</p>
+        <p>The Foundation Pass is the training I wish I'd had when I was starting out. Four paths. Honest numbers. Real work. No hype.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FAQ -->
-<section class="block block-cream">
+<section class="block">
   <div class="container">
-    <span class="section-eyebrow">Questions we get</span>
-    <h2 class="section-title">Frequently asked</h2>
+    <span class="section-eyebrow">Frequently asked</span>
+    <h2 class="section-title">Questions we get</h2>
     <div class="faq-list">
       <div class="faq-item">
-        <h4>What exactly is Income Academy?</h4>
-        <p>It's a skills-focused online business education program. You get instant access to our four-module starter framework, a members-only resource library, community access, and the option of a strategy call. It's designed for people who want real foundations — not hype.</p>
+        <h4>What exactly am I buying?</h4>
+        <p>The Foundation Pass: access to all 4 unlocked courses (AI Side Income, Honest Affiliate Marketing, Estate Sale Sourcing, Bookkeeping From Home), the custom AI Writing Assistant, community access, and monthly Q&amp;As. $47 today, then $19/month after a 7-day free trial. The locked eBay Reselling Done-With-You program is separate, by application only — for members who've earned their way up to it.</p>
       </div>
       <div class="faq-item">
-        <h4>How long does it take to complete the starter training?</h4>
-        <p>Most members work through the core material in 1-2 weeks, at roughly 30-45 minutes per day. The material stays in your account forever — revisit anything anytime.</p>
+        <h4>Do I have to take all 4 courses?</h4>
+        <p>No. Pick the one that fits your life and go deeper on it. The reason we bundle is that most people don't know which one will click for them until they see all four. You can ignore three and just take one if that's what works.</p>
       </div>
       <div class="faq-item">
-        <h4>What if I'm a complete beginner?</h4>
-        <p>That's who this is built for. We start at zero and walk you through the foundational concepts step by step. If you can read, watch short videos, and take basic notes, you can do this.</p>
+        <h4>What's the 7-day free trial?</h4>
+        <p>Your $19/mo membership starts with a 7-day free trial. For the first 7 days after you buy, you have full access to all 4 courses + community + AI Assistant, and you pay $0 on the membership. On day 8, if you haven't cancelled, the $19/mo billing begins. You can cancel in one click anytime.</p>
       </div>
       <div class="faq-item">
-        <h4>What if it's not for me?</h4>
-        <p>We offer a straightforward <a href="/refund">7-day money-back guarantee</a>. If you decide within the first week that this isn't the right fit, email us and we'll refund your $47 — no arguing, no questions beyond confirming the request.</p>
+        <h4>What if I realize this isn't for me?</h4>
+        <p>We offer a straightforward <a href="/refund">7-day money-back guarantee</a>. If you decide within the first week that this isn't the right fit, email us and we'll refund your $47 — no arguing. The $19/mo membership hasn't started charging yet either, so you walk away at $0.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Why not just buy a single course like Bookkeeper Launch or Authority Hacker?</h4>
+        <p>You can. Bookkeeper Launch is $3,000 and teaches you to build a full bookkeeping career. Authority Hacker's flagship course closed in December 2024. Our angle is different: we teach the narrower, retirement-friendly version of each path, and we bundle four of them so you can try before you commit. One price. Four chances to find the right fit.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What's the eBay Done-With-You program and why is it locked?</h4>
+        <p>It's our premium program for members who've outgrown solo sourcing and want to scale. We warehouse, photograph, list, and ship your inventory while you focus on finding it. It's sold separately by application because phone consultation is required to confirm fit — it's not right for everyone and the warehouse capacity is limited. Price is discussed on the consultation.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Are the courses actually complete?</h4>
+        <p>AI Side Income and Honest Affiliate Marketing have full video content. Estate Sale Sourcing and Bookkeeping for Over-55s are scaffolded with curriculum + written content — video production is in progress. Joining today gives you access as content is released (member-locked, no extra cost).</p>
       </div>
       <div class="faq-item">
         <h4>How is this different from free YouTube content?</h4>
-        <p>Free content is scattered and often contradictory. You'd spend weeks trying to figure out what's real, what's outdated, and what's just someone's pitch. Our program is a structured, sequential framework — the exact path we walk new members down, in the right order, with context.</p>
-      </div>
-      <div class="faq-item">
-        <h4>Do I need prior experience, special equipment, or money to invest?</h4>
-        <p>No to all three. The material is designed for people starting from scratch. You'll need a computer or phone and an internet connection — that's it.</p>
-      </div>
-      <div class="faq-item">
-        <h4>What happens after I buy?</h4>
-        <p>Immediately after your payment is confirmed, you'll get an email with your member portal login. You'll have instant access to the full starter training, the resource library, and the community.</p>
+        <p>Free content is scattered and contradictory. Most YouTube creators are selling you something at the end. Our bundle is structured, sequential, and specifically built for the 50+ demographic — which most YouTube creators aren't targeting. The AI Writing Assistant alone is worth the $47 admission; everything else is the value.</p>
       </div>
     </div>
   </div>
@@ -232,10 +693,10 @@
 <section class="final-cta">
   <div class="container-narrow">
     <h2>Ready to stop spinning your wheels?</h2>
-    <p>Get the foundational skills we teach every new member. Instant access. 7-day money-back guarantee. No subscription trap.</p>
-    <a href="/checkout" class="btn btn-primary btn-large">Get Instant Access — $47</a>
+    <p>Four honest income paths. One Foundation Pass. $47 today, $19/mo starting after your 7-day free trial. Cancel anytime in one click.</p>
+    <a href="/checkout" class="btn btn-primary btn-large">Get the Foundation Pass — $47 + $19/mo</a>
     <p style="margin-top: 24px; font-size: 14px; color: var(--gray-light);">
-      Secure checkout via Stripe · Receipt emailed immediately
+      Secure checkout via Stripe or PayPal · Receipt emailed immediately · 7-day money-back guarantee
     </p>
   </div>
 </section>
