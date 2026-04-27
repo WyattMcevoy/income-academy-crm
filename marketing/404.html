@@ -7,6 +7,51 @@
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/styles.css">
+<style>
+  .not-found {
+    min-height: 60vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 80px 24px 40px;
+  }
+  .not-found-inner { max-width: 540px; }
+  .not-found-inner h1 { font-size: clamp(72px, 12vw, 120px); color: var(--gold); margin-bottom: 12px; line-height: 1; }
+  .not-found-inner h2 { font-size: clamp(20px, 3vw, 26px); color: var(--navy); margin-bottom: 12px; }
+  .not-found-inner p { color: var(--gray); font-size: 16px; margin-bottom: 28px; line-height: 1.6; }
+  .helpful-links {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 28px 0;
+    text-align: left;
+  }
+  .helpful-links h3 {
+    font-size: 14px;
+    color: var(--gold);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .helpful-links ul { list-style: none; padding: 0; }
+  .helpful-links li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .helpful-links li:last-child { border-bottom: none; }
+  .helpful-links a {
+    color: var(--navy);
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .helpful-links a:hover { color: var(--gold); }
+  .helpful-links a span { color: var(--gray); font-size: 13px; font-weight: 400; }
+</style>
 </head>
 <body>
 
@@ -16,20 +61,36 @@
       <span class="logo-mark">IA</span>
       Income Academy
     </a>
+    <a href="/checkout" class="nav-cta">Get the Pass — $47 + $19/mo</a>
   </div>
 </nav>
 
 <div class="not-found">
   <div class="not-found-inner">
     <h1>404</h1>
-    <p>We can't find that page.</p>
+    <h2>We can't find that page</h2>
+    <p>The link might be old or mistyped. Here's where you might be looking:</p>
+
+    <div class="helpful-links">
+      <h3>Popular pages</h3>
+      <ul>
+        <li><a href="/">Home <span>The Foundation Pass overview →</span></a></li>
+        <li><a href="/quiz">Quiz <span>Which course is right for you? →</span></a></li>
+        <li><a href="https://ai.incomeacademy.biz">AI Side Income <span>Course landing →</span></a></li>
+        <li><a href="https://affiliate.incomeacademy.biz">Affiliate Marketing <span>Course landing →</span></a></li>
+        <li><a href="/checkout">Checkout <span>$47 + $19/mo →</span></a></li>
+        <li><a href="/refund">Refund Policy <span>7-day money-back →</span></a></li>
+        <li><a href="mailto:support@incomeacademy.biz">Contact Support <span>Email us →</span></a></li>
+      </ul>
+    </div>
+
     <a href="/" class="btn btn-primary">← Back to home</a>
   </div>
 </div>
 
 <footer class="footer">
   <div class="footer-bottom container">
-    © <span id="year">2026</span> Income Academy LLC
+    © <span id="year">2026</span> Income Academy LLC. All rights reserved.
   </div>
 </footer>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
