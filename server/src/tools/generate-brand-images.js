@@ -16,13 +16,33 @@
 //   marketing/brand/hero/ai-hero.jpg   (master copy)
 //   marketing/brand/hero/affiliate-hero.jpg (master copy)
 
-import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const REPO_ROOT = join(__dirname, '..', '..', '..');
+
+// Auto-load from server/.env if OPENAI_API_KEY not already in environment
+(function loadDotEnv() {
+  if (process.env.OPENAI_API_KEY) return;
+  const envPath = join(REPO_ROOT, 'server', '.env');
+  if (!existsSync(envPath)) return;
+  const lines = readFileSync(envPath, 'utf8').split('\n');
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq === -1) continue;
+    const key = trimmed.slice(0, eq).trim();
+    const val = trimmed.slice(eq + 1).trim().replace(/^["']|["']$/g, '');
+    if (!process.env[key]) process.env[key] = val;
+  }
+  if (process.env.OPENAI_API_KEY) {
+    console.log('✓ Loaded OPENAI_API_KEY from server/.env');
+  }
+})();
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const ONLY = process.argv.find(a => a.startsWith('--only='))?.split('=')[1];
