@@ -14,6 +14,9 @@ server/import-report-*.csv
 # Generated PNG exports from SVG sources — regenerate via svg-to-png-playwright.js
 marketing/brand/png-exports/
 
+# HeyGen video downloads (large binaries, regeneratable via heygen-fetch-video.js)
+marketing/videos/
+
 # Local Claude Code worktree state
 .claude/worktrees/
 .claude/settings.local.json
