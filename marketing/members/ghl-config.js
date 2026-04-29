@@ -1,26 +1,20 @@
 // Income Academy — Member dashboard URL config
-// Single source of truth for all GHL course / portal URLs.
+// Populated April 29, 2026 from GHL UI (course IDs harvested via Chrome,
+// portal base from Memberships → Client Portal dashboard).
 //
-// To populate automatically:
+// To re-fetch via API later (when GHL exposes a Memberships v2 endpoint):
 //   GHL_API_KEY=pit-xxx node server/src/tools/fetch-ghl-config.js
 //
-// To populate by hand:
-//   1. Open each course in GHL → Memberships → click "Share" / "View as Member"
-//   2. Paste the URL into the matching slot below
-//   3. Save the file, deploy
-//
-// Until URLs are populated (still starting "GHL_..."), the dashboard CTAs
-// fall back to a graceful "lessons portal is being set up" message so
-// members never see a broken link.
+// Until portal.incomeacademy.biz custom domain is live, the default GHL
+// client-portal subdomain serves all course content.
 
 window.IA_GHL_CONFIG = {
-  portalBase: 'GHL_PORTAL_BASE_URL',
+  portalBase: 'https://c3hss74iljgye3pvgshg.app.clientclub.net/',
   courses: {
-    ai:           'GHL_COURSE_URL_AI',
-    affiliate:    'GHL_COURSE_URL_AFFILIATE',
-    estate:       'GHL_COURSE_URL_ESTATE',
-    bookkeeping:  'GHL_COURSE_URL_BOOKKEEPING',
+    ai:           'https://c3hss74iljgye3pvgshg.app.clientclub.net/products/d4c2b0c2-dee8-4ccf-8d5b-cd37e1eef075',
+    affiliate:    'https://c3hss74iljgye3pvgshg.app.clientclub.net/products/4883bfbe-c2d7-4d08-b8b9-4fe130942e07',
+    estate:       'https://c3hss74iljgye3pvgshg.app.clientclub.net/products/bdaf7829-7472-443c-af7e-6b60b131c406',
+    bookkeeping:  'https://c3hss74iljgye3pvgshg.app.clientclub.net/products/f328cbc0-e1db-4c24-90d4-83469a5252a8',
   },
-  // Filled in by fetch-ghl-config.js — informational only
-  generatedAt: null,
+  generatedAt: '2026-04-29T17:30:00.000Z',
 };
