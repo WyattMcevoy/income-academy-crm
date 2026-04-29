@@ -10,3 +10,10 @@ build/
 # Local import reports contain lead PII; never commit.
 server/import-report-*.csv
 *-import-report*.csv
+
+# Generated PNG exports from SVG sources — regenerate via svg-to-png-playwright.js
+marketing/brand/png-exports/
+
+# Local Claude Code worktree state
+.claude/worktrees/
+.claude/settings.local.json

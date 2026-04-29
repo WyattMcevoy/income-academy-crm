@@ -47,6 +47,20 @@ const checks = [
     followRedirects: true,
   },
   {
+    name: 'Members dashboard loads ghl-config',
+    url: `${BASE}/members`,
+    expectStatus: [200, 301, 302, 307, 308],
+    expectContent: ['ghl-config.js', 'data-ghl='],
+    followRedirects: true,
+  },
+  {
+    name: 'GHL config script is reachable',
+    url: `${BASE}/members/ghl-config.js`,
+    expectStatus: [200, 301, 302, 307, 308],
+    expectContent: ['IA_GHL_CONFIG'],
+    followRedirects: true,
+  },
+  {
     name: 'Apply-eBay page renders',
     url: `${BASE}/apply-ebay`,
     expectStatus: [200, 301, 302, 307, 308],

@@ -296,7 +296,7 @@
       <span class="logo-mark">IA</span>
       Income Academy
     </a>
-    <a href="GHL_PORTAL_BASE_URL" class="nav-cta">Go to Lessons Portal →</a>
+    <a href="#" data-ghl="portalBase" class="nav-cta">Go to Lessons Portal →</a>
   </div>
 </nav>
 
@@ -327,7 +327,7 @@
           <div class="course-stat"><strong>200+</strong>prompts</div>
           <div class="course-stat"><strong>~4h</strong>runtime</div>
         </div>
-        <a href="GHL_COURSE_URL_AI" class="course-cta">Continue Learning →</a>
+        <a href="#" data-ghl="courses.ai" class="course-cta">Continue Learning →</a>
       </div>
     </article>
 
@@ -345,7 +345,7 @@
           <div class="course-stat"><strong>30+</strong>templates</div>
           <div class="course-stat"><strong>~5h</strong>runtime</div>
         </div>
-        <a href="GHL_COURSE_URL_AFFILIATE" class="course-cta">Continue Learning →</a>
+        <a href="#" data-ghl="courses.affiliate" class="course-cta">Continue Learning →</a>
       </div>
     </article>
 
@@ -363,7 +363,7 @@
           <div class="course-stat"><strong>7</strong>category guides</div>
           <div class="course-stat"><strong>~4h</strong>runtime</div>
         </div>
-        <a href="GHL_COURSE_URL_ESTATE" class="course-cta">Continue Learning →</a>
+        <a href="#" data-ghl="courses.estate" class="course-cta">Continue Learning →</a>
       </div>
     </article>
 
@@ -381,7 +381,7 @@
           <div class="course-stat"><strong>7</strong>templates</div>
           <div class="course-stat"><strong>~6h</strong>runtime</div>
         </div>
-        <a href="GHL_COURSE_URL_BOOKKEEPING" class="course-cta">Continue Learning →</a>
+        <a href="#" data-ghl="courses.bookkeeping" class="course-cta">Continue Learning →</a>
       </div>
     </article>
 
@@ -448,7 +448,7 @@
       <span>Foundation Pass member · Subscription active · Cancel anytime</span>
     </div>
     <div class="account-links">
-      <a href="GHL_PORTAL_BASE_URL">Open lessons portal →</a>
+      <a href="#" data-ghl="portalBase">Open lessons portal →</a>
       <a href="/refund">Refund policy</a>
       <a href="mailto:support@incomeacademy.biz">Support</a>
     </div>
@@ -480,21 +480,38 @@
   </div>
 </footer>
 
+<script src="/members/ghl-config.js"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // If GHL URLs haven't been configured yet, disable the CTAs gracefully
-  // so members don't click into broken links.
   (function() {
-    var ctas = document.querySelectorAll('.course-cta, .nav-cta, .account-links a');
-    ctas.forEach(function(cta) {
-      var href = cta.getAttribute('href') || '';
-      if (href.indexOf('GHL_') === 0 || href === 'GHL_COURSE_URL_AI' || href === 'GHL_COURSE_URL_AFFILIATE' || href === 'GHL_COURSE_URL_ESTATE' || href === 'GHL_COURSE_URL_BOOKKEEPING' || href === 'GHL_PORTAL_BASE_URL') {
-        cta.addEventListener('click', function(e) {
+    var cfg = window.IA_GHL_CONFIG || { portalBase: '', courses: {} };
+
+    function resolve(key) {
+      // key is "portalBase" or "courses.ai" etc.
+      var parts = key.split('.');
+      var v = cfg;
+      for (var i = 0; i < parts.length; i++) {
+        v = v && v[parts[i]];
+      }
+      return v;
+    }
+
+    function isUnconfigured(url) {
+      return !url || typeof url !== 'string' || url.indexOf('GHL_') === 0;
+    }
+
+    var els = document.querySelectorAll('[data-ghl]');
+    els.forEach(function(el) {
+      var url = resolve(el.getAttribute('data-ghl'));
+      if (isUnconfigured(url)) {
+        el.addEventListener('click', function(e) {
           e.preventDefault();
           alert('Lessons portal is being set up — please check back shortly or email support@incomeacademy.biz.');
         });
-        cta.style.opacity = '0.7';
+        el.style.opacity = '0.7';
+      } else {
+        el.setAttribute('href', url);
       }
     });
   })();
