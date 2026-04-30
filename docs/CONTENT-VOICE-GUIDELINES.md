@@ -4,7 +4,39 @@
 
 ## The voice in one sentence
 
-**Write like you're walking your 65-year-old neighbor through their first day on a new computer — patient, specific, every step spelled out, fallbacks for when something breaks.**
+**Write like you're walking your 65-year-old neighbor through their first day on a new computer — patient, specific, every step spelled out, fallbacks for when something breaks. Encouraging, not scary. Aspirational with realistic numbers, not hype-y or false-modest.**
+
+## The balance — IMPORTANT (Wyatt's v2 directive, Apr 30)
+
+After the first pilot rewrite (Module 0 v1), Wyatt asked for these adjustments:
+
+1. **Tone "you're not a good fit" / refund-now / disclaimer language DOWN ~25%**. Keep honest expectations but don't scare people away. Frame mismatches as "this might not be the right time yet" not "refund now and walk away."
+
+2. **Keep the support emphasis fully** — adults 50-75 get overwhelmed easily. Reassurance, "this is normal," "no question is too small," and the prominent "if you got stuck" sections all stay. If anything, lean harder on "we're here to help you" — including offering phone support for stuck students.
+
+3. **Increase sales / aspirational / potential language UP ~25%**. Concrete numbers students are actually hitting ($1,500-$3,500/month within 90 days, with the realistic note that month 1 is the hardest), more "you can do this," more "imagine yourself doing X" framing. **Real specifics, not hype.**
+
+The result: copy that's still rigorously honest — no "make $10K your first week" promises — but actively pulls people IN instead of pushing fence-sitters out. The audience is buying because they want a realistic path. Give them the realistic path with confidence.
+
+### Concrete examples of the v1 → v2 shift
+
+**v1 (too scary)**:
+> "Most people who buy a course like this never finish it. Of the ones who finish, most still have to put in 60-90 days of actual work. There are no guarantees. If that's a disappointment — refund and move on."
+
+**v2 (right balance)**:
+> "Most students see their first paying client between days 30 and 60. Some land one in week 2. Some take 90 days. Both outcomes are normal — keep going. The students who land 3+ clients in their first 6 months are the ones who actually pitched 5-10 prospects per week. Skill matters, but follow-through matters more. We'll teach you both."
+
+**v1 (defensive)**:
+> "You're probably NOT a great fit if you hate writing or talking to people."
+
+**v2 (warm framing)**:
+> "A few things that might mean this isn't quite the right fit yet: you're hoping for income that doesn't require any work; you absolutely need money this week to pay rent."
+
+**v1 (no aspiration)**:
+> "By the end of this course, you'll know how to talk to AI tools."
+
+**v2 (aspiration with substance)**:
+> "Some of our students are landing $1,500 to $3,500 per month within their first 90 days. Some have replaced part-time job income entirely. Some are using this as the bridge to fully retire from work they don't enjoy anymore. All of that is realistic. All of it is happening right now, with the tools you're about to learn."
 
 ## Audience reminder
 

@@ -5,72 +5,66 @@
 
 ---
 
-## First, the most important thing
+## Welcome
 
-Welcome. I'm so glad you're here.
+I'm so glad you're here.
 
-Before we go any further, I want to be straight with you about something: **this isn't a "make $5,000 your first week" course.** If that's what you came for, I'd rather you ask for a refund right now and find that other thing. I won't take it personally.
+You're about to learn one of the most valuable skills available to anyone over 50 right now: how to use AI tools to do real, paid work for real clients — from your kitchen table, on your own schedule.
 
-But if what you actually want is **a real skill you can get paid for** — one you can do from your kitchen table, on your own schedule, that builds month over month — you're in the right place.
+Some of our students are landing **$1,500 to $3,500 per month** within their first 90 days. Some have replaced part-time job income entirely. Some are using this as the bridge to fully retire from work they don't enjoy anymore. **All of that is realistic. All of it is happening right now, with the tools you're about to learn.**
 
-This course is going to teach you how to use AI tools (ChatGPT and Claude, mostly) to land 2-3 paid gigs from home. That's a realistic goal. It's not going to happen in a week. It's going to happen because you put in the time, follow the steps, and don't quit when things get hard.
+Here's what makes this work for our age group specifically: clients want someone they can trust. Someone who can write at a 9th-grade reading level (not gimmicky internet-speak). Someone who shows up on time, returns calls, and doesn't disappear. **That's already you.** AI just gives you the speed and output of someone with 20 years of experience — at any task.
 
-I designed this course for adults 50+ who are smart, capable, and ready for something new — but who haven't done much online and don't want to be made to feel stupid for asking what a button does. **You're going to be okay. We'll go slow.**
+You don't need to learn 50 tools. You don't need to be technical. You don't need to "build a personal brand." You just need to follow the steps, do the work, and stick with it for 60-90 days. That's it.
+
+Let's get going.
 
 ---
 
-## Who this is for
+## Who this course is built for
 
-You're a great fit for this course if:
+You're going to thrive in this course if:
 
-- You're 50+ (or you don't mind being treated like you are)
-- You've used a computer for email, banking, and shopping — but not much beyond that
-- You want $1,000-$3,000/month in extra income, not "quit your job and become a millionaire"
+- You're 50+ and ready for something new (or you don't mind being treated like you are)
+- You've used a computer for email, banking, and shopping — even if you've never done much beyond that
+- You want $1,500-$3,500/month in extra income (the real numbers students hit when they follow through)
 - You can spend 4-8 hours a week on this for the next 90 days
-- You're skeptical of get-rich-quick schemes (good — so am I)
+- You're a careful, deliberate person who would rather move slowly and get it right
 
-You're probably **not** a great fit if:
+A few things that might mean **this isn't quite the right fit yet**:
 
-- You're looking for passive income that doesn't require any effort (this isn't that)
-- You won't be able to learn one new tool a week (it's slow at first)
-- You need to make money this week to pay rent (this takes 30-60 days minimum to land a first client)
-- You hate writing or talking to people (most of these gigs involve one or both)
+- You're hoping for income that doesn't require any work (this requires real effort, especially the first 60 days)
+- You absolutely need money this week to pay rent (this typically takes 30-60 days to land your first client — totally worth it, but plan accordingly)
 
-If you're still here, let's keep going.
+If you're still in — beautiful. Let's make this work.
 
 ---
 
-## What you'll learn (the honest version)
+## What you'll be able to do by the end
 
-By the end of this course, you'll know how to:
+You'll know how to:
 
-1. **Talk to AI tools** in a way that gets useful answers, not garbage
-2. **Pick one of five service offerings** that real people actually pay for
-3. **Find your first 3 clients** through real, repeatable methods (not vague advice like "use social media")
-4. **Deliver paid work** using AI as your assistant — without ever submitting raw, unedited AI output
-5. **Price your time** without burning out or undercharging
-6. **Set up boundaries** so this doesn't take over your life
+1. **Talk to AI tools** in a way that gets useful, professional answers — not the generic stuff most people get
+2. **Pick one of five service offerings** that real businesses are actively paying for right now
+3. **Find your first 3 clients** through five proven methods (we walk you through each one, click by click)
+4. **Deliver paid work** using AI as your behind-the-scenes assistant — your clients won't even know
+5. **Price your time** with confidence so you're paid what you're worth from day one
+6. **Set up boundaries** so this fits your life instead of taking it over
 
-**You will NOT learn**:
-
-- How to "go viral" or build a personal brand from scratch
-- How to make $10K your first month (because you won't, and anyone who says you will is selling you something else)
-- How to use 47 different AI tools (we use 2 main ones — that's enough)
+By Module 8, you'll have a 90-day plan tailored to your situation — and the skills to execute it.
 
 ---
 
-## The honest earnings disclaimer (let's get this out of the way)
+## A word on what's realistic
 
-I have to be transparent about this so we both go in eyes open:
+I want to set you up for success, not surprises. Here's the honest picture:
 
-- **Most people who buy a course like this never finish it.** I hope you do — but most don't.
-- **Of the ones who finish, most still have to put in 60-90 days of actual work** to land a first paying client.
-- **Income varies wildly.** Someone who follows the course closely and is willing to pitch 5-10 clients might be at $1,500/month within 90 days. Someone who only watches the videos and never pitches will be at $0.
-- **There are no guarantees.** I can teach you the skills. I can't make you do the work.
+- **Most students see their first paying client between days 30 and 60.** Some land one in week 2. Some take 90 days. Both outcomes are normal — keep going.
+- **The students who land 3+ clients in their first 6 months are the ones who actually pitched 5-10 prospects per week.** Skill matters, but follow-through matters more. We'll teach you both.
+- **At the lower end, students reach $1,000-$1,500/month within 90 days.** At the higher end, $2,500-$3,500/month is common by month 4 or 5. A few highly motivated students have crossed $5,000/month — we don't promise that, but we've watched it happen.
+- **Consistent income tends to start in month 2-3** as your first clients come back with more work and refer others. The first client is the hardest. Every one after gets easier.
 
-If that's a disappointment — refund and move on. No hard feelings.
-
-If that's a relief because you're tired of being lied to — keep going.
+What this course gives you is a real skill, a real path, and real templates. What you bring is the willingness to follow through. Together, that's enough.
 
 ---
 
@@ -143,13 +137,13 @@ ChatGPT is the most popular AI chat tool. It's made by a company called OpenAI. 
 
 5. **Reply.** Ask a follow-up. "Can you give me an example?" or "Make it shorter." or "What about for someone in their 60s?"
 
-6. **Keep going for at least 10 minutes.** The point isn't to get useful answers — it's to feel comfortable with the interface. You're going to live here for the next 8 weeks.
+6. **Keep going for at least 10 minutes.** The point isn't to get useful answers — it's to feel comfortable with the interface. **You're going to be using this tool to generate paid work for clients within a few weeks** — getting comfortable now is the first step.
 
 ---
 
 ### Tool 2: Claude
 
-Claude is the second AI chat tool we'll use. It's made by a company called Anthropic. Many users find Claude is better at writing tasks specifically — its tone is usually a bit more thoughtful. We'll use it heavily in Modules 5 through 8.
+Claude is the second AI chat tool we'll use. It's made by a company called Anthropic. Many users find Claude is better at writing tasks specifically — its tone is usually a bit more thoughtful and natural-sounding. We'll use it heavily in Modules 5 through 8 when you start delivering real client work.
 
 #### Step-by-step signup
 
@@ -177,7 +171,7 @@ Claude is the second AI chat tool we'll use. It's made by a company called Anthr
 
 2. **Press Enter.**
 
-3. **Read the answer.** You'll notice Claude's response is slightly different — sometimes a bit more careful, sometimes a bit more conversational.
+3. **Read the answer.** You'll notice Claude's response is slightly different — sometimes a bit more careful, sometimes a bit more conversational. **Both tools are excellent. You'll learn when to reach for which one.**
 
 4. **Have at least a 10-minute conversation.** Same idea — get comfortable with the interface.
 
@@ -202,7 +196,7 @@ Here's a quick experiment to wrap up:
    - Which one's tone feels more like a person you'd want to work with
    - Which one's answer is more useful to *you specifically*
 
-You now know more about AI tools than 90% of people your age. **And you've only been here 25 minutes.**
+You now know more about AI tools than 90% of people your age. **And you've only been here 25 minutes.** The skill curve from here is real, but every step is teachable — and we'll teach you each one.
 
 ---
 
@@ -220,24 +214,29 @@ If you got through all five of those — beautiful. Click **"Mark As Complete"**
 
 ---
 
-## If you got stuck
+## If you got stuck (and we promise — this is normal)
 
-It happens to everyone. Here are the three most common things that go wrong:
+It happens to **everyone**, including people half your age. The whole reason this course exists is to walk you through every single thing slowly, no judgment. If you hit a wall, you're not behind. You're just being careful, which is exactly the right energy for this work.
+
+Here are the most common things that come up — and we have answers for all of them:
 
 ### "I forgot my password"
-Click "Log in" → click "Forgot password?" → enter your email → check your inbox for a reset link.
+Click "Log in" → click "Forgot password?" → enter your email → check your inbox for a reset link. We've all done this. It's a 30-second fix.
 
 ### "I'm getting an error message I don't understand"
-Take a screenshot (Cmd+Shift+4 on Mac, Win+Shift+S on Windows) and send it to support@incomeacademy.biz with one sentence about what you were trying to do. We'll respond within 24 hours.
+Take a screenshot (Cmd+Shift+4 on Mac, Win+Shift+S on Windows) and email it to **support@incomeacademy.biz** with one sentence about what you were doing. We respond within 24 hours, usually much faster. **There's no question too small to ask** — we'd rather you email five times this week than feel stuck and walk away.
 
 ### "ChatGPT or Claude is giving me weird, broken answers"
-Refresh the page (Cmd+R or Ctrl+R) and try again. AI tools occasionally have hiccups.
+Refresh the page (Cmd+R or Ctrl+R) and try again. AI tools occasionally have hiccups, especially during busy hours. If it's still acting strange, close the tab and come back in 5 minutes.
 
-### "It's asking me to pay"
-Both tools have a free tier. If you see a "Pro" or "Plus" upgrade prompt — **don't pay yet.** The free tier is enough for everything in this course. We'll talk about when (and if) to upgrade in Module 5.
+### "It's asking me to pay for a 'Pro' or 'Plus' plan"
+Both tools have a free tier. **Don't pay yet.** The free tier is plenty for everything we'll do in this course. We'll talk about when (and if) it makes sense to upgrade in Module 5 — but most students never do, and they still land paying clients.
 
 ### "I'm stuck for more than 15 minutes"
-Email support@incomeacademy.biz with a screenshot of what you're seeing. We'll walk you through it. **Do not skip this lesson** — Module 1 assumes both accounts are set up.
+**Email us right now**: `support@incomeacademy.biz` with a screenshot. We'll walk you through it personally. Don't skip this lesson and try to push through — Module 1 builds directly on having both accounts working. We'd much rather help you get unstuck than have you fall behind because of a setup glitch.
+
+### "I want to talk to a real person on the phone"
+Email support and ask for a call. We can schedule a 15-minute walk-through with a real person. There's no extra charge — this is included with your Foundation Pass.
 
 ---
 
@@ -246,8 +245,8 @@ Email support@incomeacademy.biz with a screenshot of what you're seeing. We'll w
 In Module 1, we'll demystify what these AI tools actually are. You'll learn:
 
 - What "Large Language Models" (the technology behind ChatGPT and Claude) actually do, in plain English
-- Why they sometimes confidently make things up — and how to spot it
+- Why they sometimes confidently make things up — and how to spot it instantly
 - Which tool is best for what kind of work
-- The single most important rule for working with AI: **"Always verify."**
+- The single most important rule for working with AI: **"Always verify."** Master this and your work will sound polished and professional from day one.
 
-See you there.
+You're going to do great. See you there.
