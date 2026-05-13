@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Where do I start? — Foundation Pass Path Map — Income Academy</title>
+<meta name="description" content="A side-by-side comparison of the 4 Foundation Pass courses. Time required, time to first revenue, what you'll need, and who each path fits best.">
+<meta name="robots" content="index,follow">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://incomeacademy.biz/path-map">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Where do I start? — Foundation Pass Path Map">
+<meta property="og:description" content="A side-by-side comparison of the 4 Foundation Pass courses.">
+<meta property="og:url" content="https://incomeacademy.biz/path-map">
+
+<link rel="stylesheet" href="/styles.css">
+
+<style>
+  body { background: var(--cream, #faf6ee); }
+
+  .map-hero {
+    background: linear-gradient(135deg, var(--navy, #0f172a) 0%, #1e293b 100%);
+    color: #fff;
+    padding: 80px 24px 60px;
+    text-align: center;
+  }
+  .map-hero-inner { max-width: 760px; margin: 0 auto; }
+  .map-hero h1 { font-size: 40px; color: #fff; margin: 8px 0 16px; }
+  .map-hero p { font-size: 18px; color: #cbd5e1; max-width: 580px; margin: 0 auto; }
+
+  .map-hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 28px;
+    padding: 14px 28px;
+    background: #f59e0b;
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 10px;
+    font-size: 15px;
+  }
+  .map-hero-cta:hover { background: #fbbf24; }
+
+  .map-container {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 24px 80px;
+  }
+
+  .map-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .path-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  .path-card .path-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .path-card.ai .path-icon       { background: #dbeafe; color: #1e40af; }
+  .path-card.affiliate .path-icon { background: #d1fae5; color: #065f46; }
+  .path-card.estate .path-icon    { background: #fed7aa; color: #7c2d12; }
+  .path-card.bookkeeping .path-icon { background: #ede9fe; color: #581c87; }
+
+  .path-card h3 {
+    font-size: 20px;
+    color: #0f172a;
+    margin: 0 0 8px;
+  }
+  .path-card .path-tagline {
+    color: #6b7280;
+    font-size: 14px;
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+
+  .path-stats {
+    border-top: 1px solid #f3f4f6;
+    padding-top: 16px;
+    margin-bottom: 16px;
+  }
+  .path-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 14px;
+  }
+  .path-stat-label { color: #6b7280; }
+  .path-stat-value { color: #0f172a; font-weight: 600; text-align: right; }
+
+  .path-best-for {
+    background: #fef3c7;
+    border-left: 3px solid #f59e0b;
+    padding: 12px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .path-best-for strong { display: block; margin-bottom: 4px; color: #78350f; }
+
+  .path-not-for {
+    background: #fee2e2;
+    border-left: 3px solid #ef4444;
+    padding: 12px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #991b1b;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  .path-not-for strong { display: block; margin-bottom: 4px; }
+
+  .path-cta {
+    margin-top: auto;
+    padding: 12px 16px;
+    background: #0f172a;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    display: block;
+  }
+  .path-cta:hover { background: #1e293b; }
+
+  .map-faq {
+    background: #fff;
+    border-radius: 16px;
+    padding: 36px;
+    margin-top: 40px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+  }
+  .map-faq h2 { font-size: 24px; color: #0f172a; margin: 0 0 20px; }
+  .map-faq details {
+    border-bottom: 1px solid #f3f4f6;
+    padding: 16px 0;
+  }
+  .map-faq details:last-child { border-bottom: none; }
+  .map-faq summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #0f172a;
+    font-size: 16px;
+    padding: 4px 0;
+  }
+  .map-faq details[open] summary { margin-bottom: 10px; }
+  .map-faq details p {
+    color: #4b5563;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .bottom-cta {
+    text-align: center;
+    margin-top: 48px;
+  }
+  .bottom-cta .btn {
+    display: inline-block;
+    padding: 16px 32px;
+    background: #f59e0b;
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+  .bottom-cta .btn:hover { background: #fbbf24; }
+</style>
+</head>
+<body>
+
+<section class="map-hero">
+  <div class="map-hero-inner">
+    <h1>Where do I start?</h1>
+    <p>Four courses, one membership. Each fits a different person. Here's the honest side-by-side so you can pick the one that matches your time, comfort, and what you actually want.</p>
+    <a class="map-hero-cta" href="/quiz/">Take the 60-second quiz first →</a>
+  </div>
+</section>
+
+<main class="map-container">
+
+  <div class="map-grid">
+
+    <!-- AI Side Income -->
+    <div class="path-card ai">
+      <div class="path-icon">🤖</div>
+      <h3>AI Side Income Starter Kit</h3>
+      <p class="path-tagline">Use AI tools to deliver real freelance services</p>
+
+      <div class="path-stats">
+        <div class="path-stat">
+          <span class="path-stat-label">Time per week</span>
+          <span class="path-stat-value">5–15 hrs</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Time to first client</span>
+          <span class="path-stat-value">30–60 days*</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Capital needed</span>
+          <span class="path-stat-value">$0–20/mo (AI tool)</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Best income type</span>
+          <span class="path-stat-value">Per-project + retainer</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Ongoing maintenance</span>
+          <span class="path-stat-value">Client work + tool updates</span>
+        </div>
+      </div>
+
+      <div class="path-best-for">
+        <strong>Best for:</strong>
+        Comfortable with computers. Good writing or organizational skills. Want a side income that can become full-time. Patient enough to learn one new skill.
+      </div>
+
+      <div class="path-not-for">
+        <strong>Not for:</strong>
+        You don't want to interact with clients. You hate change (AI tools evolve every few months).
+      </div>
+
+      <a class="path-cta" href="/ai/">See AI Side Income details →</a>
+    </div>
+
+    <!-- Affiliate Marketing -->
+    <div class="path-card affiliate">
+      <div class="path-icon">🔗</div>
+      <h3>Honest Affiliate Marketing</h3>
+      <p class="path-tagline">Build something useful, recommend products, earn commissions</p>
+
+      <div class="path-stats">
+        <div class="path-stat">
+          <span class="path-stat-label">Time per week</span>
+          <span class="path-stat-value">5–15 hrs</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Time to first commission</span>
+          <span class="path-stat-value">3–6 months*</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Capital needed</span>
+          <span class="path-stat-value">$0–50 (domain + hosting)</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Best income type</span>
+          <span class="path-stat-value">Slow compounding</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Ongoing maintenance</span>
+          <span class="path-stat-value">Regular content publishing</span>
+        </div>
+      </div>
+
+      <div class="path-best-for">
+        <strong>Best for:</strong>
+        Patient. Enjoy writing or making videos. Want something that compounds over 1–2 years. Have a topic you actually know about (or want to learn deeply).
+      </div>
+
+      <div class="path-not-for">
+        <strong>Not for:</strong>
+        You need income in the next 90 days. You don't enjoy writing or making content. You want a fast quit-your-job path.
+      </div>
+
+      <a class="path-cta" href="/affiliate/">See Affiliate Marketing details →</a>
+    </div>
+
+    <!-- Estate Sale Sourcing -->
+    <div class="path-card estate">
+      <div class="path-icon">🏚️</div>
+      <h3>Estate Sale Sourcing</h3>
+      <p class="path-tagline">Source physical inventory at estate sales, resell on eBay</p>
+
+      <div class="path-stats">
+        <div class="path-stat">
+          <span class="path-stat-label">Time per week</span>
+          <span class="path-stat-value">10–20 hrs</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Time to first sale</span>
+          <span class="path-stat-value">2–4 weeks*</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Capital needed</span>
+          <span class="path-stat-value">$200–500 starting inventory</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Best income type</span>
+          <span class="path-stat-value">Per-item profit</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Ongoing maintenance</span>
+          <span class="path-stat-value">Weekly sourcing + shipping</span>
+        </div>
+      </div>
+
+      <div class="path-best-for">
+        <strong>Best for:</strong>
+        Physical, hands-on people. Live in/near a town with estate sales (check EstateSales.net for your area). Have a car and storage space. Enjoy hunting for treasures.
+      </div>
+
+      <div class="path-not-for">
+        <strong>Not for:</strong>
+        Rural areas with no estate sales nearby. No physical storage. Hate dusty old stuff.
+      </div>
+
+      <a class="path-cta" href="/ai/">See Estate Sale details →</a>
+    </div>
+
+    <!-- Bookkeeping -->
+    <div class="path-card bookkeeping">
+      <div class="path-icon">📒</div>
+      <h3>Bookkeeping From Home</h3>
+      <p class="path-tagline">Run a part-time bookkeeping practice with 3–5 retainer clients</p>
+
+      <div class="path-stats">
+        <div class="path-stat">
+          <span class="path-stat-label">Time per week</span>
+          <span class="path-stat-value">10–25 hrs (clustered)</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Time to first client</span>
+          <span class="path-stat-value">30–90 days*</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Capital needed</span>
+          <span class="path-stat-value">$30–80/mo (QBO subscription)</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Best income type</span>
+          <span class="path-stat-value">Monthly retainer ($300–800/client)</span>
+        </div>
+        <div class="path-stat">
+          <span class="path-stat-label">Ongoing maintenance</span>
+          <span class="path-stat-value">Monthly close work</span>
+        </div>
+      </div>
+
+      <div class="path-best-for">
+        <strong>Best for:</strong>
+        Comfortable with numbers. Reliable, detail-oriented. Want predictable monthly income. Retirees / 50+ welcome (this audience excels here).
+      </div>
+
+      <div class="path-not-for">
+        <strong>Not for:</strong>
+        You dislike spreadsheets and reconciliation. You want to do taxes (different credential — not this).
+      </div>
+
+      <a class="path-cta" href="/affiliate/">See Bookkeeping details →</a>
+    </div>
+
+  </div>
+
+  <p style="text-align: center; color: #6b7280; font-size: 13px; max-width: 720px; margin: 0 auto 40px;">
+    * Timeframes are typical ranges based on members who put in the indicated weekly hours and follow the course. Individual results vary based on local market, prior experience, hours actually invested, and many other factors. We do not promise or guarantee any income outcomes.
+  </p>
+
+  <div class="map-faq">
+    <h2>Common questions</h2>
+
+    <details>
+      <summary>Can I take more than one course?</summary>
+      <p>Yes — Foundation Pass unlocks all 4. We recommend starting with ONE, finishing it, then evaluating whether to add a second. People who try to do all 4 at once usually finish none.</p>
+    </details>
+
+    <details>
+      <summary>Which course pays the fastest?</summary>
+      <p>Honestly, Estate Sale Sourcing usually shows revenue first (2–4 weeks) because each item sells on its own. AI Side Income is second (one client lands you paid work). Bookkeeping takes 30–90 days for client onboarding. Affiliate is the slowest but compounds longest. <strong>Fast revenue ≠ best fit, though.</strong> Pick the one you'll actually work on.</p>
+    </details>
+
+    <details>
+      <summary>Which course is best for someone over 55?</summary>
+      <p>Bookkeeping From Home is built specifically for the over-50 audience — predictable monthly income, no client-chasing once you're established, work-from-home. That said, plenty of members in the affiliate and AI courses are 55+ and doing well. It's about temperament, not age.</p>
+    </details>
+
+    <details>
+      <summary>What's the eBay Done-With-You program I see mentioned?</summary>
+      <p>Separate from Foundation Pass. It's a fulfillment service that members of the Estate Sale Sourcing course can apply to after they've been sourcing solo for 6+ months. Application-only. We accept about half who apply. The Foundation Pass itself does not include DWY.</p>
+    </details>
+
+    <details>
+      <summary>What if I pick wrong and want to switch?</summary>
+      <p>You don't have to "pick" — your $19/mo gives you all four. Start with one, finish it, then move to the next if you want. Most members eventually do 2–3 over the course of a year or two.</p>
+    </details>
+
+    <details>
+      <summary>What does this actually cost?</summary>
+      <p>$47 one-time + $19/mo with a 7-day free trial. Cancel anytime. (Pricing may update based on what proves out — current pricing always reflected on the <a href="/checkout">checkout page</a>.)</p>
+    </details>
+
+  </div>
+
+  <div class="bottom-cta">
+    <a class="btn" href="/quiz/">Take the 60-second quiz to see your recommended path →</a>
+  </div>
+
+</main>
+
+</body>
+</html>

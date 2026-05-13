@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You finished — Income Academy</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/styles.css">
+
+<style>
+  .complete-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: var(--white);
+    padding: 80px 24px 60px;
+    text-align: center;
+  }
+  .complete-hero-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .complete-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(245, 158, 11, 0.18);
+    color: #fbbf24;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+  .complete-hero h1 {
+    font-size: 44px;
+    margin: 8px 0 16px;
+    color: #fff;
+  }
+  .complete-hero p {
+    font-size: 18px;
+    color: var(--gray-light, #cbd5e1);
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .complete-stat {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 16px 24px;
+    border-radius: 12px;
+    margin: 32px auto 0;
+    max-width: 480px;
+    font-size: 15px;
+  }
+  .complete-stat strong { color: #fbbf24; }
+
+  .complete-body {
+    max-width: 720px;
+    margin: 60px auto;
+    padding: 0 24px 80px;
+  }
+
+  .complete-section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+  }
+  .complete-section h2 {
+    font-size: 22px;
+    color: var(--navy);
+    margin: 0 0 16px;
+  }
+  .complete-section p {
+    color: var(--gray, #4b5563);
+    line-height: 1.7;
+  }
+
+  .share-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .share-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: transform 0.1s;
+  }
+  .share-btn:hover { transform: translateY(-2px); }
+
+  .share-facebook { background: #1877f2; color: #fff; }
+  .share-twitter  { background: #000;     color: #fff; }
+  .share-linkedin { background: #0a66c2; color: #fff; }
+  .share-copy     { background: #f3f4f6; color: #0f172a; border: 1px solid #d1d5db; cursor: pointer; }
+
+  .next-step {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 20px 24px;
+    border-radius: 8px;
+    margin-top: 16px;
+  }
+  .next-step strong { color: #78350f; }
+
+  .testimonial-form {
+    margin-top: 16px;
+  }
+  .testimonial-form textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    resize: vertical;
+    box-sizing: border-box;
+  }
+  .testimonial-form label {
+    display: block;
+    margin: 12px 0 6px;
+    font-weight: 600;
+    color: #0f172a;
+    font-size: 14px;
+  }
+  .testimonial-form input[type="text"], .testimonial-form input[type="email"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
+  .testimonial-form .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .testimonial-form .checkbox-row label {
+    font-weight: 400;
+    margin: 0;
+    font-size: 14px;
+    color: #4b5563;
+  }
+  .testimonial-form button {
+    padding: 14px 24px;
+    background: #0f172a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .testimonial-form button:hover { background: #1e293b; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%);
+    background: #0f172a; color: #fff;
+    padding: 14px 24px; border-radius: 10px;
+    font-size: 14px; font-weight: 600;
+    opacity: 0; transition: opacity 0.2s;
+    pointer-events: none;
+    z-index: 1000;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<section class="complete-hero">
+  <div class="complete-hero-inner">
+    <div class="complete-badge">🎉 Course complete</div>
+    <h1>You finished <span id="course-name-hero">a Foundation Pass course</span>.</h1>
+    <p>Most people who start an online course never finish. You did. Quick read below — three things to do next.</p>
+
+    <div class="complete-stat">
+      Industry stat: <strong>about 15%</strong> of people who buy an online course actually complete it. You're in that 15%.
+    </div>
+  </div>
+</section>
+
+<main class="complete-body">
+
+  <div class="complete-section">
+    <h2>1. Grab your certificate</h2>
+    <p>Print it. Frame it. Stash it in a folder. Whatever you do with it — it's a record of the work you actually did, not just paid for.</p>
+    <a class="share-btn share-facebook" href="/certificate/" id="cert-link" style="max-width: 260px; margin-top: 12px;">
+      📄 Open my certificate
+    </a>
+  </div>
+
+  <div class="complete-section">
+    <h2>2. Share if you'd like (optional)</h2>
+    <p>If you'd like to tell people you finished — go for it. No pressure. If sharing isn't your thing, skip this section entirely.</p>
+    <div class="share-grid">
+      <a class="share-btn share-facebook" id="share-fb" href="#" target="_blank" rel="noopener">Share on Facebook</a>
+      <a class="share-btn share-twitter"  id="share-tw" href="#" target="_blank" rel="noopener">Share on X</a>
+      <a class="share-btn share-linkedin" id="share-li" href="#" target="_blank" rel="noopener">Share on LinkedIn</a>
+      <button class="share-btn share-copy" id="share-copy">📋 Copy share text</button>
+    </div>
+  </div>
+
+  <div class="complete-section">
+    <h2>3. Tell us your story (the one thing that matters most)</h2>
+    <p>Your honest experience helps the next person decide whether this is for them. We use stories like yours — with your explicit permission — on our site. No income claims, no exaggerations. Just what actually happened.</p>
+
+    <div class="next-step">
+      <strong>What we want to hear:</strong> what you did, what you learned, what surprised you, what you'd tell someone considering this course. Doesn't have to be polished. Just true.
+    </div>
+
+    <form class="testimonial-form" id="testimonial-form" method="post" action="https://api.leadconnectorhq.com/widget/form/TESTIMONIAL_FORM_PLACEHOLDER">
+
+      <label for="t-name">Your name</label>
+      <input type="text" name="full_name" id="t-name" required>
+
+      <label for="t-email">Your email (so we can follow up)</label>
+      <input type="email" name="email" id="t-email" required>
+
+      <label for="t-course">Which course did you finish?</label>
+      <input type="text" name="completed_course" id="t-course">
+
+      <label for="t-story">Your story (2–5 sentences is great — longer is welcome)</label>
+      <textarea name="story" id="t-story" required placeholder="What did you do? What worked? What surprised you?"></textarea>
+
+      <div class="checkbox-row">
+        <input type="checkbox" name="permission_to_use_name" id="t-perm-name" value="yes">
+        <label for="t-perm-name">It's OK to use my first name and last initial publicly (e.g., "Sarah M.")</label>
+      </div>
+
+      <div class="checkbox-row">
+        <input type="checkbox" name="permission_to_use_full" id="t-perm-full" value="yes">
+        <label for="t-perm-full">It's OK to use my full name publicly</label>
+      </div>
+
+      <div class="checkbox-row">
+        <input type="checkbox" name="permission_anonymous" id="t-perm-anon" value="yes" checked>
+        <label for="t-perm-anon">If I don't check the boxes above, please use my story anonymously only</label>
+      </div>
+
+      <button type="submit">Send my story</button>
+    </form>
+  </div>
+
+  <div class="complete-section">
+    <h2>What's next inside Foundation Pass</h2>
+    <p>Three options, no pressure:</p>
+    <ul style="color: var(--gray, #4b5563); line-height: 1.9;">
+      <li><strong>Start a second course.</strong> Different audience, different skill, same membership. <a href="/members/">Open your dashboard</a>.</li>
+      <li><strong>Re-take this one in 90 days.</strong> The content updates monthly. Some members find Module 4–5 lands differently the second time.</li>
+      <li><strong>Apply for eBay Done-With-You</strong> (only if you finished Estate Sale Sourcing and have 6+ months of sourcing data). <a href="/apply-ebay/">Apply page</a>.</li>
+    </ul>
+  </div>
+
+</main>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+  // Read course name from URL
+  const params = new URLSearchParams(window.location.search);
+  const course = params.get('course') || 'a Foundation Pass course';
+  document.getElementById('course-name-hero').textContent = course;
+  document.getElementById('t-course').value = course === 'a Foundation Pass course' ? '' : course;
+
+  // Certificate link routes through with course param
+  const certLink = document.getElementById('cert-link');
+  if (params.toString()) certLink.href = '/certificate/?' + params.toString();
+
+  // Share text + URLs
+  const shareText = `I just finished ${course} at Income Academy. Real work, real progress. If you're considering it, here's what mine looked like:`;
+  const shareUrl = 'https://incomeacademy.biz';
+  const encodedText = encodeURIComponent(shareText);
+  const encodedUrl  = encodeURIComponent(shareUrl);
+
+  document.getElementById('share-fb').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`;
+  document.getElementById('share-tw').href = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
+  document.getElementById('share-li').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+
+  document.getElementById('share-copy').addEventListener('click', () => {
+    navigator.clipboard.writeText(shareText + ' ' + shareUrl).then(() => {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1800);
+    });
+  });
+
+  // If form action is still placeholder, intercept submit and show thanks message inline
+  const form = document.getElementById('testimonial-form');
+  form.addEventListener('submit', (e) => {
+    const action = form.getAttribute('action') || '';
+    if (action.includes('TESTIMONIAL_FORM_PLACEHOLDER')) {
+      e.preventDefault();
+      form.innerHTML = '<p style="padding:20px; background:#d1fae5; border-radius:8px; color:#065f46;"><strong>Thanks!</strong> Your story has been received. (Note: testimonial form not yet wired to GHL — see docs/testimonial-form-setup.md.)</p>';
+    }
+  });
+</script>
+
+</body>
+</html>

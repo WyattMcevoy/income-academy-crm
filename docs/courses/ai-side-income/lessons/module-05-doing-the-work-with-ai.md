@@ -1,5 +1,8 @@
 # Module 5: Doing the Work With AI
 
+> **Last reviewed:** 2026-05-12 · **Next review due:** 2026-08-12
+> AI tools change fast. If you see a screenshot that doesn't match what you see on your screen, email support@incomeacademy.biz — we update quickly.
+
 **Time:** about 45 minutes
 **What you'll do:** Walk through the complete workflow for delivering a paid gig - from "yes, I'm interested" to "delivered work, paid invoice."
 

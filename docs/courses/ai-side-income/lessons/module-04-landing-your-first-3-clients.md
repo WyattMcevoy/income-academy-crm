@@ -1,5 +1,8 @@
 # Module 4: Landing Your First 3 Clients
 
+> **Last reviewed:** 2026-05-12 · **Next review due:** 2026-08-12
+> AI tools change fast. If you see a screenshot that doesn't match what you see on your screen, email support@incomeacademy.biz — we update quickly.
+
 **Time:** about 60 minutes
 **What you'll do:** Learn the five proven places to find your first paying clients, and write at least one real outreach email by the end of this module.
 
