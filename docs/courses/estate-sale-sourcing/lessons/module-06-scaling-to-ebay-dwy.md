@@ -80,11 +80,11 @@ Stop and think before scaling if:
 
 ## The eBay Done-With-You graduation program
 
-This is our high-touch tier for students who've outgrown solo sourcing.
+This is our high-touch **fulfillment service** for students who've outgrown solo sourcing and want their hours back.
 
 ### What it is
 
-You source. We do everything else.
+A fulfillment partnership. You stay focused on what you're best at — finding great inventory. We handle the time-consuming back end so you can source more, faster.
 
 Specifically:
 - We provide warehouse space (you ship inventory to us)
@@ -93,33 +93,31 @@ Specifically:
 - We list, manage, and ship
 - We handle returns and customer service
 
-You receive a payout based on net profit (after our service fee).
+You retain ownership of your inventory and your eBay account. We provide the service for a fee structured against gross sales.
 
 ### Who it's for
 
 People who:
 
-- Are consistently sourcing $1,500+ profit per month solo
-- Want to spend 100% of their time sourcing (no listing/shipping)
-- Want to expand inventory volume by 5x to 10x
-- Are comfortable with our service taking a percentage cut
+- Are consistently sourcing solo and want to scale their hours-spent-sourcing rather than hours-spent-listing
+- Want to spend their working time on sourcing instead of photography/listing/shipping
+- Are comfortable paying a service fee in exchange for getting their evenings back
 
 ### Who it's NOT for
 
 People who:
 
-- Haven't proven profitability solo yet
-- Want to stay small (under $2,000/month)
-- Don't have the time to source 2 to 3 days per week
-- Want to keep 100% of profits
+- Haven't proven they can consistently source profitably solo yet
+- Want to keep doing the listing/shipping work themselves (no problem — that's a valid choice)
+- Want to keep 100% of revenue (the trade-off is paying for the service)
 
 ### What it costs
 
 - Application is free
-- We charge a percentage of NET sales (after eBay fees, before our cut)
-- Specific structure is reviewed in the application call
+- We charge a service fee structured against gross sales — exact rate is reviewed individually on the application call so it matches your sourcing pace and category mix
+- A separate written agreement covers fee structure, timelines, and how either side can exit
 
-**Most successful students net $4,000 to $12,000+ per month** in this program. The trade-off is our cut.
+**We do not make income representations.** What you earn depends on what you source, how quickly you source it, which categories you choose, market demand, and dozens of factors outside our control. Your individual results will vary. The honest pitch is: this service buys back the hours you spend on listing/shipping/CS so you can spend those hours sourcing instead. Whether that math works for you depends on your own numbers.
 
 ### How to apply
 

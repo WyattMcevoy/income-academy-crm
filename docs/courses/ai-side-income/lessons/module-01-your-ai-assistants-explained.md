@@ -1,5 +1,8 @@
 # Module 1 — Your AI Assistants, Explained
 
+> **Last reviewed:** 2026-05-12 · **Next review due:** 2026-08-12
+> AI tools change fast. If you see a screenshot that doesn't match what you see on your screen, email support@incomeacademy.biz — we update quickly.
+
 **Time**: ~30 minutes
 **What you'll do**: Understand what ChatGPT and Claude actually are, why they sometimes "lie" without meaning to, and the single most important rule for working with them.
 

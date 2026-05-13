@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificate of Completion — Income Academy</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/styles.css">
+
+<style>
+  @page {
+    size: letter landscape;
+    margin: 0.5in;
+  }
+
+  body {
+    background: var(--cream, #faf6ee);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+
+  .certificate {
+    background: #fff;
+    width: 100%;
+    max-width: 1000px;
+    aspect-ratio: 11 / 8.5;
+    padding: 60px 80px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    border: 4px double #b8945a;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  .certificate::before,
+  .certificate::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 2px solid #b8945a;
+    opacity: 0.4;
+  }
+  .certificate::before {
+    top: 24px; left: 24px;
+    border-right: none; border-bottom: none;
+  }
+  .certificate::after {
+    bottom: 24px; right: 24px;
+    border-left: none; border-top: none;
+  }
+
+  .cert-header {
+    text-align: center;
+  }
+
+  .cert-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 13px;
+    color: #b8945a;
+    font-family: 'Helvetica', sans-serif;
+    font-weight: 600;
+  }
+
+  .cert-title {
+    font-size: 44px;
+    color: #0f172a;
+    margin: 12px 0 4px;
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+
+  .cert-subtitle {
+    font-size: 16px;
+    color: #6b7280;
+    font-style: italic;
+  }
+
+  .cert-body {
+    text-align: center;
+    margin: 40px 0;
+  }
+
+  .cert-presented-to {
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin-bottom: 12px;
+  }
+
+  .cert-name {
+    font-size: 56px;
+    color: #0f172a;
+    margin: 12px 0 24px;
+    font-weight: 700;
+    font-family: 'Georgia', serif;
+    border-bottom: 2px solid #b8945a;
+    padding-bottom: 16px;
+    display: inline-block;
+    min-width: 60%;
+  }
+
+  .cert-for {
+    font-size: 16px;
+    color: #4b5563;
+    margin: 24px 0 12px;
+    line-height: 1.7;
+  }
+
+  .cert-course-name {
+    font-size: 26px;
+    color: #0f172a;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .cert-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 24px;
+  }
+
+  .cert-signature, .cert-date {
+    flex: 1;
+    text-align: center;
+  }
+
+  .cert-signature-line, .cert-date-line {
+    border-top: 1px solid #6b7280;
+    padding-top: 8px;
+    margin: 0 24px;
+    font-size: 14px;
+    color: #6b7280;
+  }
+
+  .cert-signature-name {
+    font-family: 'Brush Script MT', 'Lucida Handwriting', cursive;
+    font-size: 28px;
+    color: #0f172a;
+    margin-bottom: -8px;
+  }
+
+  .cert-actions {
+    margin-top: 32px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cert-actions .btn {
+    font-family: 'Helvetica', sans-serif;
+  }
+
+  .btn-print, .btn-share {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-print {
+    background: #0f172a;
+    color: #fff;
+  }
+  .btn-print:hover { background: #1e293b; }
+
+  .btn-share {
+    background: #f59e0b;
+    color: #0f172a;
+  }
+  .btn-share:hover { background: #fbbf24; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .cert-actions, .cert-help { display: none !important; }
+    .certificate { box-shadow: none; max-width: none; }
+  }
+
+  .cert-help {
+    margin-top: 24px;
+    max-width: 720px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+    font-family: 'Helvetica', sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<div class="certificate" id="cert">
+  <div class="cert-header">
+    <div class="cert-eyebrow">Income Academy</div>
+    <h1 class="cert-title">Certificate of Completion</h1>
+    <p class="cert-subtitle">Foundation Pass — full curriculum</p>
+  </div>
+
+  <div class="cert-body">
+    <div class="cert-presented-to">Presented to</div>
+    <div class="cert-name" id="member-name">[Your Name]</div>
+    <p class="cert-for">For the successful completion of all 8 modules of</p>
+    <div class="cert-course-name" id="course-name">[Course Name]</div>
+    <p class="cert-for" style="font-size: 14px; color: #6b7280; font-style: italic;">
+      — and the work of actually doing the homework, not just watching the videos.
+    </p>
+  </div>
+
+  <div class="cert-footer">
+    <div class="cert-signature">
+      <div class="cert-signature-name">Wyatt McEvoy</div>
+      <div class="cert-signature-line">Founder, Income Academy</div>
+    </div>
+    <div class="cert-date">
+      <div style="height: 28px;"></div>
+      <div class="cert-date-line"><span id="completion-date">[Date]</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="cert-actions">
+  <button class="btn-print" onclick="window.print()">🖨️ Print certificate</button>
+  <a class="btn-share" href="#" id="share-link">📣 Share completion</a>
+</div>
+
+<p class="cert-help">
+  This certificate is for personal use — a record of work you did. It's not a license or professional credential.
+  <br>
+  Print it on cardstock for a nice frame, share it on social if you'd like, or save the PDF (use your browser's "Save as PDF" option in the print dialog).
+</p>
+
+<script>
+  // Read member name and course from URL params for personalization
+  // Example URL: /certificate/?name=Sarah%20Smith&course=AI%20Side%20Income&date=2026-06-15
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get('name');
+  const course = params.get('course');
+  const date = params.get('date');
+
+  if (name) document.getElementById('member-name').textContent = name;
+  if (course) document.getElementById('course-name').textContent = course;
+  if (date) {
+    // Format YYYY-MM-DD as "Month DD, YYYY"
+    const d = new Date(date + 'T12:00:00');
+    if (!isNaN(d)) {
+      document.getElementById('completion-date').textContent =
+        d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+  } else {
+    document.getElementById('completion-date').textContent =
+      new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  // Share link routes to the share page with prefilled course
+  const shareLink = document.getElementById('share-link');
+  if (course) {
+    shareLink.href = '/course-complete/?course=' + encodeURIComponent(course);
+  } else {
+    shareLink.href = '/course-complete/';
+  }
+</script>
+
+</body>
+</html>

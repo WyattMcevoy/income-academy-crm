@@ -1,5 +1,8 @@
 # Module 2 — Talking to AI: The Skill That Makes Everything Work
 
+> **Last reviewed:** 2026-05-12 · **Next review due:** 2026-08-12
+> AI tools change fast. If you see a screenshot that doesn't match what you see on your screen, email support@incomeacademy.biz — we update quickly.
+
 **Time**: ~45 minutes
 **What you'll do**: Learn the exact 4-part formula that turns "AI gives me garbage" into "AI gives me usable, professional output." This is the most important skill in the whole course.
 
