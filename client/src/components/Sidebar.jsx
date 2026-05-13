@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { label: 'Contracts', path: '/contracts', icon: '📄', enabled: false, note: 'Phase 5' },
   { label: 'Invoices', path: '/invoices', icon: '💵', enabled: false, note: 'Phase 6' },
   { label: 'Campaigns', path: '/campaigns', icon: '📧', enabled: false, note: 'Phase 12' },
+  { label: 'Credit Builder', path: '/credit-builder', icon: '📊', enabled: true },
   { label: 'Expenses', path: '/expenses', icon: '💰', enabled: true },
   { label: 'Settings', path: '/settings', icon: '⚙️', enabled: false, note: 'Later' },
 ];
