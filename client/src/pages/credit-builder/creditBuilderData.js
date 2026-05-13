@@ -257,7 +257,7 @@ export const SUB_PAGE_CONTENT = {
       { value: 'Find My Listing', icon: '🔍' },
     ],
     followUp: {
-      'Find My Listing': { type: 'info', title: 'SEARCH FOR YOUR EXPERIAN LISTING', description: 'Search for your business to verify your Experian profile. If you don\'t see your business, it may need to be added.', status: 'neutral', resource: { name: 'Experian Business', description: 'Search for your business credit listing', url: 'https://www.experian.com/small-business/business-information' } },
+      'Find My Listing': { type: 'info', title: 'SEARCH FOR YOUR EXPERIAN LISTING', description: 'Search for your business to verify your Experian profile. If you don\'t see your business, it may need to be added.', status: 'neutral', resource: { name: 'Experian Business', description: 'Search for your business credit listing', url: 'https://www.experian.com/small-business/' } },
     },
   },
   'equifax-verification': {

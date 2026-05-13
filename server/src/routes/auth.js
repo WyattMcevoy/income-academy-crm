@@ -58,7 +58,7 @@ router.post('/login', authLimiter, async (req, res) => {
 
   try {
     const { rows } = await pool.query(
-      'SELECT id, email, name, password_hash FROM users WHERE email = $1',
+      'SELECT id, email, name, password_hash, is_admin FROM users WHERE email = $1',
       [email]
     );
     const user = rows[0];
@@ -70,7 +70,7 @@ router.post('/login', authLimiter, async (req, res) => {
     logActivity(user.id, 'login', { email: user.email }, req);
     res.json({
       token: signToken(user),
-      user: { id: user.id, email: user.email, name: user.name },
+      user: { id: user.id, email: user.email, name: user.name, is_admin: !!user.is_admin },
     });
   } catch (err) {
     console.error('login failed:', err.code || 'unknown');
