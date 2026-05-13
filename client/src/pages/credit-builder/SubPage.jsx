@@ -126,13 +126,14 @@ export default function SubPage({ step, subSlug, content, progress, onSelect, on
                 <em>We hope you love the products and services we recommend! We research and update these on a regular basis.</em>
               </p>
               <h4 className="cb-resource-heading">Featured Resource:</h4>
-              <div className="cb-resource-card">
+              <a className="cb-resource-card" href={followUp.resource.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className="cb-resource-icon">🔗</div>
                 <div className="cb-resource-info">
                   <span className="cb-resource-name">{followUp.resource.name}</span>
                   <span className="cb-resource-desc">{followUp.resource.description}</span>
+                  {followUp.resource.url && <span className="cb-resource-link">Go To Website →</span>}
                 </div>
-              </div>
+              </a>
             </div>
           )}
 
@@ -229,6 +230,20 @@ export default function SubPage({ step, subSlug, content, progress, onSelect, on
             </div>
           </div>
 
+          {followUp.resource && (
+            <div className="cb-resource-section">
+              <h4 className="cb-resource-heading">Featured Resource:</h4>
+              <a className="cb-resource-card" href={followUp.resource.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div className="cb-resource-icon">🔗</div>
+                <div className="cb-resource-info">
+                  <span className="cb-resource-name">{followUp.resource.name}</span>
+                  <span className="cb-resource-desc">{followUp.resource.description}</span>
+                  {followUp.resource.url && <span className="cb-resource-link">Go To Website →</span>}
+                </div>
+              </a>
+            </div>
+          )}
+
           <div className="cb-subpage-actions">
             <button className="cb-btn cb-btn-outline" onClick={() => setShowFollowUp(false)}>Go Back</button>
             <button className="cb-btn cb-btn-primary" onClick={onComplete}>Next</button>
@@ -270,13 +285,13 @@ export default function SubPage({ step, subSlug, content, progress, onSelect, on
               <em>We hope you love the products and services we recommend! We research and update these on a regular basis. Just so you know, we may receive a commission from links on this page. We are diligent to ensure any compensation we receive does not affect the price or level of service offered to you.</em>
             </p>
             {followUp.resource && (
-              <div className="cb-resource-card cb-resource-card-featured">
+              <a className="cb-resource-card cb-resource-card-featured" href={followUp.resource.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className="cb-resource-logo">{followUp.resource.name.charAt(0)}</div>
                 <div className="cb-resource-info">
                   <span className="cb-resource-name">{followUp.resource.name}</span>
                   <span className="cb-resource-link">Go To Website →</span>
                 </div>
-              </div>
+              </a>
             )}
           </div>
         </>

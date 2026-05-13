@@ -97,9 +97,9 @@ export const SUB_PAGE_CONTENT = {
     followUp: {
       'Commercial Address': { type: 'form', title: 'ENTER YOUR COMMERCIAL BUSINESS ADDRESS.', description: 'A commercial address is ideal for fundability.', fields: ['businessName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipCode'], status: 'positive' },
       'Home Address': { type: 'form', title: 'ENTER YOUR HOME BUSINESS ADDRESS.', description: "A home business address can be used without negatively impacting overall fundability, but only for industries that don't require a physical business location.", fields: ['businessName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipCode'], status: 'positive' },
-      'PO Box': { type: 'warning', title: 'PO BOX NOT RECOMMENDED', description: 'A PO Box is not considered a valid business address by most lenders. Consider upgrading to a commercial or virtual address.', status: 'negative', resource: { name: 'iPostal1', description: 'Virtual Business Address Service' } },
+      'PO Box': { type: 'warning', title: 'PO BOX NOT RECOMMENDED', description: 'A PO Box is not considered a valid business address by most lenders. Consider upgrading to a commercial or virtual address.', status: 'negative', resource: { name: 'iPostal1', description: 'Virtual Business Address Service', url: 'https://ipostal1.com/virtual-business-address.php' } },
       'Virtual Address': { type: 'form', title: 'ENTER YOUR VIRTUAL BUSINESS ADDRESS.', description: 'A virtual address is a great alternative to a commercial address.', fields: ['businessName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipCode'], status: 'positive' },
-      'Registered Agent': { type: 'warning', title: 'REGISTERED AGENT ADDRESS', description: 'A registered agent address may not be ideal for fundability. Consider getting a separate business address.', status: 'negative', resource: { name: 'Northwest Registered Agent', description: 'Registered Agent + Business Address' } },
+      'Registered Agent': { type: 'warning', title: 'REGISTERED AGENT ADDRESS', description: 'A registered agent address may not be ideal for fundability. Consider getting a separate business address.', status: 'negative', resource: { name: 'Northwest Registered Agent', description: 'Registered Agent + Business Address', url: 'https://www.northwestregisteredagent.com/' } },
     },
   },
   'business-entity': {
@@ -115,7 +115,7 @@ export const SUB_PAGE_CONTENT = {
       'LLC': { type: 'success', title: 'GREAT CHOICE!', description: 'An LLC is one of the best entity types for fundability.', status: 'positive' },
       'S or C Corp': { type: 'success', title: 'GREAT CHOICE!', description: 'A Corporation is one of the best entity types for fundability.', status: 'positive' },
       'Partnership': { type: 'info', title: 'PARTNERSHIP', description: 'A partnership is an acceptable entity type but may have limitations with some lenders.', status: 'positive' },
-      'Sole Proprietor': { type: 'warning', title: 'SOLE PROPRIETORSHIP NOT RECOMMENDED', description: 'A Sole Proprietorship is NOT a legal entity. You should form an LLC or Corporation to improve your fundability.', status: 'negative', resource: { name: 'IncFile', description: 'Form an LLC or Corporation' } },
+      'Sole Proprietor': { type: 'warning', title: 'SOLE PROPRIETORSHIP NOT RECOMMENDED', description: 'A Sole Proprietorship is NOT a legal entity. You should form an LLC or Corporation to improve your fundability.', status: 'negative', resource: { name: 'Bizee (formerly IncFile)', description: 'Form an LLC or Corporation', url: 'https://bizee.com/' } },
     },
   },
   'foreign-filing': {
@@ -151,7 +151,7 @@ export const SUB_PAGE_CONTENT = {
     ],
     followUp: {
       'Yes': { type: 'success', status: 'positive' },
-      'No': { type: 'warning', title: 'EIN REQUIRED', description: 'An EIN is required to obtain business financing. You can apply for one for free at IRS.gov.', status: 'negative', resource: { name: 'IRS EIN Application', description: 'Apply for an EIN online for free' } },
+      'No': { type: 'warning', title: 'EIN REQUIRED', description: 'An EIN is required to obtain business financing. You can apply for one for free at IRS.gov.', status: 'negative', resource: { name: 'IRS EIN Application', description: 'Apply for an EIN online for free', url: 'https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number' } },
     },
   },
   'business-phone': {
@@ -163,7 +163,7 @@ export const SUB_PAGE_CONTENT = {
     ],
     followUp: {
       'Yes': { type: 'form', title: 'ENTER YOUR BUSINESS PHONE', fields: ['businessPhone'], status: 'positive' },
-      'No': { type: 'warning', title: 'BUSINESS PHONE NEEDED', description: 'Lenders and creditors might not approve you for business financing if you are using a home phone number or personal cell number for your business.', status: 'negative', resource: { name: 'Phone.com', description: 'Business phone service - Communicate Better®' }, actionLabel: 'I Have A Business Phone' },
+      'No': { type: 'warning', title: 'BUSINESS PHONE NEEDED', description: 'Lenders and creditors might not approve you for business financing if you are using a home phone number or personal cell number for your business.', status: 'negative', resource: { name: 'Phone.com', description: 'Business phone service - Communicate Better®', url: 'https://www.phone.com/' }, actionLabel: 'I Have A Business Phone' },
     },
   },
   'website-email': {
@@ -199,7 +199,7 @@ export const SUB_PAGE_CONTENT = {
     ],
     followUp: {
       'Yes': { type: 'form', title: 'BUSINESS BANK ACCOUNT', fields: ['bankName'], status: 'positive' },
-      'No': { type: 'warning', title: 'BUSINESS BANK ACCOUNT NEEDED', description: 'A business bank account is required for most business financing.', status: 'negative', resource: { name: 'Bank Account Resources', description: 'Open a business bank account' } },
+      'No': { type: 'warning', title: 'BUSINESS BANK ACCOUNT NEEDED', description: 'A business bank account is required for most business financing.', status: 'negative', resource: { name: 'Relay Financial', description: 'Free business banking with smart budgeting', url: 'https://relayfi.com/' } },
     },
   },
   'merchant-account': {
@@ -246,7 +246,7 @@ export const SUB_PAGE_CONTENT = {
     ],
     followUp: {
       'I Have A DUNS Number': { type: 'form', title: 'VERIFY YOUR D&B LISTING', description: 'Enter your DUNS number to verify your business listing.', fields: ['dunsNumber'], status: 'positive' },
-      'Search for a DUNS Number Now': { type: 'info', title: 'SEARCH FOR YOUR DUNS NUMBER', description: 'You can search for or apply for a DUNS number through D&B.', status: 'neutral', resource: { name: 'Dun & Bradstreet', description: 'Search or apply for a DUNS number' } },
+      'Search for a DUNS Number Now': { type: 'info', title: 'SEARCH FOR YOUR DUNS NUMBER', description: 'You can search for or apply for a DUNS number through D&B.', status: 'neutral', resource: { name: 'Dun & Bradstreet', description: 'Search or apply for a DUNS number', url: 'https://www.dnb.com/en-us/smb/duns/get-a-duns.html' } },
     },
   },
   'experian-verification': {
@@ -257,7 +257,7 @@ export const SUB_PAGE_CONTENT = {
       { value: 'Find My Listing', icon: '🔍' },
     ],
     followUp: {
-      'Find My Listing': { type: 'info', title: 'SEARCH FOR YOUR EXPERIAN LISTING', description: 'Search for your business to verify your Experian profile. If you don\'t see your business, it may need to be added.', status: 'neutral' },
+      'Find My Listing': { type: 'info', title: 'SEARCH FOR YOUR EXPERIAN LISTING', description: 'Search for your business to verify your Experian profile. If you don\'t see your business, it may need to be added.', status: 'neutral', resource: { name: 'Experian Business', description: 'Search for your business credit listing', url: 'https://www.experian.com/small-business/business-information' } },
     },
   },
   'equifax-verification': {
@@ -270,7 +270,7 @@ export const SUB_PAGE_CONTENT = {
     ],
     followUp: {
       'I Have An Equifax Report': { type: 'form', title: 'VERIFY YOUR EQUIFAX LISTING', description: 'Verify your business information with Equifax.', fields: [], status: 'positive' },
-      'I Do Not Have An Equifax Report': { type: 'warning', title: 'EQUIFAX REPORT NEEDED', description: 'Building vendor accounts that report to Equifax will help establish your Equifax business credit profile.', status: 'negative' },
+      'I Do Not Have An Equifax Report': { type: 'warning', title: 'EQUIFAX REPORT NEEDED', description: 'Building vendor accounts that report to Equifax will help establish your Equifax business credit profile.', status: 'negative', resource: { name: 'Equifax Business', description: 'Check your business credit report', url: 'https://www.equifax.com/business/product/business-credit-reports-small-business/' } },
     },
   },
   'addressing-inaccuracies': {
@@ -282,7 +282,7 @@ export const SUB_PAGE_CONTENT = {
       { value: 'No', icon: '✅' },
     ],
     followUp: {
-      'Yes': { type: 'warning', title: 'DISPUTE INACCURACIES', description: 'You should dispute any inaccurate derogatory items on your business credit reports. This can significantly improve your fundability.', status: 'negative', resource: { name: 'Credit Dispute Resources', description: 'Tools and services to help dispute inaccuracies' } },
+      'Yes': { type: 'warning', title: 'DISPUTE INACCURACIES', description: 'You should dispute any inaccurate derogatory items on your business credit reports. This can significantly improve your fundability.', status: 'negative', resource: { name: 'DisputeBee', description: 'DIY credit dispute software', url: 'https://disputebee.com/' } },
       'No': { type: 'success', title: 'REPORTS LOOK GOOD!', description: 'Great — no inaccuracies to address. You can proceed to the next step.', status: 'positive' },
     },
   },
@@ -322,7 +322,7 @@ export const SUB_PAGE_CONTENT = {
         helpText: 'Click below to learn more and get your LexisNexis report.',
         actionLabel: 'I Have My LexisNexis Report',
         status: 'negative',
-        resource: { name: 'LexisNexis', description: 'Request your personal consumer report' },
+        resource: { name: 'LexisNexis', description: 'Request your personal consumer report', url: 'https://consumer.risk.lexisnexis.com/request' },
       },
     },
   },
@@ -343,7 +343,7 @@ export const SUB_PAGE_CONTENT = {
         helpText: 'Click below to learn more and get your ChexSystems report.',
         actionLabel: 'I Have My ChexSystems Report',
         status: 'negative',
-        resource: { name: 'ChexSystems', description: 'Request your consumer disclosure report' },
+        resource: { name: 'ChexSystems', description: 'Request your consumer disclosure report', url: 'https://www.chexsystems.com/request-reports/consumer-disclosure' },
       },
     },
   },
@@ -351,8 +351,12 @@ export const SUB_PAGE_CONTENT = {
     title: 'Improve your Paydex score',
     description: 'Business Credit Bureaus have their own fees for monitoring your credit with them. A simpler and less costly way to view your business credit data is through a service that seamlessly integrates, granting you the ability to access lender reports and review business credit information.',
     stepSection: 'Monitor Business Reports',
-    options: [],
-    followUp: {},
+    options: [
+      { value: 'Monitor My Score', icon: '📊' },
+    ],
+    followUp: {
+      'Monitor My Score': { type: 'info', title: 'MONITOR YOUR PAYDEX SCORE', description: 'Nav provides free access to your D&B and Experian business credit scores, plus personalized funding recommendations.', status: 'neutral', resource: { name: 'Nav', description: 'Free business credit score monitoring', url: 'https://www.nav.com/business-credit-scores/' } },
+    },
   },
   // Step 5
   'vendor-accounts-6': {
@@ -381,4 +385,41 @@ export const SUB_PAGE_CONTENT = {
     isVendorStep: true,
     targetCount: 12,
   },
+};
+
+export const VENDOR_CATALOG = {
+  1: [
+    { name: 'Uline', category: 'Shipping & Packaging Supplies', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Net-30', url: 'https://www.uline.com/' },
+    { name: 'Crown Office Supplies', category: 'Office Supplies', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Net-30, $800–$5K', url: 'https://www.crownofficesupplies.com/' },
+    { name: 'Grainger', category: 'Industrial & Hardware Supplies', bureaus: ['D&B'], terms: 'Net-30', url: 'https://www.grainger.com/' },
+    { name: 'Creative Analytics', category: 'Marketing & Promotional', bureaus: ['D&B', 'Equifax'], terms: 'Net-30, up to $12K', url: 'https://www.creativeanalytics.net/' },
+    { name: 'Wise Business Plans', category: 'Business Services', bureaus: ['D&B', 'Equifax'], terms: 'Net-30', url: 'https://wisebusinessplans.com/' },
+    { name: 'Summa Office Supplies', category: 'Office Supplies', bureaus: ['D&B', 'Experian'], terms: 'Net-30, $500–$3K', url: 'https://www.summaofficesupplies.com/' },
+    { name: 'Strategic Network Solutions', category: 'IT Supplies & Accessories', bureaus: ['Equifax'], terms: 'Net-30, ~$1K', url: 'https://www.stratnsolutions.com/' },
+    { name: 'Shirtsy', category: 'Custom Apparel & Promo', bureaus: ['D&B', 'Equifax'], terms: 'Net-30, ~$1K', url: 'https://www.shirtsy.com/' },
+  ],
+  2: [
+    { name: 'Home Depot Pro', category: 'Building & Construction', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.homedepot.com/c/Pro' },
+    { name: "Lowe's Business", category: 'Building & Construction', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.lowes.com/l/shop/lowes-business-credit' },
+    { name: 'Office Depot', category: 'Office Supplies', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.officedepot.com/' },
+    { name: 'Staples Business Advantage', category: 'Office Supplies', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.staples.com/sbd/cre/marketing/business-account/' },
+    { name: 'Amazon Business Line of Credit', category: 'General Merchandise', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.amazon.com/gp/cobrandcard/marketing.html?pr=bb' },
+    { name: 'Dell Business Credit', category: 'Technology & Computers', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.dell.com/en-us/lp/dell-business-credit' },
+    { name: 'Newegg Business', category: 'Electronics & IT', bureaus: ['D&B'], terms: 'Net-30', url: 'https://www.neweggbusiness.com/' },
+  ],
+  3: [
+    { name: 'Shell Fleet Card', category: 'Fuel & Fleet', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.shell.us/business-customers/shell-fleet-solutions.html' },
+    { name: 'Fuelman', category: 'Fuel & Fleet', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.fuelman.com/' },
+    { name: 'BP Business Solutions', category: 'Fuel', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.bpbusinesssolutions.com/' },
+    { name: 'WEX Fleet Card', category: 'Fleet Management', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.wexinc.com/' },
+    { name: 'ExxonMobil Business', category: 'Fuel', bureaus: ['D&B'], terms: 'Revolving', url: 'https://www.exxon.com/en/business-fuel-card' },
+    { name: 'Chevron/Texaco Business', category: 'Fuel', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.chevronwithtechron.com/station/business-card' },
+  ],
+  4: [
+    { name: 'Brex', category: 'Corporate Visa/MC (No PG)', bureaus: ['D&B', 'Experian'], terms: 'Revolving, requires $50K+ in bank', url: 'https://www.brex.com/' },
+    { name: 'Ramp', category: 'Corporate Visa (No PG)', bureaus: ['D&B', 'Experian'], terms: 'Revolving, requires $25K+ in bank', url: 'https://ramp.com/' },
+    { name: 'Divvy (BILL)', category: 'Corporate Visa (No PG)', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.divvy.co/' },
+    { name: "Sam's Club Business MC", category: 'Retail Revolving', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.samsclub.com/content/credit' },
+    { name: 'Costco Business Visa', category: 'Retail Revolving', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.citi.com/credit-cards/citi-costco-anywhere-visa-business-credit-card' },
+  ],
 };
