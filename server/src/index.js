@@ -7,6 +7,7 @@ import clientsRouter from './routes/clients.js';
 import expensesRouter from './routes/expenses.js';
 import webhooksRouter from './routes/webhooks.js';
 import intakeRouter from './routes/intake.js';
+import creditBuilderRouter from './routes/credit-builder.js';
 import { requireAuth } from './middleware/auth.js';
 
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
@@ -64,6 +65,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/leads', requireAuth, leadsRouter);
 app.use('/api/clients', requireAuth, clientsRouter);
 app.use('/api/expenses', requireAuth, expensesRouter);
+app.use('/api/credit-builder', requireAuth, creditBuilderRouter);
 
 // Public lead intake (no JWT — uses header token instead).
 app.use('/api/intake', intakeRouter);
