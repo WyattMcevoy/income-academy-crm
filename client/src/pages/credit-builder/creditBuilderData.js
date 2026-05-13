@@ -386,3 +386,40 @@ export const SUB_PAGE_CONTENT = {
     targetCount: 12,
   },
 };
+
+export const VENDOR_CATALOG = {
+  1: [
+    { name: 'Uline', category: 'Shipping & Packaging Supplies', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Net-30', url: 'https://www.uline.com/' },
+    { name: 'Crown Office Supplies', category: 'Office Supplies', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Net-30, $800–$5K', url: 'https://www.crownofficesupplies.com/' },
+    { name: 'Grainger', category: 'Industrial & Hardware Supplies', bureaus: ['D&B'], terms: 'Net-30', url: 'https://www.grainger.com/' },
+    { name: 'Creative Analytics', category: 'Marketing & Promotional', bureaus: ['D&B', 'Equifax'], terms: 'Net-30, up to $12K', url: 'https://www.creativeanalytics.net/' },
+    { name: 'Wise Business Plans', category: 'Business Services', bureaus: ['D&B', 'Equifax'], terms: 'Net-30', url: 'https://wisebusinessplans.com/' },
+    { name: 'Summa Office Supplies', category: 'Office Supplies', bureaus: ['D&B', 'Experian'], terms: 'Net-30, $500–$3K', url: 'https://www.summaofficesupplies.com/' },
+    { name: 'Strategic Network Solutions', category: 'IT Supplies & Accessories', bureaus: ['Equifax'], terms: 'Net-30, ~$1K', url: 'https://www.stratnsolutions.com/' },
+    { name: 'Shirtsy', category: 'Custom Apparel & Promo', bureaus: ['D&B', 'Equifax'], terms: 'Net-30, ~$1K', url: 'https://www.shirtsy.com/' },
+  ],
+  2: [
+    { name: 'Home Depot Pro', category: 'Building & Construction', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.homedepot.com/c/Pro' },
+    { name: "Lowe's Business", category: 'Building & Construction', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.lowes.com/l/shop/lowes-business-credit' },
+    { name: 'Office Depot', category: 'Office Supplies', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.officedepot.com/' },
+    { name: 'Staples Business Advantage', category: 'Office Supplies', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.staples.com/sbd/cre/marketing/business-account/' },
+    { name: 'Amazon Business Line of Credit', category: 'General Merchandise', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.amazon.com/gp/cobrandcard/marketing.html?pr=bb' },
+    { name: 'Dell Business Credit', category: 'Technology & Computers', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.dell.com/en-us/lp/dell-business-credit' },
+    { name: 'Newegg Business', category: 'Electronics & IT', bureaus: ['D&B'], terms: 'Net-30', url: 'https://www.neweggbusiness.com/' },
+  ],
+  3: [
+    { name: 'Shell Fleet Card', category: 'Fuel & Fleet', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.shell.us/business-customers/shell-fleet-solutions.html' },
+    { name: 'Fuelman', category: 'Fuel & Fleet', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.fuelman.com/' },
+    { name: 'BP Business Solutions', category: 'Fuel', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.bpbusinesssolutions.com/' },
+    { name: 'WEX Fleet Card', category: 'Fleet Management', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.wexinc.com/' },
+    { name: 'ExxonMobil Business', category: 'Fuel', bureaus: ['D&B'], terms: 'Revolving', url: 'https://www.exxon.com/en/business-fuel-card' },
+    { name: 'Chevron/Texaco Business', category: 'Fuel', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.chevronwithtechron.com/station/business-card' },
+  ],
+  4: [
+    { name: 'Brex', category: 'Corporate Visa/MC (No PG)', bureaus: ['D&B', 'Experian'], terms: 'Revolving, requires $50K+ in bank', url: 'https://www.brex.com/' },
+    { name: 'Ramp', category: 'Corporate Visa (No PG)', bureaus: ['D&B', 'Experian'], terms: 'Revolving, requires $25K+ in bank', url: 'https://ramp.com/' },
+    { name: 'Divvy (BILL)', category: 'Corporate Visa (No PG)', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.divvy.co/' },
+    { name: "Sam's Club Business MC", category: 'Retail Revolving', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.samsclub.com/content/credit' },
+    { name: 'Costco Business Visa', category: 'Retail Revolving', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.citi.com/credit-cards/citi-costco-anywhere-visa-business-credit-card' },
+  ],
+};

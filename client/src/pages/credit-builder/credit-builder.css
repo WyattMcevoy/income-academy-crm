@@ -720,6 +720,104 @@
   cursor: pointer;
 }
 
+/* ---- Vendor Catalog ---- */
+
+.cb-vendor-catalog { margin-top: 32px; }
+.cb-vendor-catalog-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0b3954;
+  margin: 0 0 6px;
+}
+.cb-vendor-catalog-desc {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+.cb-vendor-catalog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cb-vendor-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px 20px;
+  background: #fff;
+  transition: box-shadow 150ms, border-color 150ms;
+}
+.cb-vendor-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.cb-vendor-card-applied {
+  border-color: #fbbf24;
+  background: #fffbeb;
+}
+.cb-vendor-card-reporting {
+  border-color: #059669;
+  background: #f0fdf4;
+}
+
+.cb-vendor-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.cb-vendor-card-info { display: flex; flex-direction: column; gap: 2px; }
+.cb-vendor-card-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0b3954;
+}
+.cb-vendor-card-category {
+  font-size: 12px;
+  color: #6b7280;
+}
+.cb-vendor-card-terms {
+  font-size: 11px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.cb-vendor-card-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+.cb-vendor-badge-applied { background: #fef3c7; color: #92400e; }
+.cb-vendor-badge-reporting { background: #d1fae5; color: #065f46; }
+
+.cb-vendor-card-bureaus {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.cb-vendor-bureau-badge {
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
+}
+
+.cb-vendor-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.cb-btn-sm {
+  padding: 6px 14px !important;
+  font-size: 12px !important;
+}
+
 /* ---- Status indicators in sidebar ---- */
 
 .cb-sub-item-positive .cb-sub-item-status { color: #059669; }

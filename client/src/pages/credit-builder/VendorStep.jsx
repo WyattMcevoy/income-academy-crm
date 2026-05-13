@@ -1,4 +1,4 @@
-import { STEPS, SUB_PAGE_CONTENT } from './creditBuilderData.js';
+import { STEPS, SUB_PAGE_CONTENT, VENDOR_CATALOG } from './creditBuilderData.js';
 
 const FOUNDATION_ITEMS = [
   { slug: 'business-address', name: 'Business address', step: 1 },
@@ -15,30 +15,25 @@ const CREDIT_ITEMS = [
   { slug: 'dnb-verification', name: 'DnB', step: 2 },
 ];
 
-/** Map tier step numbers to the prerequisite step and required vendor count. */
 const TIER_PREREQS = {
-  3: { requiredStep: null, requiredVendors: 0 },   // Tier 1: needs foundation items
-  5: { requiredStep: 3, requiredVendors: 3 },       // Tier 2: needs 3 vendors
-  6: { requiredStep: 5, requiredVendors: 6 },       // Tier 3: needs 6 vendors
-  7: { requiredStep: 6, requiredVendors: 9 },       // Tier 4: needs 9 vendors
+  3: { requiredStep: null, requiredVendors: 0 },
+  5: { requiredStep: 3, requiredVendors: 3 },
+  6: { requiredStep: 5, requiredVendors: 6 },
+  7: { requiredStep: 6, requiredVendors: 9 },
 };
+
+const STEP_TO_TIER = { 3: 1, 5: 2, 6: 3, 7: 4 };
 
 function getItemStatus(item, progress) {
   const key = `${item.step}:${item.slug}`;
   const entry = progress[key];
-
   if (!entry) return 'not_started';
   if (entry.completed) return 'completed';
-
-  // Has a selected option but not completed — check followUp status
   if (entry.selected_option) {
     const content = SUB_PAGE_CONTENT[item.slug];
     const followUp = content?.followUp?.[entry.selected_option];
     if (followUp?.status === 'negative') return 'negative';
-    // In-progress but not negative
-    return 'not_started';
   }
-
   return 'not_started';
 }
 
@@ -57,7 +52,32 @@ function checkFoundationComplete(progress) {
 
 function countReportingVendors(vendors) {
   if (!vendors || !Array.isArray(vendors)) return 0;
-  return vendors.filter(v => v.reporting).length;
+  const reportingNames = new Set();
+  vendors.forEach(v => {
+    if (v.completed) reportingNames.add(v.vendor_name);
+  });
+  return reportingNames.size;
+}
+
+function getVendorStatus(vendorName, vendors) {
+  const rows = vendors.filter(v => v.vendor_name === vendorName);
+  if (rows.length === 0) return 'none';
+  if (rows.some(v => v.completed)) return 'reporting';
+  if (rows.some(v => v.applied)) return 'applied';
+  return 'none';
+}
+
+function BureauBadge({ bureau }) {
+  const colors = {
+    'D&B': '#196499',
+    'Experian': '#0cae87',
+    'Equifax': '#dc3545',
+  };
+  return (
+    <span className="cb-vendor-bureau-badge" style={{ background: colors[bureau] || '#6b7280' }}>
+      {bureau}
+    </span>
+  );
 }
 
 export default function VendorStep({
@@ -67,16 +87,17 @@ export default function VendorStep({
   progress,
   vendors,
   onNavigateStep,
+  onVendorAction,
 }) {
   const prereq = TIER_PREREQS[step];
   const reportingCount = countReportingVendors(vendors);
+  const tierNumber = STEP_TO_TIER[step];
+  const catalog = VENDOR_CATALOG[tierNumber] || [];
 
-  // Determine if prerequisites are met
   let prereqsMet = true;
   let prereqStepLabel = null;
 
   if (step === 3) {
-    // Tier 1 needs foundation items from steps 1-2
     prereqsMet = checkFoundationComplete(progress);
     if (!prereqsMet) prereqStepLabel = 1;
   } else if (prereq) {
@@ -84,19 +105,33 @@ export default function VendorStep({
     if (!prereqsMet) prereqStepLabel = prereq.requiredStep;
   }
 
-  const tierNumber = step === 3 ? 1 : step === 5 ? 2 : step === 6 ? 3 : 4;
+  const handleApply = (vendor) => {
+    vendor.bureaus.forEach(bureau => {
+      onVendorAction?.({ bureau, vendor_name: vendor.name, tier: tierNumber, applied: true, completed: false });
+    });
+  };
+
+  const handleMarkReporting = (vendor) => {
+    vendor.bureaus.forEach(bureau => {
+      onVendorAction?.({ bureau, vendor_name: vendor.name, tier: tierNumber, applied: true, completed: true });
+    });
+  };
+
+  const handleRemove = (vendor) => {
+    vendor.bureaus.forEach(bureau => {
+      onVendorAction?.({ bureau, vendor_name: vendor.name, tier: tierNumber, applied: false, completed: false });
+    });
+  };
 
   return (
     <div className="cb-vendor-page">
-      {/* Header */}
       <div className="cb-vendor-page-header">
         <h2 className="cb-vendor-page-title">{tierName}</h2>
         <p className="cb-vendor-page-subtitle">
-          {targetCount} vendors reporting
+          {reportingCount} of {targetCount} vendors reporting
         </p>
       </div>
 
-      {/* Warning box when prerequisites not met */}
       {!prereqsMet && (
         <>
           <div className="cb-vendor-warning">
@@ -125,11 +160,8 @@ export default function VendorStep({
         </>
       )}
 
-      {/* Foundation checklist */}
       <div className="cb-prereq-section">
-        <h3 className="cb-prereq-section-title">
-          ⚙️ Foundation
-        </h3>
+        <h3 className="cb-prereq-section-title">⚙️ Foundation</h3>
         <div className="cb-prereq-grid">
           {FOUNDATION_ITEMS.map(item => {
             const status = getItemStatus(item, progress);
@@ -145,9 +177,7 @@ export default function VendorStep({
       </div>
 
       <div className="cb-prereq-section">
-        <h3 className="cb-prereq-section-title">
-          ⚙️ Business Credit Builder
-        </h3>
+        <h3 className="cb-prereq-section-title">⚙️ Business Credit Builder</h3>
         <div className="cb-prereq-grid">
           {CREDIT_ITEMS.map(item => {
             const status = getItemStatus(item, progress);
@@ -156,6 +186,70 @@ export default function VendorStep({
                 <StatusIcon status={status} />
                 <span className="cb-prereq-item-name">{item.name}</span>
                 <span className="cb-prereq-item-info" onClick={() => onNavigateStep(item.step)} title={`View ${item.name}`}>i</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Vendor catalog */}
+      <div className="cb-vendor-catalog">
+        <h3 className="cb-vendor-catalog-title">Tier {tierNumber} Vendor Accounts</h3>
+        <p className="cb-vendor-catalog-desc">
+          Apply for these accounts, then mark them as reporting once they appear on your business credit reports.
+        </p>
+
+        <div className="cb-vendor-catalog-list">
+          {catalog.map(vendor => {
+            const status = getVendorStatus(vendor.name, vendors);
+            return (
+              <div key={vendor.name} className={`cb-vendor-card cb-vendor-card-${status}`}>
+                <div className="cb-vendor-card-header">
+                  <div className="cb-vendor-card-info">
+                    <span className="cb-vendor-card-name">{vendor.name}</span>
+                    <span className="cb-vendor-card-category">{vendor.category}</span>
+                    <span className="cb-vendor-card-terms">{vendor.terms}</span>
+                  </div>
+                  {status === 'reporting' && <span className="cb-vendor-card-badge cb-vendor-badge-reporting">Reporting</span>}
+                  {status === 'applied' && <span className="cb-vendor-card-badge cb-vendor-badge-applied">Applied</span>}
+                </div>
+
+                <div className="cb-vendor-card-bureaus">
+                  {vendor.bureaus.map(b => <BureauBadge key={b} bureau={b} />)}
+                </div>
+
+                <div className="cb-vendor-card-actions">
+                  {status === 'none' && (
+                    <>
+                      <a href={vendor.url} target="_blank" rel="noopener noreferrer" className="cb-btn cb-btn-outline cb-btn-sm">
+                        Visit Website
+                      </a>
+                      <button className="cb-btn cb-btn-primary cb-btn-sm" onClick={() => handleApply(vendor)}>
+                        Mark Applied
+                      </button>
+                    </>
+                  )}
+                  {status === 'applied' && (
+                    <>
+                      <button className="cb-btn cb-btn-outline cb-btn-sm" onClick={() => handleRemove(vendor)}>
+                        Remove
+                      </button>
+                      <button className="cb-btn cb-btn-save cb-btn-sm" onClick={() => handleMarkReporting(vendor)}>
+                        Mark Reporting
+                      </button>
+                    </>
+                  )}
+                  {status === 'reporting' && (
+                    <>
+                      <a href={vendor.url} target="_blank" rel="noopener noreferrer" className="cb-btn cb-btn-outline cb-btn-sm">
+                        Visit Website
+                      </a>
+                      <button className="cb-btn cb-btn-outline cb-btn-sm" onClick={() => handleRemove(vendor)}>
+                        Remove
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             );
           })}

@@ -69,23 +69,23 @@ router.post('/score', async (req, res) => {
 
 router.get('/vendors', async (req, res) => {
   const { rows } = await pool.query(
-    'SELECT bureau, vendor_name, completed FROM credit_builder_vendors WHERE user_id = $1 ORDER BY bureau, vendor_name',
+    'SELECT bureau, vendor_name, tier, applied, completed FROM credit_builder_vendors WHERE user_id = $1 ORDER BY tier, bureau, vendor_name',
     [req.user.id]
   );
   res.json(rows);
 });
 
 router.put('/vendors', async (req, res) => {
-  const { bureau, vendor_name, completed } = req.body;
+  const { bureau, vendor_name, tier, applied, completed } = req.body;
   if (!bureau || !vendor_name) return res.status(400).json({ error: 'bureau and vendor_name required' });
 
   const { rows } = await pool.query(
-    `INSERT INTO credit_builder_vendors (user_id, bureau, vendor_name, completed, updated_at)
-     VALUES ($1, $2, $3, $4, NOW())
+    `INSERT INTO credit_builder_vendors (user_id, bureau, vendor_name, tier, applied, completed, updated_at)
+     VALUES ($1, $2, $3, $4, $5, $6, NOW())
      ON CONFLICT (user_id, bureau, vendor_name)
-     DO UPDATE SET completed = $4, updated_at = NOW()
+     DO UPDATE SET tier = $4, applied = $5, completed = $6, updated_at = NOW()
      RETURNING *`,
-    [req.user.id, bureau, vendor_name, completed !== false]
+    [req.user.id, bureau, vendor_name, tier || 1, applied !== false, completed === true]
   );
   res.json(rows[0]);
 });

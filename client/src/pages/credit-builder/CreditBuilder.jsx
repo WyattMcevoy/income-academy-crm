@@ -73,18 +73,21 @@ export default function CreditBuilder() {
         token: auth.token,
         body: { step: activeStep, sub_item: subSlug, completed: true },
       });
-      setProgress(prev => ({
-        ...prev,
-        [`${activeStep}:${subSlug}`]: { ...prev[`${activeStep}:${subSlug}`], completed: true },
-      }));
-      recalcScore();
+      setProgress(prev => {
+        const updated = {
+          ...prev,
+          [`${activeStep}:${subSlug}`]: { ...prev[`${activeStep}:${subSlug}`], completed: true },
+        };
+        recalcScore(updated);
+        return updated;
+      });
     } catch (e) {
       console.error('Failed to mark complete:', e);
     }
   };
 
-  const recalcScore = async () => {
-    const completedCount = Object.values(progress).filter(p => p.completed).length + 1;
+  const recalcScore = async (currentProgress) => {
+    const completedCount = Object.values(currentProgress || progress).filter(p => p.completed).length;
     const totalItems = STEPS.reduce((sum, s) => sum + s.subItems.length, 0);
     const newScore = Math.round((completedCount / totalItems) * 890);
     try {
@@ -96,6 +99,31 @@ export default function CreditBuilder() {
       setScore(result);
     } catch (e) {
       console.error('Failed to update score:', e);
+    }
+  };
+
+  const handleVendorAction = async (vendorData) => {
+    try {
+      const result = await api('/api/credit-builder/vendors', {
+        method: 'PUT',
+        token: auth.token,
+        body: vendorData,
+      });
+      setVendors(prev => {
+        const key = `${result.bureau}:${result.vendor_name}`;
+        const existing = prev.findIndex(v => v.bureau === result.bureau && v.vendor_name === result.vendor_name);
+        if (!result.applied && !result.completed) {
+          return prev.filter((_, i) => i !== existing);
+        }
+        if (existing >= 0) {
+          const updated = [...prev];
+          updated[existing] = result;
+          return updated;
+        }
+        return [...prev, result];
+      });
+    } catch (e) {
+      console.error('Failed to update vendor:', e);
     }
   };
 
@@ -232,6 +260,7 @@ export default function CreditBuilder() {
                   progress={progress}
                   vendors={vendors}
                   onNavigateStep={(stepNum) => { setActiveStep(stepNum); setActiveSubItem(null); }}
+                  onVendorAction={handleVendorAction}
                 />
               ) : (
                 <div className="cb-step-overview">

@@ -122,6 +122,8 @@ CREATE TABLE IF NOT EXISTS credit_builder_vendors (
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   bureau TEXT NOT NULL CHECK (bureau IN ('D&B', 'Equifax', 'Experian')),
   vendor_name TEXT NOT NULL,
+  tier INTEGER NOT NULL DEFAULT 1,
+  applied BOOLEAN NOT NULL DEFAULT FALSE,
   completed BOOLEAN NOT NULL DEFAULT FALSE,
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(user_id, bureau, vendor_name)
