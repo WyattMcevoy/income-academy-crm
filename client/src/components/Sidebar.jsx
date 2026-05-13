@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { label: 'Campaigns', path: '/campaigns', icon: '📧', enabled: false, note: 'Phase 12' },
   { label: 'Credit Builder', path: '/credit-builder', icon: '📊', enabled: true },
   { label: 'Expenses', path: '/expenses', icon: '💰', enabled: true },
-  { label: 'Admin', path: '/admin', icon: '🛡️', enabled: true },
+  { label: 'Admin', path: '/admin', icon: '🛡️', enabled: true, adminOnly: true },
   { label: 'Settings', path: '/settings', icon: '⚙️', enabled: false, note: 'Later' },
 ];
 
@@ -48,7 +48,7 @@ export default function Sidebar() {
         </div>
 
         <nav className="sidebar-nav">
-          {NAV_ITEMS.map((item) =>
+          {NAV_ITEMS.filter(item => !item.adminOnly || auth.user?.is_admin).map((item) =>
             item.enabled ? (
               <NavLink
                 key={item.path}

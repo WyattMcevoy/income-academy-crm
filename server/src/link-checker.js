@@ -8,7 +8,7 @@ const RESOURCE_LINKS = [
   { sub_item: 'business-phone', name: 'Phone.com', url: 'https://www.phone.com/' },
   { sub_item: 'business-bank-account', name: 'Relay Financial', url: 'https://relayfi.com/' },
   { sub_item: 'dnb-verification', name: 'Dun & Bradstreet', url: 'https://www.dnb.com/en-us/smb/duns/get-a-duns.html' },
-  { sub_item: 'experian-verification', name: 'Experian Business', url: 'https://www.experian.com/small-business/business-information' },
+  { sub_item: 'experian-verification', name: 'Experian Business', url: 'https://www.experian.com/small-business/' },
   { sub_item: 'equifax-verification', name: 'Equifax Business', url: 'https://www.equifax.com/business/product/business-credit-reports-small-business/' },
   { sub_item: 'addressing-inaccuracies', name: 'DisputeBee', url: 'https://disputebee.com/' },
   { sub_item: 'lexisnexis', name: 'LexisNexis', url: 'https://consumer.risk.lexisnexis.com/request' },
@@ -21,10 +21,12 @@ async function checkUrl(link) {
   const timeout = setTimeout(() => controller.abort(), 15000);
 
   try {
+    // Use a real-browser UA so bot-blocking WAFs (Experian, banks) don't return 403.
+    const realUa = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
     const res = await fetch(link.url, {
       method: 'HEAD',
       signal: controller.signal,
-      headers: { 'User-Agent': 'IncomeAcademy-LinkChecker/1.0' },
+      headers: { 'User-Agent': realUa },
       redirect: 'follow',
     });
     clearTimeout(timeout);
@@ -34,10 +36,14 @@ async function checkUrl(link) {
       const getRes = await fetch(link.url, {
         method: 'GET',
         signal: AbortSignal.timeout(15000),
-        headers: { 'User-Agent': 'IncomeAcademy-LinkChecker/1.0' },
+        headers: { 'User-Agent': realUa },
         redirect: 'follow',
       });
-      return { ...link, status_code: getRes.status, ok: getRes.ok, error_message: null };
+      // 403 with browser UA usually means the site is alive but actively blocks
+      // automated requests (Experian, some banks). Treat as "up" so we don't
+      // false-positive every periodic check.
+      const ok = getRes.ok || getRes.status === 403;
+      return { ...link, status_code: getRes.status, ok, error_message: ok ? null : null };
     }
 
     return { ...link, status_code: res.status, ok: res.ok, error_message: null };
