@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { pool } from '../db/pool.js';
+import { logActivity } from '../activity.js';
 
 const router = Router();
 
@@ -23,6 +24,7 @@ router.put('/progress', async (req, res) => {
      RETURNING *`,
     [req.user.id, step, sub_item, selected_option || null]
   );
+  logActivity(req.user.id, 'cb_select', { step, sub_item, selected_option }, req);
   res.json(rows[0]);
 });
 
@@ -38,6 +40,7 @@ router.put('/progress/complete', async (req, res) => {
      RETURNING *`,
     [req.user.id, step, sub_item, completed !== false]
   );
+  logActivity(req.user.id, 'cb_complete', { step, sub_item }, req);
   res.json(rows[0]);
 });
 
@@ -87,6 +90,7 @@ router.put('/vendors', async (req, res) => {
      RETURNING *`,
     [req.user.id, bureau, vendor_name, tier || 1, applied !== false, completed === true]
   );
+  logActivity(req.user.id, 'cb_vendor', { bureau, vendor_name, tier, applied, completed }, req);
   res.json(rows[0]);
 });
 

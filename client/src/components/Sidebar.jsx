@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { label: 'Campaigns', path: '/campaigns', icon: '📧', enabled: false, note: 'Phase 12' },
   { label: 'Credit Builder', path: '/credit-builder', icon: '📊', enabled: true },
   { label: 'Expenses', path: '/expenses', icon: '💰', enabled: true },
+  { label: 'Admin', path: '/admin', icon: '🛡️', enabled: true },
   { label: 'Settings', path: '/settings', icon: '⚙️', enabled: false, note: 'Later' },
 ];
 

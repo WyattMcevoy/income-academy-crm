@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
 import { pool } from '../db/pool.js';
 import { isEmail, isStrongPassword, cleanString } from '../validate.js';
+import { logActivity } from '../activity.js';
 
 const router = Router();
 
@@ -37,6 +38,7 @@ router.post('/register', authLimiter, async (req, res) => {
       [email, hash, name]
     );
     const user = rows[0];
+    logActivity(user.id, 'register', { email: user.email }, req);
     res.json({ token: signToken(user), user });
   } catch (err) {
     if (err.code === '23505') return res.status(409).json({ error: 'Email already registered' });
@@ -65,6 +67,7 @@ router.post('/login', authLimiter, async (req, res) => {
       ? await bcrypt.compare(password, user.password_hash)
       : await bcrypt.compare(password, '$2a$12$invalidsaltinvalidsaltinvaliux.7FqCp3fcX8Nk0F9PYq5iGx2rYkG');
     if (!user || !ok) return res.status(401).json({ error: 'Invalid credentials' });
+    logActivity(user.id, 'login', { email: user.email }, req);
     res.json({
       token: signToken(user),
       user: { id: user.id, email: user.email, name: user.name },

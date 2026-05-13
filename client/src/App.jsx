@@ -9,6 +9,7 @@ import LeadDetail from './pages/LeadDetail.jsx';
 import Clients from './pages/Clients.jsx';
 import Expenses from './pages/Expenses.jsx';
 import CreditBuilder from './pages/credit-builder/CreditBuilder.jsx';
+import Admin from './pages/Admin.jsx';
 
 function Protected({ children }) {
   const { auth } = useAuth();
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/clients" element={<Protected><Clients /></Protected>} />
         <Route path="/credit-builder" element={<Protected><CreditBuilder /></Protected>} />
         <Route path="/expenses" element={<Protected><Expenses /></Protected>} />
+        <Route path="/admin" element={<Protected><Admin /></Protected>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Shell>
