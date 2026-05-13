@@ -110,7 +110,6 @@ export default function CreditBuilder() {
         body: vendorData,
       });
       setVendors(prev => {
-        const key = `${result.bureau}:${result.vendor_name}`;
         const existing = prev.findIndex(v => v.bureau === result.bureau && v.vendor_name === result.vendor_name);
         if (!result.applied && !result.completed) {
           return prev.filter((_, i) => i !== existing);

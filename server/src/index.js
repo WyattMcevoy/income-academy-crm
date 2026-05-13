@@ -8,7 +8,9 @@ import expensesRouter from './routes/expenses.js';
 import webhooksRouter from './routes/webhooks.js';
 import intakeRouter from './routes/intake.js';
 import creditBuilderRouter from './routes/credit-builder.js';
+import adminRouter from './routes/admin.js';
 import { requireAuth } from './middleware/auth.js';
+import { startPeriodicChecks } from './link-checker.js';
 
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
   console.error('FATAL: JWT_SECRET must be set and at least 32 chars.');
@@ -66,6 +68,7 @@ app.use('/api/leads', requireAuth, leadsRouter);
 app.use('/api/clients', requireAuth, clientsRouter);
 app.use('/api/expenses', requireAuth, expensesRouter);
 app.use('/api/credit-builder', requireAuth, creditBuilderRouter);
+app.use('/api/admin', requireAuth, adminRouter);
 
 // Public lead intake (no JWT — uses header token instead).
 app.use('/api/intake', intakeRouter);
@@ -77,4 +80,7 @@ app.use((err, _req, res, _next) => {
 });
 
 const port = process.env.PORT || 4000;
-app.listen(port, () => console.log(`API listening on :${port}`));
+app.listen(port, () => {
+  console.log(`API listening on :${port}`);
+  startPeriodicChecks();
+});
