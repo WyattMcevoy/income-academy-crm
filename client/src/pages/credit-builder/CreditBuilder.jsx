@@ -7,12 +7,14 @@ import VendorDistribution from './VendorDistribution.jsx';
 import StepSidebar from './StepSidebar.jsx';
 import SubPage from './SubPage.jsx';
 import VendorStep from './VendorStep.jsx';
+import FundabilityDashboard from './FundabilityDashboard.jsx';
 import './credit-builder.css';
 
 const VENDOR_STEPS = [3, 5, 6, 7];
 
 export default function CreditBuilder() {
   const { auth } = useAuth();
+  const [activeTab, setActiveTab] = useState('builder');
   const [activeStep, setActiveStep] = useState(1);
   const [activeSubItem, setActiveSubItem] = useState(null);
   const [progress, setProgress] = useState({});
@@ -140,129 +142,161 @@ export default function CreditBuilder() {
       <div className="cb-header">
         <h1 className="cb-title">Business Credit Builder</h1>
         <div className="cb-nav-tabs">
-          <span className="cb-nav-tab cb-nav-tab-active">Business Credit Builder</span>
+          <span className={`cb-nav-tab ${activeTab === 'builder' ? 'cb-nav-tab-active' : ''}`} onClick={() => setActiveTab('builder')}>Business Credit Builder</span>
           <span className="cb-nav-divider">|</span>
-          <span className="cb-nav-tab">Fundability Dashboard</span>
+          <span className={`cb-nav-tab ${activeTab === 'dashboard' ? 'cb-nav-tab-active' : ''}`} onClick={() => setActiveTab('dashboard')}>Fundability Dashboard</span>
         </div>
       </div>
 
-      {/* Progress bar */}
-      <div className="cb-progress-bar">
-        {STEPS.map(s => (
-          <button
-            key={s.step}
-            className={`cb-progress-step ${activeStep === s.step ? 'cb-progress-step-active' : ''} ${getStepProgress(s.step) === 100 ? 'cb-progress-step-done' : ''}`}
-            onClick={() => { setActiveStep(s.step); setActiveSubItem(null); }}
-          >
-            {s.step}/7
-          </button>
-        ))}
-      </div>
-
-      <div className="cb-main">
-        {/* Left column: Step list */}
-        <div className="cb-steps-col">
-          {STEPS.map(s => (
-            <button
-              key={s.step}
-              className={`cb-step-card ${activeStep === s.step ? 'cb-step-card-active' : ''}`}
-              onClick={() => { setActiveStep(s.step); setActiveSubItem(null); }}
-            >
-              <span className="cb-step-icon">{s.icon}</span>
-              <div className="cb-step-info">
-                <span className="cb-step-label">STEP {s.step}</span>
-                <span className="cb-step-name">{s.name}</span>
-              </div>
-            </button>
-          ))}
-        </div>
-
-        {/* Center column: Step detail / sub-page */}
-        <div className="cb-content-col">
-          {activeSubItem ? (
-            <SubPage
-              step={activeStep}
-              subSlug={activeSubItem}
-              content={SUB_PAGE_CONTENT[activeSubItem]}
-              progress={progress[`${activeStep}:${activeSubItem}`]}
-              formData={formData[activeSubItem]}
-              onSelect={(option) => handleSelectOption(activeSubItem, option)}
-              onComplete={() => handleComplete(activeSubItem)}
-              onBack={() => setActiveSubItem(null)}
-              onNavigate={(slug) => setActiveSubItem(slug)}
-              onSaveForm={(data) => handleSaveForm(activeSubItem, data)}
-            />
-          ) : VENDOR_STEPS.includes(activeStep) ? (
-            <VendorStep
-              step={activeStep}
-              tierName={currentStep?.name}
-              targetCount={SUB_PAGE_CONTENT[currentStep?.subItems[0]?.slug]?.targetCount || 3}
+      {activeTab === 'dashboard' ? (
+        <div className="cb-main cb-main-dashboard">
+          <div className="cb-content-col" style={{ gridColumn: '1 / -1', maxWidth: '100%' }}>
+            <FundabilityDashboard
+              score={score.score}
               progress={progress}
-              vendors={vendors}
-              onNavigateStep={(stepNum) => { setActiveStep(stepNum); setActiveSubItem(null); }}
+              onNavigateToItem={(step, slug) => {
+                setActiveTab('builder');
+                setActiveStep(step);
+                setActiveSubItem(slug);
+              }}
             />
-          ) : (
-            <div className="cb-step-overview">
-              <div className="cb-step-overview-header">
-                <span className="cb-step-overview-icon">{currentStep?.icon}</span>
-                <div>
-                  <div className="cb-step-overview-label">Step {activeStep}/7</div>
-                  <h2 className="cb-step-overview-title">{currentStep?.name}</h2>
+          </div>
+          <div className="cb-score-col">
+            <ScoreGauge score={score.score} maxScore={890} />
+            <div className="cb-score-stats">
+              <div className="cb-stat-row">
+                <span>Approved Funding</span>
+                <span>${score.approved_funding?.toLocaleString() || 0}</span>
+              </div>
+              <div className="cb-stat-row">
+                <span>Revenue vs Funding</span>
+                <span>{score.score > 0 ? Math.round((score.approved_funding / score.score) * 100) : 0}%</span>
+              </div>
+            </div>
+            <VendorDistribution vendors={vendors} />
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Progress bar */}
+          <div className="cb-progress-bar">
+            {STEPS.map(s => (
+              <button
+                key={s.step}
+                className={`cb-progress-step ${activeStep === s.step ? 'cb-progress-step-active' : ''} ${getStepProgress(s.step) === 100 ? 'cb-progress-step-done' : ''}`}
+                onClick={() => { setActiveStep(s.step); setActiveSubItem(null); }}
+              >
+                {s.step}/7
+              </button>
+            ))}
+          </div>
+
+          <div className="cb-main">
+            {/* Left column: Step list */}
+            <div className="cb-steps-col">
+              {STEPS.map(s => (
+                <button
+                  key={s.step}
+                  className={`cb-step-card ${activeStep === s.step ? 'cb-step-card-active' : ''}`}
+                  onClick={() => { setActiveStep(s.step); setActiveSubItem(null); }}
+                >
+                  <span className="cb-step-icon">{s.icon}</span>
+                  <div className="cb-step-info">
+                    <span className="cb-step-label">STEP {s.step}</span>
+                    <span className="cb-step-name">{s.name}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            {/* Center column: Step detail / sub-page */}
+            <div className="cb-content-col">
+              {activeSubItem ? (
+                <SubPage
+                  step={activeStep}
+                  subSlug={activeSubItem}
+                  content={SUB_PAGE_CONTENT[activeSubItem]}
+                  progress={progress[`${activeStep}:${activeSubItem}`]}
+                  formData={formData[activeSubItem]}
+                  onSelect={(option) => handleSelectOption(activeSubItem, option)}
+                  onComplete={() => handleComplete(activeSubItem)}
+                  onBack={() => setActiveSubItem(null)}
+                  onNavigate={(slug) => setActiveSubItem(slug)}
+                  onSaveForm={(data) => handleSaveForm(activeSubItem, data)}
+                />
+              ) : VENDOR_STEPS.includes(activeStep) ? (
+                <VendorStep
+                  step={activeStep}
+                  tierName={currentStep?.name}
+                  targetCount={SUB_PAGE_CONTENT[currentStep?.subItems[0]?.slug]?.targetCount || 3}
+                  progress={progress}
+                  vendors={vendors}
+                  onNavigateStep={(stepNum) => { setActiveStep(stepNum); setActiveSubItem(null); }}
+                />
+              ) : (
+                <div className="cb-step-overview">
+                  <div className="cb-step-overview-header">
+                    <span className="cb-step-overview-icon">{currentStep?.icon}</span>
+                    <div>
+                      <div className="cb-step-overview-label">Step {activeStep}/7</div>
+                      <h2 className="cb-step-overview-title">{currentStep?.name}</h2>
+                    </div>
+                  </div>
+
+                  <div className="cb-sub-items">
+                    {currentStep?.subItems.map(si => {
+                      const prog = progress[`${activeStep}:${si.slug}`];
+                      const subContent = SUB_PAGE_CONTENT[si.slug];
+                      const followUp = subContent?.followUp?.[prog?.selected_option];
+                      const status = followUp?.status || (prog?.completed ? 'positive' : null);
+                      const statusIcon = status === 'positive' ? '✅' : status === 'negative' ? '❌' : '⭕';
+                      return (
+                        <button
+                          key={si.slug}
+                          className={`cb-sub-item ${status === 'positive' ? 'cb-sub-item-done' : ''} ${status === 'negative' ? 'cb-sub-item-warning' : ''}`}
+                          onClick={() => setActiveSubItem(si.slug)}
+                        >
+                          <span className="cb-sub-item-status">{statusIcon}</span>
+                          <span className="cb-sub-item-name">{si.name}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="cb-step-nav">
+                    {activeStep > 1 && (
+                      <button className="cb-btn cb-btn-outline" onClick={handlePrevStep}>
+                        ← Previous
+                      </button>
+                    )}
+                    {activeStep < 7 && (
+                      <button className="cb-btn cb-btn-primary" onClick={handleNextStep}>
+                        Next →
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Right column: Score + Vendors */}
+            <div className="cb-score-col">
+              <ScoreGauge score={score.score} maxScore={890} />
+              <div className="cb-score-stats">
+                <div className="cb-stat-row">
+                  <span>Approved Funding</span>
+                  <span>${score.approved_funding?.toLocaleString() || 0}</span>
+                </div>
+                <div className="cb-stat-row">
+                  <span>Revenue vs Funding</span>
+                  <span>{score.score > 0 ? Math.round((score.approved_funding / score.score) * 100) : 0}%</span>
                 </div>
               </div>
-
-              <div className="cb-sub-items">
-                {currentStep?.subItems.map(si => {
-                  const prog = progress[`${activeStep}:${si.slug}`];
-                  const subContent = SUB_PAGE_CONTENT[si.slug];
-                  const followUp = subContent?.followUp?.[prog?.selected_option];
-                  const status = followUp?.status || (prog?.completed ? 'positive' : null);
-                  const statusIcon = status === 'positive' ? '✅' : status === 'negative' ? '❌' : '⭕';
-                  return (
-                    <button
-                      key={si.slug}
-                      className={`cb-sub-item ${status === 'positive' ? 'cb-sub-item-done' : ''} ${status === 'negative' ? 'cb-sub-item-warning' : ''}`}
-                      onClick={() => setActiveSubItem(si.slug)}
-                    >
-                      <span className="cb-sub-item-status">{statusIcon}</span>
-                      <span className="cb-sub-item-name">{si.name}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="cb-step-nav">
-                {activeStep > 1 && (
-                  <button className="cb-btn cb-btn-outline" onClick={handlePrevStep}>
-                    ← Previous
-                  </button>
-                )}
-                {activeStep < 7 && (
-                  <button className="cb-btn cb-btn-primary" onClick={handleNextStep}>
-                    Next →
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Right column: Score + Vendors */}
-        <div className="cb-score-col">
-          <ScoreGauge score={score.score} maxScore={890} />
-          <div className="cb-score-stats">
-            <div className="cb-stat-row">
-              <span>Approved Funding</span>
-              <span>${score.approved_funding?.toLocaleString() || 0}</span>
-            </div>
-            <div className="cb-stat-row">
-              <span>Revenue vs Funding</span>
-              <span>{score.score > 0 ? Math.round((score.approved_funding / score.score) * 100) : 0}%</span>
+              <VendorDistribution vendors={vendors} />
             </div>
           </div>
-          <VendorDistribution vendors={vendors} />
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }
