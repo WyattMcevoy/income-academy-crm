@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vote on the next Income Academy course — Help shape what we build</title>
+<meta name="description" content="We're building the fifth Foundation Pass course. Vote on which of three options to build next: How to Write & Publish a Book, Pet Sitting Side Business, or Voiceover From Home.">
+<meta name="robots" content="index,follow">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://incomeacademy.biz/vote-next-course">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Vote on the next Income Academy course">
+<meta property="og:description" content="Help us pick what we build next. Three options. One vote.">
+<meta property="og:url" content="https://incomeacademy.biz/vote-next-course">
+
+<link rel="stylesheet" href="/styles.css">
+
+<style>
+  body { background: var(--cream, #faf6ee); }
+
+  .vote-hero {
+    background: linear-gradient(135deg, var(--navy, #0f172a) 0%, #1e293b 100%);
+    color: #fff;
+    padding: 80px 24px 60px;
+    text-align: center;
+  }
+  .vote-hero-inner { max-width: 720px; margin: 0 auto; }
+  .vote-badge {
+    display: inline-block;
+    background: rgba(245, 158, 11, 0.18);
+    color: #fbbf24;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .vote-hero h1 { font-size: 40px; color: #fff; margin: 8px 0 16px; }
+  .vote-hero p { font-size: 18px; color: #cbd5e1; max-width: 580px; margin: 0 auto; }
+
+  .vote-container {
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 24px 80px;
+  }
+
+  .vote-form-container {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+  }
+
+  .vote-form-container h2 {
+    font-size: 24px;
+    color: var(--navy, #0f172a);
+    margin: 0 0 8px;
+  }
+  .vote-instructions {
+    color: #6b7280;
+    margin-bottom: 28px;
+    font-size: 15px;
+  }
+
+  .vote-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .vote-option {
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    background: #fff;
+  }
+  .vote-option:hover {
+    border-color: #f59e0b;
+    transform: translateY(-2px);
+  }
+  .vote-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .vote-option input[type="radio"]:checked + .vote-option-content {
+    /* styled via parent class */
+  }
+  .vote-option.selected {
+    border-color: #f59e0b;
+    background: #fffbeb;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.15);
+  }
+
+  .vote-option-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+  .vote-option.book .vote-option-icon { background: #dbeafe; color: #1e40af; }
+  .vote-option.pet .vote-option-icon  { background: #fef3c7; color: #92400e; }
+  .vote-option.voice .vote-option-icon { background: #fce7f3; color: #9d174d; }
+
+  .vote-option h3 {
+    font-size: 18px;
+    color: #0f172a;
+    margin: 0 0 8px;
+  }
+  .vote-option .vote-option-tagline {
+    color: #6b7280;
+    font-size: 14px;
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+  .vote-option ul {
+    margin: 0 0 12px;
+    padding-left: 18px;
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .vote-option-radio-indicator {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f3f4f6;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .vote-option.selected .vote-option-radio-indicator {
+    color: #f59e0b;
+  }
+  .vote-option-radio-circle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #d1d5db;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .vote-option.selected .vote-option-radio-circle {
+    border-color: #f59e0b;
+    background: #f59e0b;
+    box-shadow: inset 0 0 0 3px #fff;
+  }
+
+  .vote-divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 32px 0;
+  }
+
+  .vote-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 540px) {
+    .vote-fields { grid-template-columns: 1fr; }
+  }
+
+  .vote-field label {
+    display: block;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .vote-field input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+  .vote-field input:focus {
+    outline: none;
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+  }
+
+  .vote-textarea-field { margin-bottom: 24px; }
+  .vote-textarea-field label {
+    display: block;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .vote-textarea-field textarea {
+    width: 100%;
+    min-height: 90px;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+  .vote-textarea-help {
+    color: #9ca3af;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  .vote-submit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .vote-submit {
+    padding: 16px 32px;
+    background: #0f172a;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .vote-submit:hover { background: #1e293b; }
+  .vote-submit:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+  }
+  .vote-privacy-note {
+    color: #9ca3af;
+    font-size: 13px;
+    max-width: 320px;
+  }
+
+  .vote-thanks {
+    background: #d1fae5;
+    border-left: 4px solid #10b981;
+    padding: 20px 24px;
+    border-radius: 8px;
+    color: #065f46;
+    display: none;
+  }
+  .vote-thanks.show { display: block; }
+  .vote-thanks h3 { margin: 0 0 6px; color: #065f46; }
+  .vote-thanks p { margin: 0; line-height: 1.6; }
+
+  .vote-error {
+    background: #fee2e2;
+    border-left: 4px solid #ef4444;
+    padding: 16px 20px;
+    border-radius: 8px;
+    color: #991b1b;
+    margin-bottom: 16px;
+    display: none;
+    font-size: 14px;
+  }
+  .vote-error.show { display: block; }
+</style>
+</head>
+<body>
+
+<section class="vote-hero">
+  <div class="vote-hero-inner">
+    <div class="vote-badge">Course #5 — your vote</div>
+    <h1>Help us pick what we build next.</h1>
+    <p>Three options for the fifth Foundation Pass course. One vote. We'll build whichever wins — and the people who voted for it get first access at a discount.</p>
+  </div>
+</section>
+
+<main class="vote-container">
+
+  <form class="vote-form-container" id="vote-form" method="post" action="https://api.leadconnectorhq.com/widget/form/VOTE_FORM_PLACEHOLDER">
+
+    <h2>Cast your vote</h2>
+    <p class="vote-instructions">Pick the one you'd actually buy. Not "the one that sounds cool" — the one you'd open week 1 and do the homework on.</p>
+
+    <div class="vote-error" id="vote-error">Please pick one course option before submitting.</div>
+
+    <div class="vote-grid">
+
+      <!-- Book -->
+      <label class="vote-option book" data-option="book">
+        <input type="radio" name="course_vote" value="write-and-publish-book" required>
+        <div class="vote-option-content">
+          <div class="vote-option-icon">📚</div>
+          <h3>How to Write & Publish a Book</h3>
+          <p class="vote-option-tagline">Self-publish on Amazon KDP — fiction, nonfiction, or memoir</p>
+          <ul>
+            <li>Plot or outline → manuscript in 90 days</li>
+            <li>Self-publish via Amazon KDP (no agent, no traditional gatekeepers)</li>
+            <li>Cover design + formatting using AI + cheap tools</li>
+            <li>Honest revenue expectations (most first books earn $50–500/mo at year 1; some break out)</li>
+          </ul>
+          <div class="vote-option-radio-indicator">
+            <span class="vote-option-radio-circle"></span>
+            <span>I'd buy this one</span>
+          </div>
+        </div>
+      </label>
+
+      <!-- Pet Sitting -->
+      <label class="vote-option pet" data-option="pet">
+        <input type="radio" name="course_vote" value="pet-sitting-side-business">
+        <div class="vote-option-content">
+          <div class="vote-option-icon">🐕</div>
+          <h3>Pet Sitting Side Business</h3>
+          <p class="vote-option-tagline">Build a local pet-sitting / dog-walking business from your home</p>
+          <ul>
+            <li>Set up on Rover + local network</li>
+            <li>Price your services + handle the legal/insurance basics</li>
+            <li>Stack 5–10 repeat clients for predictable income</li>
+            <li>Physical work, low tech, retirees & animal lovers excel here</li>
+          </ul>
+          <div class="vote-option-radio-indicator">
+            <span class="vote-option-radio-circle"></span>
+            <span>I'd buy this one</span>
+          </div>
+        </div>
+      </label>
+
+      <!-- Voiceover -->
+      <label class="vote-option voice" data-option="voice">
+        <input type="radio" name="course_vote" value="voiceover-from-home">
+        <div class="vote-option-content">
+          <div class="vote-option-icon">🎙️</div>
+          <h3>Voiceover From Home</h3>
+          <p class="vote-option-tagline">Record voice work for audiobooks, commercials, and eLearning</p>
+          <ul>
+            <li>Set up a closet studio for under $200</li>
+            <li>Audition on Voices.com, Voice123, and ACX (audiobooks)</li>
+            <li>Mature voices are in HIGH demand (commercials, audiobooks, training)</li>
+            <li>Work from your couch, no clients to chase in person</li>
+          </ul>
+          <div class="vote-option-radio-indicator">
+            <span class="vote-option-radio-circle"></span>
+            <span>I'd buy this one</span>
+          </div>
+        </div>
+      </label>
+
+    </div>
+
+    <div class="vote-divider"></div>
+
+    <h3 style="margin: 0 0 16px; color: var(--navy, #0f172a); font-size: 18px;">Quick info so we can notify you</h3>
+
+    <div class="vote-fields">
+      <div class="vote-field">
+        <label for="vote-name">Your name</label>
+        <input type="text" name="full_name" id="vote-name" required>
+      </div>
+      <div class="vote-field">
+        <label for="vote-email">Email</label>
+        <input type="email" name="email" id="vote-email" required>
+      </div>
+    </div>
+
+    <div class="vote-textarea-field">
+      <label for="vote-why">Why this one? (optional, 1–2 sentences)</label>
+      <textarea name="why" id="vote-why" placeholder="What makes this the one you'd actually do?"></textarea>
+      <div class="vote-textarea-help">Your honest reasoning helps us build it right. Skip if you'd rather not.</div>
+    </div>
+
+    <input type="hidden" name="source_page" value="vote-next-course">
+
+    <div class="vote-submit-row">
+      <button type="submit" class="vote-submit" id="vote-submit-btn">Submit my vote</button>
+      <p class="vote-privacy-note">We'll email you when the winner is announced and offer voters first access at a discount. No spam, ever.</p>
+    </div>
+
+  </form>
+
+  <div class="vote-thanks" id="vote-thanks">
+    <h3>Vote received — thank you.</h3>
+    <p>We'll email you when voting closes and we announce the winner. If your pick wins, you get first access at a voter-only discount.</p>
+  </div>
+
+</main>
+
+<script>
+  // Visual selection feedback
+  const options = document.querySelectorAll('.vote-option');
+  options.forEach(opt => {
+    opt.addEventListener('click', () => {
+      options.forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      const radio = opt.querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+      document.getElementById('vote-error').classList.remove('show');
+    });
+  });
+
+  // Form submit handling
+  const form = document.getElementById('vote-form');
+  form.addEventListener('submit', (e) => {
+    const selected = form.querySelector('input[name="course_vote"]:checked');
+    if (!selected) {
+      e.preventDefault();
+      document.getElementById('vote-error').classList.add('show');
+      window.scrollTo({ top: form.offsetTop - 40, behavior: 'smooth' });
+      return;
+    }
+
+    // If form action is still placeholder, intercept and show thanks message inline
+    const action = form.getAttribute('action') || '';
+    if (action.includes('VOTE_FORM_PLACEHOLDER')) {
+      e.preventDefault();
+      form.style.display = 'none';
+      document.getElementById('vote-thanks').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+</script>
+
+</body>
+</html>
