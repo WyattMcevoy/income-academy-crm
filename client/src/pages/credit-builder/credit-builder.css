@@ -1233,3 +1233,408 @@
   color: var(--cb-ink-mute);
   text-align: center;
 }
+
+/* ============================================================
+   Editorial score block (replaces ScoreGauge half-circle)
+   ============================================================ */
+
+.cb-score-block {
+  padding: 22px 20px 20px;
+  background: var(--cb-bg-page-card);
+  border: 1px solid var(--cb-hair-light);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cb-score-eyebrow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: var(--cb-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cb-ink-mute);
+}
+.cb-score-max { color: var(--cb-ink-mute); opacity: 0.7; }
+
+.cb-score-number {
+  font-family: var(--cb-font-display);
+  font-variation-settings: 'opsz' 144, 'wght' 500;
+  font-weight: 500;
+  font-size: 72px;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  color: var(--cb-ink-dark);
+  font-variant-numeric: tabular-nums;
+}
+
+.cb-score-bar {
+  height: 4px;
+  width: 100%;
+  background: var(--cb-hair-light);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.cb-score-bar-fill {
+  height: 100%;
+  background: var(--cb-brand);
+  border-radius: inherit;
+  transition: width 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.cb-score-caption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--cb-ink-mute);
+}
+.cb-score-tier {
+  font-family: var(--cb-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--cb-brand);
+  font-weight: 600;
+}
+.cb-score-caption-dot { opacity: 0.5; }
+.cb-score-tier-label {
+  font-family: var(--cb-font-display);
+  font-variation-settings: 'opsz' 36;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--cb-ink-dark);
+}
+
+/* ============================================================
+   Editorial dashboard captions (under charts)
+   ============================================================ */
+
+.cb-editorial-caption {
+  margin: 12px 0 0;
+  padding: 14px 18px;
+  background: var(--cb-bg-page-card);
+  border-left: 2px solid var(--cb-brand);
+  font-family: var(--cb-font-display);
+  font-variation-settings: 'opsz' 36;
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cb-ink-dark);
+  border-radius: 0 8px 8px 0;
+}
+.cb-editorial-caption strong {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--cb-brand);
+}
+
+/* ============================================================
+   Celebration modal
+   ============================================================ */
+
+.cb-celebrate-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 18, 14, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: cb-fade-in 200ms ease-out;
+}
+@keyframes cb-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes cb-rise-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.cb-celebrate-card {
+  max-width: 460px;
+  width: 100%;
+  background: oklch(15% 0.012 60);
+  color: var(--cb-ink);
+  border: 1px solid var(--cb-brand-line);
+  border-radius: 16px;
+  padding: 36px 32px 28px;
+  position: relative;
+  animation: cb-rise-in 350ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  box-shadow: 0 32px 80px -20px rgba(0,0,0,0.5);
+}
+
+.cb-celebrate-eyebrow {
+  font-family: var(--cb-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cb-brand);
+  margin: 0 0 18px;
+}
+.cb-celebrate-title {
+  font-family: var(--cb-font-display);
+  font-variation-settings: 'opsz' 96, 'wght' 500;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+  color: var(--cb-ink);
+}
+.cb-celebrate-title em {
+  font-style: italic;
+  color: var(--cb-brand);
+}
+.cb-celebrate-body {
+  font-size: 15px;
+  line-height: 1.55;
+  color: oklch(82% 0.015 70);
+  margin: 0 0 24px;
+}
+.cb-celebrate-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 16px;
+  background: oklch(20% 0.015 60);
+  border-radius: 10px;
+  margin: 0 0 24px;
+  border: 1px solid var(--cb-hair-strong);
+}
+.cb-celebrate-stat-num {
+  font-family: var(--cb-font-display);
+  font-variation-settings: 'opsz' 96, 'wght' 500;
+  font-size: 32px;
+  color: var(--cb-brand);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.cb-celebrate-stat-label {
+  font-family: var(--cb-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: oklch(70% 0.015 70);
+}
+.cb-celebrate-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+.cb-celebrate-btn {
+  padding: 12px 22px;
+  background: var(--cb-brand);
+  color: oklch(20% 0.02 70);
+  border: none;
+  border-radius: 100px;
+  font-family: var(--cb-font-body);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 150ms, background 150ms;
+}
+.cb-celebrate-btn:hover { transform: translateY(-1px); background: oklch(80% 0.13 70); }
+.cb-celebrate-btn-ghost {
+  background: transparent;
+  color: var(--cb-ink-dim);
+  padding: 12px 16px;
+}
+.cb-celebrate-btn-ghost:hover { color: var(--cb-ink); background: transparent; }
+
+/* ============================================================
+   Per-link affiliate disclosure inline
+   ============================================================ */
+
+.cb-affiliate-note {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: var(--cb-bg-page);
+  border: 1px dashed var(--cb-hair-strong);
+  border-radius: 6px;
+  font-family: var(--cb-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: var(--cb-ink-mute);
+}
+.cb-affiliate-note strong {
+  color: var(--cb-ink-dark);
+  font-family: var(--cb-font-body);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.cb-affiliate-alt {
+  display: block;
+  margin-top: 4px;
+  color: var(--cb-ink-dim);
+}
+
+/* ============================================================
+   Mobile pass — collapse the 3-column grid below ~960px
+   ============================================================ */
+
+@media (max-width: 960px) {
+  .cb-container { padding: 16px; }
+  .cb-main {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .cb-steps-col {
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    margin: 0 -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .cb-step-card {
+    flex-shrink: 0;
+    min-width: 200px;
+  }
+  .cb-score-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .cb-fd-container {
+    flex-direction: column;
+    padding: 16px;
+  }
+  .cb-fd-chart { width: 100%; max-width: 360px; margin: 0 auto; }
+  .cb-fd-connector { display: none; }
+  .cb-score-number { font-size: 56px; }
+  .cb-celebrate-card { padding: 28px 22px 20px; }
+  .cb-celebrate-title { font-size: 26px; }
+}
+
+@media (max-width: 540px) {
+  .cb-progress-bar { flex-wrap: wrap; }
+  .cb-progress-step { flex: 1 1 calc(100% / 7); font-size: 11px; padding: 6px 2px; }
+  .cb-subpage { padding: 16px; }
+  .cb-step-overview { padding: 16px; }
+  .cb-vendor-page { padding: 16px; }
+  .cb-funding-form { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   Header row + Download Report button
+   ============================================================ */
+
+.cb-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cb-report-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  background: transparent;
+  color: var(--cb-ink-dark);
+  border: 1px solid var(--cb-hair-strong);
+  border-radius: 100px;
+  font-family: var(--cb-font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 150ms, color 150ms, background 150ms;
+}
+.cb-report-trigger:hover {
+  border-color: var(--cb-brand);
+  color: var(--cb-brand);
+  background: var(--cb-brand-soft);
+}
+.cb-report-trigger-arrow {
+  font-family: var(--cb-font-display);
+  font-style: italic;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* ============================================================
+   "What this tier achieves" honest broker section
+   ============================================================ */
+
+.cb-tier-reality {
+  margin: 16px 0 24px;
+  padding: 20px 22px 18px;
+  background: var(--cb-bg-page-card);
+  border: 1px solid var(--cb-hair-light);
+  border-radius: 12px;
+}
+.cb-tier-reality-title {
+  font-family: var(--cb-font-display);
+  font-variation-settings: 'opsz' 36;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--cb-ink-dark);
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+.cb-tier-reality-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.cb-tier-reality-card {
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--cb-ink-dark);
+}
+.cb-tier-reality-card p { margin: 6px 0 0; }
+.cb-tier-reality-positive {
+  background: oklch(96% 0.03 150);
+  border-left: 2px solid var(--cb-positive);
+}
+.cb-tier-reality-negative {
+  background: oklch(97% 0.025 25);
+  border-left: 2px solid var(--cb-negative);
+}
+.cb-tier-reality-label {
+  font-family: var(--cb-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--cb-ink-mute);
+}
+.cb-tier-reality-timing {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--cb-ink-mute);
+  margin: 6px 0 0;
+  padding-top: 12px;
+  border-top: 1px dashed var(--cb-hair-light);
+  line-height: 1.5;
+}
+.cb-tier-reality-timing-label {
+  font-family: var(--cb-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 600;
+  color: var(--cb-brand);
+  margin-right: 10px;
+}
+
+@media (max-width: 720px) {
+  .cb-tier-reality-grid { grid-template-columns: 1fr; }
+}

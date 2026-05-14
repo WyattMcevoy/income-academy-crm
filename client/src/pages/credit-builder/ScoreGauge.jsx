@@ -1,46 +1,51 @@
-export default function ScoreGauge({ score, maxScore = 890 }) {
-  const pct = Math.min(score / maxScore, 1);
-  const angle = -90 + pct * 180;
+/**
+ * Editorial score block — replaces the generic Credit-Karma-style half-circle
+ * gauge. Mercury/Linear language: oversized variable serif numeral, thin
+ * progress bar, mono eyebrow + caption. Reads "advisor-grade" not "free tool."
+ */
+
+const TIER_BANDS = [
+  { min: 0,   max: 199, label: 'Establishing Foundation', tier: '0 of 4' },
+  { min: 200, max: 399, label: 'Foundation Complete',     tier: '1 of 4' },
+  { min: 400, max: 549, label: 'Building Credit',         tier: '2 of 4' },
+  { min: 550, max: 699, label: 'Advanced Building',       tier: '3 of 4' },
+  { min: 700, max: 890, label: 'Revolving / Fundable',    tier: '4 of 4' },
+];
+
+function getBand(score) {
+  return TIER_BANDS.find(b => score >= b.min && score <= b.max) || TIER_BANDS[0];
+}
+
+export default function ScoreGauge({ score = 0, maxScore = 890 }) {
+  const pct = Math.max(0, Math.min(100, (score / maxScore) * 100));
+  const band = getBand(score);
 
   return (
-    <div className="cb-gauge">
-      <svg viewBox="0 0 200 120" className="cb-gauge-svg">
-        {/* Background arc */}
-        <path
-          d="M 20 100 A 80 80 0 0 1 180 100"
-          fill="none"
-          stroke="#e5e7eb"
-          strokeWidth="12"
-          strokeLinecap="round"
-        />
-        {/* Colored arc */}
-        <path
-          d="M 20 100 A 80 80 0 0 1 180 100"
-          fill="none"
-          stroke="#196499"
-          strokeWidth="12"
-          strokeLinecap="round"
-          strokeDasharray={`${pct * 251.3} 251.3`}
-        />
-        {/* Needle */}
-        <line
-          x1="100"
-          y1="100"
-          x2={100 + 60 * Math.cos((angle * Math.PI) / 180)}
-          y2={100 + 60 * Math.sin((angle * Math.PI) / 180)}
-          stroke="#1a1a1a"
-          strokeWidth="2"
-        />
-        <circle cx="100" cy="100" r="4" fill="#1a1a1a" />
-        {/* Score text */}
-        <text x="100" y="85" textAnchor="middle" fontSize="32" fontWeight="600" fill="#1a1a1a">
-          {score}
-        </text>
-        {/* Labels */}
-        <text x="20" y="115" textAnchor="middle" fontSize="10" fill="#6b7280">0</text>
-        <text x="100" y="60" textAnchor="middle" fontSize="9" fill="#6b7280">Fundability Score™</text>
-        <text x="180" y="115" textAnchor="middle" fontSize="10" fill="#6b7280">{maxScore}</text>
-      </svg>
+    <div className="cb-score-block">
+      <div className="cb-score-eyebrow">
+        <span>Fundability Score</span>
+        <span className="cb-score-max">/ {maxScore}</span>
+      </div>
+
+      <div className="cb-score-number" aria-live="polite">
+        {score}
+      </div>
+
+      <div
+        className="cb-score-bar"
+        role="progressbar"
+        aria-valuenow={score}
+        aria-valuemin={0}
+        aria-valuemax={maxScore}
+      >
+        <div className="cb-score-bar-fill" style={{ width: `${pct}%` }} />
+      </div>
+
+      <div className="cb-score-caption">
+        <span className="cb-score-tier">{band.tier}</span>
+        <span className="cb-score-caption-dot">·</span>
+        <span className="cb-score-tier-label">{band.label}</span>
+      </div>
     </div>
   );
 }
