@@ -287,6 +287,7 @@ function EvidenceTab() {
   const [data, setData] = useState(null);
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
+  const [copyStatus, setCopyStatus] = useState('');
 
   const lookup = async (e) => {
     e?.preventDefault();
@@ -308,32 +309,177 @@ function EvidenceTab() {
 
   const fmt = (ts) => ts ? new Date(ts).toLocaleString() : '—';
 
+  // Two plain-text outputs to handle different portal constraints:
+  //   buildSummaryText(): ≤ 1500 chars — safe for any portal text field
+  //   buildFullText():    ≤ 10000 chars — full activity log, paste where supported
+  const fmtCompact = (ts) => ts ? new Date(ts).toISOString().replace('T', ' ').substring(0, 16) + 'Z' : '—';
+
+  const buildSummaryText = (data) => {
+    const s = data.summary;
+    const lines = [];
+    lines.push('PROOF OF DELIVERY — KICK START COMPANIES LLC');
+    lines.push(`Customer: ${s.user?.email || s.lead?.email || '—'} (ID ${s.user?.id || '—'})`);
+    if (s.lead?.stripe_session_id) lines.push(`Payment ref: ${s.lead.stripe_session_id}`);
+    lines.push('');
+    lines.push('DELIVERY:');
+    lines.push(`  Account registered:      ${fmtCompact(s.registration_at)}`);
+    lines.push(`  First login:             ${fmtCompact(s.first_login_at)}`);
+    lines.push(`  First product access:    ${fmtCompact(s.first_credit_builder_access_at)}`);
+    lines.push('');
+    lines.push('USE:');
+    lines.push(`  Total logins:            ${s.total_logins}`);
+    lines.push(`  Total product actions:   ${s.total_credit_builder_actions}`);
+    lines.push(`  Sub-items completed:     ${s.completed_sub_items}`);
+    lines.push(`  Vendors applied:         ${s.vendors_applied}`);
+    lines.push(`  Vendors reporting:       ${s.vendors_reporting}`);
+    lines.push(`  Funding logged:          $${Number(s.funding_total).toLocaleString()} across ${s.funding_events_count} events`);
+    lines.push(`  Latest fundability:      ${s.latest_score} / 890`);
+    lines.push('');
+    lines.push('The customer was granted access, accessed the product, and used it');
+    lines.push('per the activity log above. Server-side timestamps and IPs are');
+    lines.push('not user-modifiable. Signed service agreement is on file separately.');
+    return lines.join('\n');
+  };
+
+  const buildFullText = (data) => {
+    const s = data.summary;
+    const lines = [];
+    lines.push('=== PROOF OF DELIVERY — KICK START COMPANIES LLC ===');
+    lines.push(`Generated: ${fmtCompact(new Date().toISOString())}`);
+    lines.push('');
+    lines.push('--- CUSTOMER ---');
+    lines.push(`Name:               ${s.user?.name || s.lead?.name || '—'}`);
+    lines.push(`Email:              ${s.user?.email || s.lead?.email || '—'}`);
+    lines.push(`Internal user ID:   ${s.user?.id || '—'}`);
+    if (s.lead?.stripe_session_id) lines.push(`Payment session ID: ${s.lead.stripe_session_id}`);
+    if (s.lead?.stripe_customer_id) lines.push(`Payment customer:   ${s.lead.stripe_customer_id}`);
+    if (s.lead?.source) lines.push(`Lead source:        ${s.lead.source}`);
+    lines.push('');
+    lines.push('--- DELIVERY ---');
+    lines.push(`Registered:         ${fmtCompact(s.registration_at)}`);
+    lines.push(`First login:        ${fmtCompact(s.first_login_at)}`);
+    lines.push(`First access:       ${fmtCompact(s.first_credit_builder_access_at)}`);
+    lines.push(`Total logins:       ${s.total_logins}`);
+    lines.push(`Total actions:      ${s.total_credit_builder_actions}`);
+    lines.push(`Items completed:    ${s.completed_sub_items}`);
+    lines.push(`Vendors applied:    ${s.vendors_applied}`);
+    lines.push(`Vendors reporting:  ${s.vendors_reporting}`);
+    lines.push(`Funding total:      $${Number(s.funding_total).toLocaleString()}`);
+    lines.push(`Latest score:       ${s.latest_score} / 890`);
+    lines.push('');
+    lines.push('--- ACTIVITY LOG (server-recorded, immutable) ---');
+    let totalLen = lines.join('\n').length;
+    let truncated = 0;
+    for (const a of data.activity) {
+      const meta = a.metadata && Object.keys(a.metadata).length
+        ? ` [${Object.entries(a.metadata).map(([k, v]) => `${k}=${typeof v === 'string' ? v : JSON.stringify(v)}`).join(', ')}]`
+        : '';
+      const line = `${fmtCompact(a.created_at)} | ${(a.event_type || '').padEnd(18)} | IP ${a.ip_address || '—'}${meta}`;
+      if (totalLen + line.length > 9500) { truncated++; continue; }
+      lines.push(line);
+      totalLen += line.length + 1;
+    }
+    if (truncated > 0) lines.push(`... (${truncated} earlier events truncated for length)`);
+    lines.push('');
+    if (s.reporting_vendor_names?.length) {
+      lines.push('--- VENDORS REPORTING ---');
+      s.reporting_vendor_names.forEach(n => lines.push(`  • ${n}`));
+      lines.push('');
+    }
+    if (data.credit_builder.funding.length) {
+      lines.push('--- FUNDING APPROVALS ---');
+      data.credit_builder.funding.forEach(f => {
+        lines.push(`  ${fmtCompact(f.created_at)} | ${f.label}${f.source ? ' (' + f.source + ')' : ''} | $${Number(f.amount).toLocaleString()}`);
+      });
+      lines.push('');
+    }
+    lines.push('Server-side timestamps and IPs are not user-modifiable.');
+    lines.push('Signed service agreement on file separately.');
+    return lines.join('\n');
+  };
+
+  const copyText = async (kind) => {
+    if (!data) return;
+    const text = kind === 'summary' ? buildSummaryText(data) : buildFullText(data);
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopyStatus(`Copied ${text.length} chars. Paste into the portal's response field.`);
+      setTimeout(() => setCopyStatus(''), 4500);
+    } catch {
+      setCopyStatus('Copy failed — your browser blocked clipboard access.');
+    }
+  };
+
+  // Suggested filename for portal upload — matches the LCD spec from research:
+  // ≤45 chars, alphanumeric + underscore + hyphen, no spaces/specials.
+  const suggestedFilename = data
+    ? `KSC_CB_${(data.summary.user?.id || data.summary.lead?.id || 'x')}_${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.pdf`
+    : null;
+
+  // Set the document title before printing so Save-as-PDF defaults to the
+  // portal-safe filename. Restore on cleanup.
+  useEffect(() => {
+    if (!data) return;
+    const original = document.title;
+    document.title = suggestedFilename?.replace(/\.pdf$/, '') || original;
+    return () => { document.title = original; };
+  }, [data, suggestedFilename]);
+
+  const downloadJson = () => {
+    if (!data) return;
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `evidence-${data.summary.user?.email || data.summary.user?.id || 'export'}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="admin-evidence">
       <div className="evidence-search no-print">
         <p style={{ color: '#6b7280', fontSize: 14, marginTop: 0, lineHeight: 1.55 }}>
-          Look up by <strong>email</strong>, <strong>user ID</strong>, or <strong>Stripe session/customer ID</strong> (cs_… / cus_… / pi_…).
-          Generates a structured proof-of-delivery report you can save as PDF and upload to a Stripe dispute.
+          Look up by <strong>email</strong>, <strong>user ID</strong>, or any <strong>payment processor reference</strong>.
+          Produces a processor-agnostic proof-of-delivery record. Use <strong>Save as PDF</strong> for portal uploads,
+          <strong> Copy as Plain Text</strong> for portal text fields, or <strong>Export JSON</strong> for your records.
         </p>
-        <form onSubmit={lookup} style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 8 }}>
+        <form onSubmit={lookup} style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 8, flexWrap: 'wrap' }}>
           <input
             type="text"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
-            placeholder="customer@example.com or cs_xxx or 42"
-            style={{ flex: 1, padding: '10px 14px', fontSize: 15, border: '1px solid #d1d5db', borderRadius: 6 }}
+            placeholder="customer@example.com or 42"
+            style={{ flex: 1, minWidth: 280, padding: '10px 14px', fontSize: 15, border: '1px solid #d1d5db', borderRadius: 6 }}
             autoFocus
           />
           <button type="submit" disabled={busy || !identifier.trim()} style={{ padding: '10px 22px', fontSize: 14 }}>
             {busy ? 'Looking up…' : 'Look up'}
           </button>
           {data && (
-            <button type="button" onClick={printReport} style={{ padding: '10px 22px', fontSize: 14 }}>
-              Save as PDF
-            </button>
+            <>
+              <button type="button" onClick={printReport} style={{ padding: '10px 22px', fontSize: 14 }} title={`Suggested filename: ${suggestedFilename}`}>
+                Save as PDF
+              </button>
+              <button type="button" onClick={() => copyText('summary')} style={{ padding: '10px 22px', fontSize: 14 }} title="≤1500 chars. Safe for any portal text field.">
+                Copy Summary
+              </button>
+              <button type="button" onClick={() => copyText('full')} style={{ padding: '10px 22px', fontSize: 14 }} title="Up to ~10K chars with full activity log.">
+                Copy Full Log
+              </button>
+              <button type="button" onClick={downloadJson} style={{ padding: '10px 22px', fontSize: 14 }}>
+                Export JSON
+              </button>
+            </>
           )}
         </form>
+        {data && suggestedFilename && (
+          <p style={{ color: '#6b7280', fontSize: 12, marginTop: 10, fontFamily: 'monospace' }}>
+            Suggested filename: <code>{suggestedFilename}</code>
+          </p>
+        )}
         {err && <p style={{ color: '#dc3545', fontSize: 13, marginTop: 12 }}>— {err}</p>}
+        {copyStatus && <p style={{ color: '#059669', fontSize: 13, marginTop: 12 }}>{copyStatus}</p>}
       </div>
 
       {data && (
@@ -356,8 +502,8 @@ function EvidenceTab() {
               <div><dt>Customer email</dt><dd>{data.summary.user?.email || data.summary.lead?.email || '—'}</dd></div>
               <div><dt>User ID</dt><dd>{data.summary.user?.id || '—'}</dd></div>
               <div><dt>Lead source</dt><dd>{data.summary.lead?.source || '—'}</dd></div>
-              <div><dt>Stripe session</dt><dd style={{ fontFamily: 'monospace', fontSize: 12 }}>{data.summary.lead?.stripe_session_id || '—'}</dd></div>
-              <div><dt>Stripe customer</dt><dd style={{ fontFamily: 'monospace', fontSize: 12 }}>{data.summary.lead?.stripe_customer_id || '—'}</dd></div>
+              <div><dt>Payment session ID</dt><dd style={{ fontFamily: 'monospace', fontSize: 12 }}>{data.summary.lead?.stripe_session_id || '—'}</dd></div>
+              <div><dt>Payment customer ID</dt><dd style={{ fontFamily: 'monospace', fontSize: 12 }}>{data.summary.lead?.stripe_customer_id || '—'}</dd></div>
               <div><dt>Account registered</dt><dd>{fmt(data.summary.registration_at)}</dd></div>
               <div><dt>First login</dt><dd>{fmt(data.summary.first_login_at)}</dd></div>
               <div><dt>First Credit Builder access</dt><dd>{fmt(data.summary.first_credit_builder_access_at)}</dd></div>
