@@ -131,16 +131,6 @@ export default function SubPage({ step, subSlug, content, progress, onSelect, on
                   {followUp.resource.url && <span className="cb-resource-link">Go To Website →</span>}
                 </div>
               </a>
-              {(followUp.resource.commission || followUp.resource.alternative) && (
-                <div className="cb-affiliate-note">
-                  {followUp.resource.commission && (
-                    <><strong>Honest broker:</strong> {followUp.resource.commission}</>
-                  )}
-                  {followUp.resource.alternative && (
-                    <span className="cb-affiliate-alt">{followUp.resource.alternative}</span>
-                  )}
-                </div>
-              )}
             </div>
           )}
 
@@ -248,16 +238,6 @@ export default function SubPage({ step, subSlug, content, progress, onSelect, on
                   {followUp.resource.url && <span className="cb-resource-link">Go To Website →</span>}
                 </div>
               </a>
-              {(followUp.resource.commission || followUp.resource.alternative) && (
-                <div className="cb-affiliate-note">
-                  {followUp.resource.commission && (
-                    <><strong>Honest broker:</strong> {followUp.resource.commission}</>
-                  )}
-                  {followUp.resource.alternative && (
-                    <span className="cb-affiliate-alt">{followUp.resource.alternative}</span>
-                  )}
-                </div>
-              )}
             </div>
           )}
 
