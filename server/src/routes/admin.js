@@ -78,4 +78,111 @@ router.post('/link-health/run', async (req, res) => {
   res.json({ checked: results.length, broken: results.filter(r => !r.ok).length, results });
 });
 
+// =============================================================================
+// Customer Evidence Package — for chargeback defense.
+//
+// Compiles every piece of proof that this customer received, accessed, and
+// used the Credit Builder product. Returns a single structured payload that
+// can be dropped into a Stripe dispute response or saved as a PDF.
+//
+// Lookup is by user_id, email, or stripe_session_id from a Stripe lead.
+// =============================================================================
+router.get('/evidence/:identifier', async (req, res) => {
+  const identifier = String(req.params.identifier || '').trim();
+  if (!identifier) return res.status(400).json({ error: 'identifier required' });
+
+  // 1) Resolve to a user (by id, email, or Stripe lead's stripe_session_id)
+  let userRow = null;
+  let leadRow = null;
+
+  if (/^\d+$/.test(identifier)) {
+    const r = await pool.query('SELECT id, email, name, created_at FROM users WHERE id = $1', [parseInt(identifier, 10)]);
+    userRow = r.rows[0] || null;
+  } else if (identifier.includes('@')) {
+    const r = await pool.query('SELECT id, email, name, created_at FROM users WHERE email = $1', [identifier.toLowerCase()]);
+    userRow = r.rows[0] || null;
+    const lr = await pool.query('SELECT id, name, email, phone, source, stage, stripe_session_id, stripe_customer_id, created_at FROM leads WHERE LOWER(email) = $1 ORDER BY created_at DESC LIMIT 1', [identifier.toLowerCase()]);
+    leadRow = lr.rows[0] || null;
+  } else if (identifier.startsWith('cs_') || identifier.startsWith('sub_') || identifier.startsWith('pi_')) {
+    const lr = await pool.query('SELECT id, name, email, phone, source, stage, stripe_session_id, stripe_customer_id, created_at FROM leads WHERE stripe_session_id = $1 OR stripe_customer_id = $1 LIMIT 1', [identifier]);
+    leadRow = lr.rows[0] || null;
+    if (leadRow?.email) {
+      const r = await pool.query('SELECT id, email, name, created_at FROM users WHERE email = $1', [leadRow.email.toLowerCase()]);
+      userRow = r.rows[0] || null;
+    }
+  }
+
+  if (!userRow && !leadRow) {
+    return res.status(404).json({ error: 'No user or lead found for that identifier' });
+  }
+
+  const userId = userRow?.id;
+
+  // 2) Full activity log
+  const activity = userId
+    ? (await pool.query('SELECT event_type, metadata, ip_address, user_agent, created_at FROM user_activity WHERE user_id = $1 ORDER BY created_at ASC', [userId])).rows
+    : [];
+
+  // 3) Credit builder usage
+  const progress = userId
+    ? (await pool.query('SELECT step, sub_item, selected_option, completed, updated_at FROM credit_builder_progress WHERE user_id = $1 ORDER BY updated_at ASC', [userId])).rows
+    : [];
+
+  const vendors = userId
+    ? (await pool.query('SELECT bureau, vendor_name, tier, applied, completed, updated_at FROM credit_builder_vendors WHERE user_id = $1 ORDER BY updated_at ASC', [userId])).rows
+    : [];
+
+  const funding = userId
+    ? (await pool.query('SELECT label, amount, source, approved_on, notes, created_at FROM credit_builder_funding_events WHERE user_id = $1 ORDER BY created_at ASC', [userId])).rows
+    : [];
+
+  const scores = userId
+    ? (await pool.query('SELECT score, recorded_at FROM credit_builder_scores WHERE user_id = $1 ORDER BY recorded_at ASC', [userId])).rows
+    : [];
+
+  const formData = userId
+    ? (await pool.query('SELECT sub_item, form_data, updated_at FROM credit_builder_form_data WHERE user_id = $1 ORDER BY updated_at ASC', [userId])).rows
+    : [];
+
+  // 4) Lead + notes (the signed agreement reference, source, Stripe IDs)
+  let leadId = leadRow?.id;
+  if (!leadRow && userRow?.email) {
+    const lr = await pool.query('SELECT id, name, email, phone, source, stage, stripe_session_id, stripe_customer_id, created_at FROM leads WHERE LOWER(email) = $1 ORDER BY created_at DESC LIMIT 1', [userRow.email.toLowerCase()]);
+    leadRow = lr.rows[0] || null;
+    leadId = leadRow?.id;
+  }
+  const leadNotes = leadId
+    ? (await pool.query('SELECT body, created_at FROM lead_notes WHERE lead_id = $1 ORDER BY created_at ASC', [leadId])).rows
+    : [];
+
+  // 5) Headline timestamps
+  const firstLogin = activity.find(a => a.event_type === 'login')?.created_at || null;
+  const firstAccess = activity.find(a => a.event_type === 'cb_first_access')?.created_at || null;
+  const registration = activity.find(a => a.event_type === 'register')?.created_at || userRow?.created_at || null;
+  const completedItems = progress.filter(p => p.completed).length;
+  const reportingVendorNames = Array.from(new Set(vendors.filter(v => v.completed).map(v => v.vendor_name)));
+
+  res.json({
+    summary: {
+      user: userRow,
+      lead: leadRow,
+      registration_at: registration,
+      first_login_at: firstLogin,
+      first_credit_builder_access_at: firstAccess,
+      total_logins: activity.filter(a => a.event_type === 'login').length,
+      total_credit_builder_actions: activity.filter(a => a.event_type?.startsWith('cb_')).length,
+      completed_sub_items: completedItems,
+      vendors_applied: Array.from(new Set(vendors.filter(v => v.applied).map(v => v.vendor_name))).length,
+      vendors_reporting: reportingVendorNames.length,
+      reporting_vendor_names: reportingVendorNames,
+      funding_events_count: funding.length,
+      funding_total: funding.reduce((s, f) => s + Number(f.amount || 0), 0),
+      latest_score: scores.length ? scores[scores.length - 1].score : 0,
+    },
+    activity,
+    credit_builder: { progress, vendors, funding, scores, form_data: formData },
+    lead_notes: leadNotes,
+  });
+});
+
 export default router;
