@@ -84,7 +84,7 @@ export default function FundabilityReport() {
           <div className="cb-report-score-num">{score}</div>
           <div className="cb-report-score-details">
             <span className="cb-report-score-max">/ {SCORE_MAX}</span>
-            <span className="cb-report-score-label">Fundability Score</span>
+            <span className="cb-report-score-label">Credit Readiness Score</span>
             <div className="cb-report-score-bar">
               <div className="cb-report-score-bar-fill" style={{ width: `${(score / SCORE_MAX) * 100}%` }} />
             </div>

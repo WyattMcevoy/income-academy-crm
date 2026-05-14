@@ -6,7 +6,7 @@ import './fundability-quiz.css';
 const QUIZ_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
 // Each question maps an answer key → weighted points. Subset of the full
-// 890-point Fundability Score — enough signal for a directional snapshot.
+// 890-point Credit Readiness Score — enough signal for a directional snapshot.
 const QUESTIONS = [
   {
     id: 'entity',
@@ -160,7 +160,7 @@ export default function FundabilityQuiz() {
           <div className="auth-brand">
             <span className="auth-brand-mark">IA</span>
             <span className="auth-brand-divider" aria-hidden="true" />
-            <span className="auth-brand-name">Fundability Score</span>
+            <span className="auth-brand-name">Credit Readiness Score</span>
           </div>
           {!isResultStep && (
             <div className="fq-progress">

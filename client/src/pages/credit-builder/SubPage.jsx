@@ -116,7 +116,7 @@ export default function SubPage({ step, subSlug, content, progress, onSelect, on
 
           {followUp.description && (
             <p className="cb-followup-text">
-              While you work on this, you can continue to build your Fundability Score by clicking on the right side to the next factor.
+              While you work on this, you can continue to build your Credit Readiness Score by clicking on the right side to the next factor.
             </p>
           )}
 

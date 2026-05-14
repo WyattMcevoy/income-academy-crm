@@ -514,7 +514,7 @@ function EvidenceTab() {
               <div><dt>Vendors reporting</dt><dd>{data.summary.vendors_reporting}</dd></div>
               <div><dt>Funding events logged</dt><dd>{data.summary.funding_events_count}</dd></div>
               <div><dt>Total approved funding</dt><dd>${Number(data.summary.funding_total).toLocaleString()}</dd></div>
-              <div><dt>Latest Fundability Score</dt><dd>{data.summary.latest_score} / 890</dd></div>
+              <div><dt>Latest Credit Readiness Score</dt><dd>{data.summary.latest_score} / 890</dd></div>
             </div>
           </section>
 
