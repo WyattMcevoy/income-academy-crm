@@ -1,9 +1,9 @@
+import { useState } from 'react';
+
 /**
  * Curated lender / capital partner marketplace.
  * Affiliate-link page with honest broker disclosure per partner.
- * Sorted by realistic accessibility for new businesses (free → easiest →
- * harder), each tagged with credit pull, PG requirement, and what it
- * actually takes to get approved.
+ * Tabbed by category so it doesn't scroll for ages.
  */
 
 const PARTNERS = [
@@ -161,7 +161,10 @@ const PARTNERS = [
   },
 ];
 
-export default function FundingMarketplace({ onBack }) {
+export default function FundingMarketplace() {
+  const [active, setActive] = useState(0);
+  const group = PARTNERS[active];
+
   return (
     <div className="cb-marketplace">
       <div className="cb-marketplace-header">
@@ -175,53 +178,60 @@ export default function FundingMarketplace({ onBack }) {
         </p>
       </div>
 
-      {PARTNERS.map(group => (
-        <section key={group.tier} className="cb-marketplace-section">
-          <h3 className="cb-marketplace-section-title">
-            <span className="cb-marketplace-section-num">
-              {String(PARTNERS.indexOf(group) + 1).padStart(2, '0')}
-            </span>
-            {group.tier}
-          </h3>
+      <div className="cb-marketplace-tabs" role="tablist">
+        {PARTNERS.map((g, i) => (
+          <button
+            key={g.tier}
+            role="tab"
+            aria-selected={i === active}
+            className={`cb-marketplace-tab ${i === active ? 'is-active' : ''}`}
+            onClick={() => setActive(i)}
+          >
+            <span className="cb-marketplace-tab-num">{String(i + 1).padStart(2, '0')}</span>
+            <span className="cb-marketplace-tab-label">{g.tier}</span>
+            <span className="cb-marketplace-tab-count">{g.items.length}</span>
+          </button>
+        ))}
+      </div>
 
-          <div className="cb-marketplace-grid">
-            {group.items.map(p => (
-              <article key={p.name} className="cb-marketplace-card">
-                <header className="cb-marketplace-card-head">
-                  <div>
-                    <h4 className="cb-marketplace-card-name">{p.name}</h4>
-                    <p className="cb-marketplace-card-cat">{p.category}</p>
-                  </div>
-                  <span className="cb-marketplace-card-fund">{p.funding}</span>
-                </header>
-
-                <dl className="cb-marketplace-card-specs">
-                  <div><dt>Revenue</dt><dd>{p.revenue}</dd></div>
-                  <div><dt>Time in biz</dt><dd>{p.timeInBusiness}</dd></div>
-                  <div><dt>Credit pull</dt><dd>{p.creditPull}</dd></div>
-                  <div><dt>PG required</dt><dd>{p.pg}</dd></div>
-                </dl>
-
-                <p className="cb-marketplace-card-note">{p.note}</p>
-
-                <div className="cb-marketplace-card-foot">
-                  <a
-                    href={p.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="cb-marketplace-card-cta"
-                  >
-                    Visit {p.name} <span aria-hidden="true">→</span>
-                  </a>
-                  <p className="cb-marketplace-card-commission">
-                    <strong>Honest broker:</strong> {p.commission}
-                  </p>
+      <section className="cb-marketplace-section" key={group.tier}>
+        <div className="cb-marketplace-grid">
+          {group.items.map(p => (
+            <article key={p.name} className="cb-marketplace-card">
+              <header className="cb-marketplace-card-head">
+                <div>
+                  <h4 className="cb-marketplace-card-name">{p.name}</h4>
+                  <p className="cb-marketplace-card-cat">{p.category}</p>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      ))}
+                <span className="cb-marketplace-card-fund">{p.funding}</span>
+              </header>
+
+              <dl className="cb-marketplace-card-specs">
+                <div><dt>Revenue</dt><dd>{p.revenue}</dd></div>
+                <div><dt>Time in biz</dt><dd>{p.timeInBusiness}</dd></div>
+                <div><dt>Credit pull</dt><dd>{p.creditPull}</dd></div>
+                <div><dt>PG required</dt><dd>{p.pg}</dd></div>
+              </dl>
+
+              <p className="cb-marketplace-card-note">{p.note}</p>
+
+              <div className="cb-marketplace-card-foot">
+                <a
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cb-marketplace-card-cta"
+                >
+                  Visit {p.name} <span aria-hidden="true">→</span>
+                </a>
+                <p className="cb-marketplace-card-commission">
+                  <strong>Honest broker:</strong> {p.commission}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <footer className="cb-marketplace-footer">
         <p>

@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { STEPS, SUB_PAGE_CONTENT, VENDOR_CATALOG } from './creditBuilderData.js';
+
+const VENDORS_PER_PAGE = 4;
 
 const FOUNDATION_ITEMS = [
   { slug: 'business-address', name: 'Business address', step: 1 },
@@ -118,6 +121,11 @@ export default function VendorStep({
   const tierNumber = STEP_TO_TIER[step];
   const catalog = VENDOR_CATALOG[tierNumber] || [];
 
+  // Collapse prereqs by default if any foundation work has been done
+  const anyFoundationDone = FOUNDATION_ITEMS.some(item => progress[`${item.step}:${item.slug}`]?.completed);
+  const [prereqOpen, setPrereqOpen] = useState(!anyFoundationDone);
+  const [page, setPage] = useState(0);
+
   let prereqsMet = true;
   let prereqStepLabel = null;
 
@@ -128,6 +136,16 @@ export default function VendorStep({
     prereqsMet = reportingCount >= prereq.requiredVendors;
     if (!prereqsMet) prereqStepLabel = prereq.requiredStep;
   }
+
+  const foundationDone = FOUNDATION_ITEMS.filter(item => progress[`${item.step}:${item.slug}`]?.completed).length;
+  const creditDone = CREDIT_ITEMS.filter(item => progress[`${item.step}:${item.slug}`]?.completed).length;
+  const totalPrereq = FOUNDATION_ITEMS.length + CREDIT_ITEMS.length;
+  const totalPrereqDone = foundationDone + creditDone;
+
+  // Vendor pagination
+  const totalPages = Math.max(1, Math.ceil(catalog.length / VENDORS_PER_PAGE));
+  const pageStart = page * VENDORS_PER_PAGE;
+  const pagedVendors = catalog.slice(pageStart, pageStart + VENDORS_PER_PAGE);
 
   const handleApply = (vendor) => {
     vendor.bureaus.forEach(bureau => {
@@ -184,36 +202,59 @@ export default function VendorStep({
         </>
       )}
 
-      <div className="cb-prereq-section">
-        <h3 className="cb-prereq-section-title">⚙️ Foundation</h3>
-        <div className="cb-prereq-grid">
-          {FOUNDATION_ITEMS.map(item => {
-            const status = getItemStatus(item, progress);
-            return (
-              <div key={item.slug} className="cb-prereq-item">
-                <StatusIcon status={status} />
-                <span className="cb-prereq-item-name">{item.name}</span>
-                <span className="cb-prereq-item-info" onClick={() => onNavigateStep(item.step)} title={`View ${item.name}`}>i</span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      {/* Prerequisites — collapsible summary + details */}
+      <div className={`cb-prereq-collapse ${prereqOpen ? 'is-open' : ''}`}>
+        <button
+          className="cb-prereq-toggle"
+          onClick={() => setPrereqOpen(o => !o)}
+          aria-expanded={prereqOpen}
+        >
+          <span className="cb-prereq-toggle-status">
+            {totalPrereqDone === totalPrereq ? '✅' : totalPrereqDone === 0 ? '⭕' : '🔵'}
+          </span>
+          <span className="cb-prereq-toggle-label">
+            <strong>{totalPrereqDone} of {totalPrereq}</strong> prerequisites complete
+          </span>
+          <span className="cb-prereq-toggle-chevron" aria-hidden="true">
+            {prereqOpen ? '▴ Hide details' : '▾ Show details'}
+          </span>
+        </button>
 
-      <div className="cb-prereq-section">
-        <h3 className="cb-prereq-section-title">⚙️ Business Credit Builder</h3>
-        <div className="cb-prereq-grid">
-          {CREDIT_ITEMS.map(item => {
-            const status = getItemStatus(item, progress);
-            return (
-              <div key={item.slug} className="cb-prereq-item">
-                <StatusIcon status={status} />
-                <span className="cb-prereq-item-name">{item.name}</span>
-                <span className="cb-prereq-item-info" onClick={() => onNavigateStep(item.step)} title={`View ${item.name}`}>i</span>
+        {prereqOpen && (
+          <div className="cb-prereq-details">
+            <div className="cb-prereq-section">
+              <h3 className="cb-prereq-section-title">⚙️ Foundation</h3>
+              <div className="cb-prereq-grid">
+                {FOUNDATION_ITEMS.map(item => {
+                  const status = getItemStatus(item, progress);
+                  return (
+                    <div key={item.slug} className="cb-prereq-item">
+                      <StatusIcon status={status} />
+                      <span className="cb-prereq-item-name">{item.name}</span>
+                      <span className="cb-prereq-item-info" onClick={() => onNavigateStep(item.step)} title={`View ${item.name}`}>i</span>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        </div>
+            </div>
+
+            <div className="cb-prereq-section">
+              <h3 className="cb-prereq-section-title">⚙️ Business Credit Builder</h3>
+              <div className="cb-prereq-grid">
+                {CREDIT_ITEMS.map(item => {
+                  const status = getItemStatus(item, progress);
+                  return (
+                    <div key={item.slug} className="cb-prereq-item">
+                      <StatusIcon status={status} />
+                      <span className="cb-prereq-item-name">{item.name}</span>
+                      <span className="cb-prereq-item-info" onClick={() => onNavigateStep(item.step)} title={`View ${item.name}`}>i</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* What this tier actually achieves (honest broker section) */}
@@ -237,15 +278,22 @@ export default function VendorStep({
         </div>
       )}
 
-      {/* Vendor catalog */}
+      {/* Vendor catalog (paginated) */}
       <div className="cb-vendor-catalog">
-        <h3 className="cb-vendor-catalog-title">Tier {tierNumber} Vendor Accounts</h3>
-        <p className="cb-vendor-catalog-desc">
-          Apply for these accounts, then mark them as reporting once they appear on your business credit reports.
-        </p>
+        <div className="cb-vendor-catalog-head">
+          <div>
+            <h3 className="cb-vendor-catalog-title">Tier {tierNumber} Vendor Accounts</h3>
+            <p className="cb-vendor-catalog-desc">
+              Apply for these accounts, then mark them as reporting once they appear on your business credit reports.
+            </p>
+          </div>
+          <span className="cb-vendor-catalog-counter">
+            Showing {pageStart + 1}–{Math.min(pageStart + VENDORS_PER_PAGE, catalog.length)} of {catalog.length}
+          </span>
+        </div>
 
         <div className="cb-vendor-catalog-list">
-          {catalog.map(vendor => {
+          {pagedVendors.map(vendor => {
             const status = getVendorStatus(vendor.name, vendors);
             return (
               <div key={vendor.name} className={`cb-vendor-card cb-vendor-card-${status}`}>
@@ -299,6 +347,40 @@ export default function VendorStep({
             );
           })}
         </div>
+
+        {totalPages > 1 && (
+          <nav className="cb-vendor-pagination" aria-label="Vendor pages">
+            <button
+              className="cb-vendor-page-btn"
+              onClick={() => setPage(p => Math.max(0, p - 1))}
+              disabled={page === 0}
+            >
+              ← Previous
+            </button>
+
+            <div className="cb-vendor-page-dots">
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  className={`cb-vendor-page-dot ${i === page ? 'is-active' : ''}`}
+                  onClick={() => setPage(i)}
+                  aria-label={`Go to page ${i + 1}`}
+                  aria-current={i === page ? 'page' : undefined}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+
+            <button
+              className="cb-vendor-page-btn"
+              onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+              disabled={page >= totalPages - 1}
+            >
+              Next →
+            </button>
+          </nav>
+        )}
       </div>
     </div>
   );
