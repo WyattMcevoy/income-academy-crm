@@ -1,5 +1,8 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useAuth } from './auth.jsx';
+
+// Public marketing pages that should never render the auth'd app shell.
+const PUBLIC_FULLSCREEN_PATHS = ['/login', '/register', '/fundability-score'];
 import Sidebar from './components/Sidebar.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
@@ -10,6 +13,7 @@ import Clients from './pages/Clients.jsx';
 import Expenses from './pages/Expenses.jsx';
 import CreditBuilder from './pages/credit-builder/CreditBuilder.jsx';
 import Admin from './pages/Admin.jsx';
+import FundabilityQuiz from './pages/FundabilityQuiz.jsx';
 
 function Protected({ children }) {
   const { auth } = useAuth();
@@ -18,7 +22,11 @@ function Protected({ children }) {
 
 function Shell({ children }) {
   const { auth } = useAuth();
-  if (!auth) return <>{children}</>;
+  const location = useLocation();
+  const isPublicFullscreen = PUBLIC_FULLSCREEN_PATHS.some(p =>
+    location.pathname === p || location.pathname.startsWith(p + '/')
+  );
+  if (!auth || isPublicFullscreen) return <>{children}</>;
   return (
     <div className="app-shell">
       <Sidebar />
@@ -33,6 +41,7 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/fundability-score" element={<FundabilityQuiz />} />
         <Route path="/" element={<Protected><Dashboard /></Protected>} />
         <Route path="/leads" element={<Protected><Pipeline /></Protected>} />
         <Route path="/leads/:id" element={<Protected><LeadDetail /></Protected>} />

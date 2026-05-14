@@ -46,6 +46,7 @@ export default function CreditBuilder() {
   const pathMatch = useMemo(() => {
     const segs = location.pathname.replace(/^\/credit-builder\/?/, '').split('/').filter(Boolean);
     if (segs[0] === 'report') return { tab: 'report', step: 1, sub: null };
+    if (segs[0] === 'funding') return { tab: 'funding', step: 1, sub: null };
     if (segs[0] === 'dashboard') return { tab: 'dashboard', step: 1, sub: null };
     if (segs[0] === 'step') {
       const n = parseInt(segs[1], 10);
@@ -256,6 +257,34 @@ export default function CreditBuilder() {
     return <div className={TENANT_THEME_CLASS}><FundabilityReport /></div>;
   }
 
+  // Funding marketplace — third top-level tab
+  if (activeTab === 'funding') {
+    return (
+      <div className={`${TENANT_THEME_CLASS} cb-container`}>
+        <div className="cb-header">
+          <h1 className="cb-title">Business Credit Builder</h1>
+          <div className="cb-header-row">
+            <div className="cb-nav-tabs">
+              <span className="cb-nav-tab" onClick={() => setTab('builder')}>Business Credit Builder</span>
+              <span className="cb-nav-divider">|</span>
+              <span className="cb-nav-tab" onClick={() => setTab('dashboard')}>Fundability Dashboard</span>
+              <span className="cb-nav-divider">|</span>
+              <span className="cb-nav-tab cb-nav-tab-active">Funding Marketplace</span>
+            </div>
+            <button
+              className="cb-report-trigger"
+              onClick={() => navigate('/credit-builder/report')}
+            >
+              <span>Download Report</span>
+              <span className="cb-report-trigger-arrow">↓</span>
+            </button>
+          </div>
+        </div>
+        <FundingMarketplace />
+      </div>
+    );
+  }
+
   return (
     <div className={`${TENANT_THEME_CLASS} cb-container`}>
       <div className="cb-header">
@@ -265,6 +294,8 @@ export default function CreditBuilder() {
             <span className={`cb-nav-tab ${activeTab === 'builder' ? 'cb-nav-tab-active' : ''}`} onClick={() => setTab('builder')}>Business Credit Builder</span>
             <span className="cb-nav-divider">|</span>
             <span className={`cb-nav-tab ${activeTab === 'dashboard' ? 'cb-nav-tab-active' : ''}`} onClick={() => setTab('dashboard')}>Fundability Dashboard</span>
+            <span className="cb-nav-divider">|</span>
+            <span className={`cb-nav-tab ${activeTab === 'funding' ? 'cb-nav-tab-active' : ''}`} onClick={() => navigate('/credit-builder/funding')}>Funding Marketplace</span>
           </div>
           <button
             className="cb-report-trigger"
