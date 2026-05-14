@@ -1,48 +1,48 @@
-/* ========== Credit Builder — Editorial Finance system ==========
-   Design tokens are OKLCH so dark/light modes and status colors are
-   perceptually equivalent. White-label override: change --cb-brand and
-   --cb-bg-* on a parent element to retheme the entire surface.
+/* ========== Credit Builder — Kick Start palette ==========
+   Light theme, mint-teal brand, Montserrat throughout.
+   White-label override: change --cb-brand and --cb-bg-* on a parent
+   element to retheme the entire surface.
 ================================================================ */
 
 :root,
 .cb-theme-income-academy {
-  /* Surface */
-  --cb-bg:           oklch(15% 0.012 60);     /* warm near-black */
-  --cb-bg-elev:      oklch(19% 0.015 60);     /* cards */
-  --cb-bg-elev-2:    oklch(23% 0.018 60);     /* hover / active */
-  --cb-bg-page:      oklch(98% 0.005 70);     /* light page fallback */
-  --cb-bg-page-card: oklch(100% 0 0);
+  /* Surface — light */
+  --cb-bg:           #ffffff;
+  --cb-bg-elev:      #f9fafb;
+  --cb-bg-elev-2:    #f3f4f6;
+  --cb-bg-page:      #f5f6f8;
+  --cb-bg-page-card: #ffffff;
 
   /* Ink */
-  --cb-ink:          oklch(92% 0.01 70);
-  --cb-ink-dim:      oklch(72% 0.015 70);
-  --cb-ink-mute:     oklch(56% 0.015 70);
-  --cb-ink-dark:     oklch(20% 0.02 70);      /* on light surface */
+  --cb-ink:          #0b3954;
+  --cb-ink-dim:      #4b5563;
+  --cb-ink-mute:     #6b7280;
+  --cb-ink-dark:     #0b3954;
 
   /* Hairlines */
-  --cb-hair:         oklch(92% 0.01 70 / 0.10);
-  --cb-hair-strong:  oklch(92% 0.01 70 / 0.20);
-  --cb-hair-light:   oklch(20% 0.02 70 / 0.08);
+  --cb-hair:         rgba(11, 57, 84, 0.10);
+  --cb-hair-strong:  rgba(11, 57, 84, 0.18);
+  --cb-hair-light:   rgba(11, 57, 84, 0.08);
 
-  /* Brand & status (OKLCH so they read equal-weight side by side) */
-  --cb-brand:        oklch(75% 0.13 70);      /* warm copper */
-  --cb-brand-soft:   oklch(75% 0.13 70 / 0.18);
-  --cb-brand-line:   oklch(75% 0.13 70 / 0.50);
-  --cb-positive:     oklch(72% 0.14 150);     /* muted green, not neon */
-  --cb-negative:     oklch(68% 0.16 25);
-  --cb-warning:      oklch(80% 0.13 80);
+  /* Brand & status — Kick Start mint teal + supporting colors */
+  --cb-brand:        #0fa888;
+  --cb-brand-soft:   rgba(15, 168, 136, 0.12);
+  --cb-brand-line:   rgba(15, 168, 136, 0.45);
+  --cb-positive:     #059669;
+  --cb-negative:     #dc3545;
+  --cb-warning:      #f59e0b;
 
-  /* Type */
-  --cb-font-display: 'Fraunces', 'Times New Roman', Georgia, serif;
-  --cb-font-body:    'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --cb-font-mono:    'Geist Mono', 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+  /* Type — Montserrat throughout */
+  --cb-font-display: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --cb-font-body:    'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --cb-font-mono:    'SF Mono', Menlo, Consolas, monospace;
 }
 
-/* Kick Start tenant override — single import switches the whole surface */
+/* Kick Start tenant override — currently same palette; hook for future tweaks */
 .cb-theme-kickstart {
-  --cb-brand:        oklch(70% 0.15 240);     /* placeholder cool blue — change to Kick Start brand when known */
-  --cb-brand-soft:   oklch(70% 0.15 240 / 0.18);
-  --cb-brand-line:   oklch(70% 0.15 240 / 0.50);
+  --cb-brand:        #0fa888;
+  --cb-brand-soft:   rgba(15, 168, 136, 0.12);
+  --cb-brand-line:   rgba(15, 168, 136, 0.45);
 }
 
 .cb-container {
@@ -1164,7 +1164,7 @@
   grid-column: 1 / -1;
   padding: 8px 14px;
   background: var(--cb-brand);
-  color: oklch(20% 0.02 70);
+  color: #0b3954;
   border: none;
   border-radius: 100px;
   font-family: var(--cb-font-body);
@@ -1360,7 +1360,7 @@
 .cb-celebrate-card {
   max-width: 460px;
   width: 100%;
-  background: oklch(15% 0.012 60);
+  background: #0b3954;
   color: var(--cb-ink);
   border: 1px solid var(--cb-brand-line);
   border-radius: 16px;
@@ -1395,7 +1395,7 @@
 .cb-celebrate-body {
   font-size: 15px;
   line-height: 1.55;
-  color: oklch(82% 0.015 70);
+  color: #e5e7eb;
   margin: 0 0 24px;
 }
 .cb-celebrate-stat {
@@ -1403,7 +1403,7 @@
   align-items: baseline;
   gap: 12px;
   padding: 14px 16px;
-  background: oklch(20% 0.015 60);
+  background: #0e4868;
   border-radius: 10px;
   margin: 0 0 24px;
   border: 1px solid var(--cb-hair-strong);
@@ -1422,7 +1422,7 @@
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: oklch(70% 0.015 70);
+  color: #9ca3af;
 }
 .cb-celebrate-actions {
   display: flex;
@@ -1432,7 +1432,7 @@
 .cb-celebrate-btn {
   padding: 12px 22px;
   background: var(--cb-brand);
-  color: oklch(20% 0.02 70);
+  color: #0b3954;
   border: none;
   border-radius: 100px;
   font-family: var(--cb-font-body);
@@ -1441,7 +1441,7 @@
   cursor: pointer;
   transition: transform 150ms, background 150ms;
 }
-.cb-celebrate-btn:hover { transform: translateY(-1px); background: oklch(80% 0.13 70); }
+.cb-celebrate-btn:hover { transform: translateY(-1px); background: #13c39d; }
 .cb-celebrate-btn-ghost {
   background: transparent;
   color: var(--cb-ink-dim);
@@ -1600,11 +1600,11 @@
 }
 .cb-tier-reality-card p { margin: 6px 0 0; }
 .cb-tier-reality-positive {
-  background: oklch(96% 0.03 150);
+  background: #f0fdf4;
   border-left: 2px solid var(--cb-positive);
 }
 .cb-tier-reality-negative {
-  background: oklch(97% 0.025 25);
+  background: #fef2f2;
   border-left: 2px solid var(--cb-negative);
 }
 .cb-tier-reality-label {
@@ -1795,7 +1795,7 @@
   align-self: flex-start;
   padding: 9px 18px;
   background: var(--cb-brand);
-  color: oklch(20% 0.02 70);
+  color: #0b3954;
   border-radius: 100px;
   font-size: 13px;
   font-weight: 600;
@@ -1805,7 +1805,7 @@
 .cb-marketplace-card-cta:hover {
   transform: translateY(-1px);
   text-decoration: none;
-  background: oklch(80% 0.13 70);
+  background: #13c39d;
 }
 .cb-marketplace-card-cta span {
   font-family: var(--cb-font-display);

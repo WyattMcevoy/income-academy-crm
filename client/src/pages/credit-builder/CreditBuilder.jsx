@@ -21,7 +21,7 @@ const SCORE_MILESTONES = [200, 400, 550, 700, 890];
 const VENDOR_STEPS = [3, 5, 6, 7];
 const TENANT_THEME_CLASS = 'cb-theme-income-academy'; // swap for 'cb-theme-kickstart' when white-labeled
 
-// Inject editorial fonts once.
+// Inject Montserrat once.
 function useEditorialFonts() {
   useEffect(() => {
     const id = 'cb-fonts';
@@ -29,7 +29,7 @@ function useEditorialFonts() {
     const link = document.createElement('link');
     link.id = id;
     link.rel = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Geist:wght@400;460;500;600;700&family=Geist+Mono:wght@500;600&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap';
     document.head.appendChild(link);
   }, []);
 }
