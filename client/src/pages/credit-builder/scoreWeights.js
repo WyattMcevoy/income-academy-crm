@@ -1,5 +1,5 @@
 // Impact-weighted fundability scoring.
-// Each sub-item carries the points it adds to the 0–890 Fundability Score
+// Each sub-item carries the points it adds to the 0–890 Credit Readiness Score
 // when marked complete. Weights are based on what actually moves underwriting
 // decisions (entity, EIN, bank account, bureau verification, vendor tiers
 // reporting) rather than peripheral items (website, merchant account).

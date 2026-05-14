@@ -202,7 +202,7 @@ export default function FundabilityDashboard({ score, progress, onNavigateToItem
             fontWeight="500"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            Fundability Score™
+            Credit Readiness Score
           </text>
         </svg>
       </div>

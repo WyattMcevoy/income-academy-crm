@@ -23,7 +23,7 @@ export default function ScoreGauge({ score = 0, maxScore = 890 }) {
   return (
     <div className="cb-score-block">
       <div className="cb-score-eyebrow">
-        <span>Fundability Score</span>
+        <span>Credit Readiness Score</span>
         <span className="cb-score-max">/ {maxScore}</span>
       </div>
 
