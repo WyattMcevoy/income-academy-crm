@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { SUB_PAGE_CONTENT } from './creditBuilderData.js';
 
+// Editorial palette — five harmonious tones across the OKLCH wheel,
+// each with the same perceived lightness so no slice dominates by accident.
 const CATEGORIES = [
   {
     name: 'Foundation',
-    color: '#0cae87',
+    color: 'oklch(65% 0.14 145)',     // deep forest
     items: [
       { slug: 'business-address', name: 'Business Address', step: 1 },
       { slug: 'business-entity', name: 'Business Entity', step: 1 },
@@ -21,14 +23,14 @@ const CATEGORIES = [
   },
   {
     name: 'Financials',
-    color: '#196499',
+    color: 'oklch(60% 0.16 235)',     // teal-blue
     items: [
       { slug: 'business-bank-account', name: 'Business Bank Account', step: 1 },
     ],
   },
   {
-    name: 'Business Credit',
-    color: '#f5a623',
+    name: 'Bureau Credit',
+    color: 'oklch(72% 0.15 70)',      // warm copper (matches brand)
     items: [
       { slug: 'dnb-verification', name: 'D&B Verification', step: 2 },
       { slug: 'experian-verification', name: 'Experian Verification', step: 2 },
@@ -38,15 +40,15 @@ const CATEGORIES = [
   },
   {
     name: 'Personal',
-    color: '#fbbf24',
+    color: 'oklch(68% 0.14 25)',      // muted coral
     items: [
       { slug: 'lexisnexis', name: 'LexisNexis', step: 4 },
       { slug: 'chex-systems', name: 'ChexSystems', step: 4 },
     ],
   },
   {
-    name: 'Application Process',
-    color: '#f5d76e',
+    name: 'Monitoring',
+    color: 'oklch(63% 0.13 300)',     // dusty violet
     items: [
       { slug: 'paydex-score', name: 'Paydex Score', step: 4 },
     ],
@@ -104,16 +106,6 @@ function StatusIcon({ status }) {
   return <span className="cb-fd-item-status cb-fd-status-pending">⭕</span>;
 }
 
-// Generate curved text path for a segment label
-function segmentLabelPath(index, cx, cy, r) {
-  const startAngle = START_OFFSET + index * SEGMENT_ANGLE + 8;
-  const endAngle = START_OFFSET + (index + 1) * SEGMENT_ANGLE - 8;
-  const start = polarToCartesian(cx, cy, r, startAngle);
-  const end = polarToCartesian(cx, cy, r, endAngle);
-  const largeArc = endAngle - startAngle > 180 ? 1 : 0;
-  return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 1 ${end.x} ${end.y}`;
-}
-
 export default function FundabilityDashboard({ score, progress, onNavigateToItem }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeCategory = CATEGORIES[activeIndex];
@@ -127,7 +119,7 @@ export default function FundabilityDashboard({ score, progress, onNavigateToItem
     <div className="cb-fd-container">
       {/* Donut Chart */}
       <div className="cb-fd-chart">
-        <svg viewBox="0 0 400 400" width="400" height="400">
+        <svg viewBox="-60 -20 520 440" width="460" height="400">
           {/* Segment arcs */}
           {CATEGORIES.map((cat, i) => {
             const isActive = i === activeIndex;
@@ -151,92 +143,67 @@ export default function FundabilityDashboard({ score, progress, onNavigateToItem
             );
           })}
 
-          {/* Curved text labels */}
+          {/* External labels — Mercury-style legend, leader line from outer edge */}
           {CATEGORIES.map((cat, i) => {
-            const labelR = (OUTER_R + INNER_R) / 2;
-            const pathId = `label-path-${i}`;
-            // For bottom segments (angles crossing 180), we need to flip the text
+            const isActive = i === activeIndex;
             const midAngle = START_OFFSET + i * SEGMENT_ANGLE + SEGMENT_ANGLE / 2;
+            const outerR = isActive ? ACTIVE_OUTER_R : OUTER_R;
+            const innerEnd = polarToCartesian(CX, CY, outerR + 6, midAngle);
+            const labelAnchor = polarToCartesian(CX, CY, outerR + 28, midAngle);
             const normalizedMid = ((midAngle % 360) + 360) % 360;
-            const needsFlip = normalizedMid > 90 && normalizedMid < 270;
-
-            if (needsFlip) {
-              // Draw path in reverse direction so text reads correctly
-              const startAngle = START_OFFSET + (i + 1) * SEGMENT_ANGLE - 8;
-              const endAngle = START_OFFSET + i * SEGMENT_ANGLE + 8;
-              const start = polarToCartesian(CX, CY, labelR, startAngle);
-              const end = polarToCartesian(CX, CY, labelR, endAngle);
-              const flipPath = `M ${start.x} ${start.y} A ${labelR} ${labelR} 0 0 0 ${end.x} ${end.y}`;
-
-              return (
-                <g key={`label-${cat.name}`}>
-                  <defs>
-                    <path id={pathId} d={flipPath} />
-                  </defs>
-                  <text
-                    fontSize="11"
-                    fontWeight="600"
-                    fill="#fff"
-                    style={{ pointerEvents: 'none' }}
-                  >
-                    <textPath
-                      href={`#${pathId}`}
-                      startOffset="50%"
-                      textAnchor="middle"
-                    >
-                      {cat.name}
-                    </textPath>
-                  </text>
-                </g>
-              );
-            }
-
+            const onRight = normalizedMid < 90 || normalizedMid > 270;
+            const textX = labelAnchor.x + (onRight ? 4 : -4);
+            const textAnchor = onRight ? 'start' : 'end';
             return (
-              <g key={`label-${cat.name}`}>
-                <defs>
-                  <path id={pathId} d={segmentLabelPath(i, CX, CY, labelR)} />
-                </defs>
+              <g key={`label-${cat.name}`} style={{ pointerEvents: 'none' }}>
+                <line
+                  x1={innerEnd.x} y1={innerEnd.y}
+                  x2={labelAnchor.x} y2={labelAnchor.y}
+                  stroke={cat.color}
+                  strokeWidth="1"
+                  opacity={isActive ? 1 : 0.6}
+                />
                 <text
-                  fontSize="11"
-                  fontWeight="600"
-                  fill="#fff"
-                  style={{ pointerEvents: 'none' }}
+                  x={textX}
+                  y={labelAnchor.y}
+                  textAnchor={textAnchor}
+                  dominantBaseline="middle"
+                  fontSize="10"
+                  fontWeight={isActive ? 700 : 500}
+                  fill={isActive ? cat.color : '#374151'}
+                  style={{ fontFamily: "'Geist Mono', 'IBM Plex Mono', monospace", letterSpacing: '0.08em', textTransform: 'uppercase' }}
                 >
-                  <textPath
-                    href={`#${pathId}`}
-                    startOffset="50%"
-                    textAnchor="middle"
-                  >
-                    {cat.name}
-                  </textPath>
+                  {cat.name}
                 </text>
               </g>
             );
           })}
 
-          {/* Center score */}
+          {/* Center score — Fraunces variable serif, tabular */}
           <text
             className="cb-fd-score-center"
             x={CX}
-            y={CY - 8}
+            y={CY - 6}
             textAnchor="middle"
             dominantBaseline="central"
-            fontSize="42"
-            fontWeight="700"
-            fill="#0b3954"
+            fontSize="56"
+            fontWeight="500"
+            fill="currentColor"
+            style={{ fontFamily: "'Fraunces', Georgia, serif", fontVariationSettings: "'opsz' 144, 'wght' 500", letterSpacing: '-0.03em' }}
           >
             {score ?? 0}
           </text>
           <text
             x={CX}
-            y={CY + 24}
+            y={CY + 28}
             textAnchor="middle"
             dominantBaseline="central"
-            fontSize="10"
-            fill="#6b7280"
-            fontWeight="500"
+            fontSize="9"
+            fill="currentColor"
+            opacity="0.6"
+            style={{ fontFamily: "'Geist Mono', monospace", letterSpacing: '0.18em', textTransform: 'uppercase' }}
           >
-            Fundability Score™
+            Fundability Score
           </text>
         </svg>
       </div>

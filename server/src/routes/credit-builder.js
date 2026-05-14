@@ -117,4 +117,38 @@ router.put('/form-data', async (req, res) => {
   res.json(rows[0]);
 });
 
+// Funding events — user-logged credit approvals (LOCs, business card limits,
+// vendor credit lines). Replaces the dead "Approved Funding" KPI.
+router.get('/funding-events', async (req, res) => {
+  const { rows } = await pool.query(
+    'SELECT id, label, amount, source, approved_on, notes, created_at FROM credit_builder_funding_events WHERE user_id = $1 ORDER BY approved_on DESC NULLS LAST, created_at DESC',
+    [req.user.id]
+  );
+  const total = rows.reduce((sum, r) => sum + Number(r.amount || 0), 0);
+  res.json({ events: rows, total });
+});
+
+router.post('/funding-events', async (req, res) => {
+  const { label, amount, source, approved_on, notes } = req.body;
+  if (!label) return res.status(400).json({ error: 'label required' });
+  const amt = Number(amount);
+  if (!Number.isFinite(amt) || amt < 0 || amt > 100_000_000) {
+    return res.status(400).json({ error: 'amount must be a non-negative number' });
+  }
+  const { rows } = await pool.query(
+    `INSERT INTO credit_builder_funding_events (user_id, label, amount, source, approved_on, notes)
+     VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+    [req.user.id, String(label).slice(0, 200), amt, source ? String(source).slice(0, 100) : null, approved_on || null, notes ? String(notes).slice(0, 1000) : null]
+  );
+  logActivity(req.user.id, 'cb_funding_logged', { label, amount: amt, source }, req);
+  res.json(rows[0]);
+});
+
+router.delete('/funding-events/:id', async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (!Number.isInteger(id)) return res.status(400).json({ error: 'invalid id' });
+  await pool.query('DELETE FROM credit_builder_funding_events WHERE id = $1 AND user_id = $2', [id, req.user.id]);
+  res.json({ ok: true });
+});
+
 export default router;

@@ -37,7 +37,7 @@ export default function App() {
         <Route path="/leads" element={<Protected><Pipeline /></Protected>} />
         <Route path="/leads/:id" element={<Protected><LeadDetail /></Protected>} />
         <Route path="/clients" element={<Protected><Clients /></Protected>} />
-        <Route path="/credit-builder" element={<Protected><CreditBuilder /></Protected>} />
+        <Route path="/credit-builder/*" element={<Protected><CreditBuilder /></Protected>} />
         <Route path="/expenses" element={<Protected><Expenses /></Protected>} />
         <Route path="/admin" element={<Protected><Admin /></Protected>} />
         <Route path="*" element={<Navigate to="/" replace />} />
