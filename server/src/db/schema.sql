@@ -9,8 +9,13 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash TEXT NOT NULL,
   name TEXT,
   is_admin BOOLEAN NOT NULL DEFAULT FALSE,
+  tenant_id TEXT NOT NULL DEFAULT 'income-academy',
+  external_id TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+CREATE INDEX IF NOT EXISTS users_tenant_idx ON users(tenant_id);
+CREATE INDEX IF NOT EXISTS users_external_idx ON users(tenant_id, external_id);
 
 CREATE TABLE IF NOT EXISTS leads (
   id SERIAL PRIMARY KEY,

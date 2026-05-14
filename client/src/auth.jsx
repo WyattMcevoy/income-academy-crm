@@ -25,8 +25,16 @@ export function AuthProvider({ children }) {
   };
   const logout = () => setAuth(null);
 
+  // Consume a JWT from a trusted external tenant (Kick Start CRM, etc.)
+  // Used by the /credit-builder/sso landing page.
+  const ssoConsume = async (token) => {
+    const data = await api('/api/auth/sso', { method: 'POST', body: { token } });
+    setAuth(data);
+    return data;
+  };
+
   return (
-    <AuthContext.Provider value={{ auth, login, register, logout }}>
+    <AuthContext.Provider value={{ auth, login, register, logout, ssoConsume }}>
       {children}
     </AuthContext.Provider>
   );
