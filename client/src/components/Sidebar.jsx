@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth.jsx';
 
@@ -15,10 +15,22 @@ const NAV_ITEMS = [
   { label: 'Settings', path: '/settings', icon: '⚙️', enabled: false, note: 'Later' },
 ];
 
+const COLLAPSED_STORAGE_KEY = 'ia_sidebar_collapsed';
+
 export default function Sidebar() {
   const { auth, logout } = useAuth();
   const nav = useNavigate();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // mobile drawer
+  const [collapsed, setCollapsed] = useState(() => {
+    try { return localStorage.getItem(COLLAPSED_STORAGE_KEY) === '1'; } catch { return false; }
+  });
+
+  // Persist + reflect on <body> so .app-main can pad correctly
+  useEffect(() => {
+    try { localStorage.setItem(COLLAPSED_STORAGE_KEY, collapsed ? '1' : '0'); } catch {}
+    document.body.classList.toggle('sidebar-collapsed', collapsed);
+    return () => document.body.classList.remove('sidebar-collapsed');
+  }, [collapsed]);
 
   if (!auth) return null;
 
@@ -28,6 +40,7 @@ export default function Sidebar() {
   };
 
   const closeMobile = () => setOpen(false);
+  const toggleCollapsed = () => setCollapsed(v => !v);
 
   return (
     <>
@@ -41,10 +54,18 @@ export default function Sidebar() {
 
       {open && <div className="sidebar-backdrop" onClick={closeMobile} />}
 
-      <aside className={`sidebar ${open ? 'sidebar-open' : ''}`}>
+      <aside className={`sidebar ${open ? 'sidebar-open' : ''} ${collapsed ? 'sidebar-collapsed' : ''}`}>
         <div className="sidebar-brand">
           <span className="brand-mark">💼</span>
           <span className="brand-text">Income Academy</span>
+          <button
+            className="sidebar-collapse-btn"
+            onClick={toggleCollapsed}
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            {collapsed ? '›' : '‹'}
+          </button>
         </div>
 
         <nav className="sidebar-nav">
@@ -55,21 +76,22 @@ export default function Sidebar() {
                 to={item.path}
                 end={item.path === '/'}
                 onClick={closeMobile}
+                title={collapsed ? item.label : undefined}
                 className={({ isActive }) =>
                   `sidebar-link ${isActive ? 'sidebar-link-active' : ''}`
                 }
               >
                 <span className="sidebar-icon" aria-hidden="true">{item.icon}</span>
-                <span>{item.label}</span>
+                <span className="sidebar-label">{item.label}</span>
               </NavLink>
             ) : (
               <div
                 key={item.path}
                 className="sidebar-link sidebar-link-disabled"
-                title={`Coming soon (${item.note})`}
+                title={collapsed ? `${item.label} — coming soon (${item.note})` : `Coming soon (${item.note})`}
               >
                 <span className="sidebar-icon" aria-hidden="true">{item.icon}</span>
-                <span>{item.label}</span>
+                <span className="sidebar-label">{item.label}</span>
                 <span className="sidebar-badge">soon</span>
               </div>
             )
@@ -78,10 +100,11 @@ export default function Sidebar() {
 
         <div className="sidebar-footer">
           <div className="sidebar-user" title={auth.user.email}>
-            {auth.user.email}
+            {collapsed ? (auth.user.email?.[0]?.toUpperCase() || '·') : auth.user.email}
           </div>
-          <button className="sidebar-logout" onClick={onLogout}>
-            Log out
+          <button className="sidebar-logout" onClick={onLogout} title={collapsed ? 'Log out' : undefined}>
+            <span className="sidebar-logout-icon" aria-hidden="true">⎋</span>
+            <span className="sidebar-logout-label">Log out</span>
           </button>
         </div>
       </aside>
