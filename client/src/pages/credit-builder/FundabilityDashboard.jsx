@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { SUB_PAGE_CONTENT } from './creditBuilderData.js';
 
-// Editorial palette — five harmonious tones across the OKLCH wheel,
-// each with the same perceived lightness so no slice dominates by accident.
+// Kick Start palette — original donut colors
 const CATEGORIES = [
   {
     name: 'Foundation',
-    color: 'oklch(65% 0.14 145)',     // deep forest
+    color: '#0fa888',
     items: [
       { slug: 'business-address', name: 'Business Address', step: 1 },
       { slug: 'business-entity', name: 'Business Entity', step: 1 },
@@ -23,14 +22,14 @@ const CATEGORIES = [
   },
   {
     name: 'Financials',
-    color: 'oklch(60% 0.16 235)',     // teal-blue
+    color: '#196499',
     items: [
       { slug: 'business-bank-account', name: 'Business Bank Account', step: 1 },
     ],
   },
   {
-    name: 'Bureau Credit',
-    color: 'oklch(72% 0.15 70)',      // warm copper (matches brand)
+    name: 'Business Credit',
+    color: '#f5a623',
     items: [
       { slug: 'dnb-verification', name: 'D&B Verification', step: 2 },
       { slug: 'experian-verification', name: 'Experian Verification', step: 2 },
@@ -40,15 +39,15 @@ const CATEGORIES = [
   },
   {
     name: 'Personal',
-    color: 'oklch(68% 0.14 25)',      // muted coral
+    color: '#fbbf24',
     items: [
       { slug: 'lexisnexis', name: 'LexisNexis', step: 4 },
       { slug: 'chex-systems', name: 'ChexSystems', step: 4 },
     ],
   },
   {
-    name: 'Monitoring',
-    color: 'oklch(63% 0.13 300)',     // dusty violet
+    name: 'Application Process',
+    color: '#f5d76e',
     items: [
       { slug: 'paydex-score', name: 'Paydex Score', step: 4 },
     ],
@@ -168,10 +167,10 @@ export default function FundabilityDashboard({ score, progress, onNavigateToItem
                   y={labelAnchor.y}
                   textAnchor={textAnchor}
                   dominantBaseline="middle"
-                  fontSize="10"
-                  fontWeight={isActive ? 700 : 500}
+                  fontSize="11"
+                  fontWeight={isActive ? 700 : 600}
                   fill={isActive ? cat.color : '#374151'}
-                  style={{ fontFamily: "'Geist Mono', 'IBM Plex Mono', monospace", letterSpacing: '0.08em', textTransform: 'uppercase' }}
+                  style={{ fontFamily: "'Montserrat', sans-serif", letterSpacing: '0.04em' }}
                 >
                   {cat.name}
                 </text>
@@ -179,31 +178,31 @@ export default function FundabilityDashboard({ score, progress, onNavigateToItem
             );
           })}
 
-          {/* Center score — Fraunces variable serif, tabular */}
+          {/* Center score */}
           <text
             className="cb-fd-score-center"
             x={CX}
-            y={CY - 6}
+            y={CY - 8}
             textAnchor="middle"
             dominantBaseline="central"
-            fontSize="56"
-            fontWeight="500"
-            fill="currentColor"
-            style={{ fontFamily: "'Fraunces', Georgia, serif", fontVariationSettings: "'opsz' 144, 'wght' 500", letterSpacing: '-0.03em' }}
+            fontSize="42"
+            fontWeight="700"
+            fill="#0b3954"
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             {score ?? 0}
           </text>
           <text
             x={CX}
-            y={CY + 28}
+            y={CY + 24}
             textAnchor="middle"
             dominantBaseline="central"
-            fontSize="9"
-            fill="currentColor"
-            opacity="0.6"
-            style={{ fontFamily: "'Geist Mono', monospace", letterSpacing: '0.18em', textTransform: 'uppercase' }}
+            fontSize="10"
+            fill="#0fa888"
+            fontWeight="500"
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            Fundability Score
+            Fundability Score™
           </text>
         </svg>
       </div>
