@@ -97,9 +97,9 @@ export const SUB_PAGE_CONTENT = {
     followUp: {
       'Commercial Address': { type: 'form', title: 'ENTER YOUR COMMERCIAL BUSINESS ADDRESS.', description: 'A commercial address is ideal for fundability.', fields: ['businessName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipCode'], status: 'positive' },
       'Home Address': { type: 'form', title: 'ENTER YOUR HOME BUSINESS ADDRESS.', description: "A home business address can be used without negatively impacting overall fundability, but only for industries that don't require a physical business location.", fields: ['businessName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipCode'], status: 'positive' },
-      'PO Box': { type: 'warning', title: 'PO BOX NOT RECOMMENDED', description: 'A PO Box is not considered a valid business address by most lenders. Consider upgrading to a commercial or virtual address.', status: 'negative', resource: { name: 'iPostal1', description: 'Virtual Business Address Service', url: 'https://ipostal1.com/virtual-business-address.php' } },
+      'PO Box': { type: 'warning', title: 'PO BOX NOT RECOMMENDED', description: 'A PO Box is not considered a valid business address by most lenders. Consider upgrading to a commercial or virtual address.', status: 'negative', resource: { name: 'iPostal1', description: 'Virtual Business Address Service', url: 'https://ipostal1.com/virtual-business-address.php', commission: '~$10 if you subscribe', alternative: 'UPS Store mailbox at any UPS location is also valid; no commission paid to us.' } },
       'Virtual Address': { type: 'form', title: 'ENTER YOUR VIRTUAL BUSINESS ADDRESS.', description: 'A virtual address is a great alternative to a commercial address.', fields: ['businessName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipCode'], status: 'positive' },
-      'Registered Agent': { type: 'warning', title: 'REGISTERED AGENT ADDRESS', description: 'A registered agent address may not be ideal for fundability. Consider getting a separate business address.', status: 'negative', resource: { name: 'Northwest Registered Agent', description: 'Registered Agent + Business Address', url: 'https://www.northwestregisteredagent.com/' } },
+      'Registered Agent': { type: 'warning', title: 'REGISTERED AGENT ADDRESS', description: 'A registered agent address may not be ideal for fundability. Consider getting a separate business address.', status: 'negative', resource: { name: 'Northwest Registered Agent', description: 'Registered Agent + Business Address', url: 'https://www.northwestregisteredagent.com/', commission: '~$25 if you subscribe', alternative: 'Any state-licensed RA works; LegalZoom and your CPA can refer one with no commission to us.' } },
     },
   },
   'business-entity': {
@@ -115,7 +115,7 @@ export const SUB_PAGE_CONTENT = {
       'LLC': { type: 'success', title: 'GREAT CHOICE!', description: 'An LLC is one of the best entity types for fundability.', status: 'positive' },
       'S or C Corp': { type: 'success', title: 'GREAT CHOICE!', description: 'A Corporation is one of the best entity types for fundability.', status: 'positive' },
       'Partnership': { type: 'info', title: 'PARTNERSHIP', description: 'A partnership is an acceptable entity type but may have limitations with some lenders.', status: 'positive' },
-      'Sole Proprietor': { type: 'warning', title: 'SOLE PROPRIETORSHIP NOT RECOMMENDED', description: 'A Sole Proprietorship is NOT a legal entity. You should form an LLC or Corporation to improve your fundability.', status: 'negative', resource: { name: 'Bizee (formerly IncFile)', description: 'Form an LLC or Corporation', url: 'https://bizee.com/' } },
+      'Sole Proprietor': { type: 'warning', title: 'SOLE PROPRIETORSHIP NOT RECOMMENDED', description: 'A Sole Proprietorship is NOT a legal entity. You should form an LLC or Corporation to improve your fundability.', status: 'negative', resource: { name: 'Bizee (formerly IncFile)', description: 'Form an LLC or Corporation', url: 'https://bizee.com/', commission: '~$30 if you sign up', alternative: 'You can file directly with your state Secretary of State for the state filing fee only (typically $50–$300). No middleman needed.' } },
     },
   },
   'foreign-filing': {
@@ -151,7 +151,7 @@ export const SUB_PAGE_CONTENT = {
     ],
     followUp: {
       'Yes': { type: 'success', status: 'positive' },
-      'No': { type: 'warning', title: 'EIN REQUIRED', description: 'An EIN is required to obtain business financing. You can apply for one for free at IRS.gov.', status: 'negative', resource: { name: 'IRS EIN Application', description: 'Apply for an EIN online for free', url: 'https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number' } },
+      'No': { type: 'warning', title: 'EIN REQUIRED', description: 'An EIN is required to obtain business financing. You can apply for one for free at IRS.gov.', status: 'negative', resource: { name: 'IRS EIN Application', description: 'Apply for an EIN online — completely free', url: 'https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number', commission: 'No commission — direct .gov link.', alternative: 'Anyone charging for an EIN is reselling a free government service. Use this IRS link directly.' } },
     },
   },
   'business-phone': {
@@ -163,7 +163,7 @@ export const SUB_PAGE_CONTENT = {
     ],
     followUp: {
       'Yes': { type: 'form', title: 'ENTER YOUR BUSINESS PHONE', fields: ['businessPhone'], status: 'positive' },
-      'No': { type: 'warning', title: 'BUSINESS PHONE NEEDED', description: 'Lenders and creditors might not approve you for business financing if you are using a home phone number or personal cell number for your business.', status: 'negative', resource: { name: 'Phone.com', description: 'Business phone service - Communicate Better®', url: 'https://www.phone.com/' }, actionLabel: 'I Have A Business Phone' },
+      'No': { type: 'warning', title: 'BUSINESS PHONE NEEDED', description: 'Lenders and creditors might not approve you for business financing if you are using a home phone number or personal cell number for your business.', status: 'negative', resource: { name: 'Phone.com', description: 'Business phone service - Communicate Better®', url: 'https://www.phone.com/', commission: '~$15 if you subscribe', alternative: 'Google Voice (free) or OpenPhone work too. Make sure the number is listed in 411 directory assistance for full credit.' }, actionLabel: 'I Have A Business Phone' },
     },
   },
   'website-email': {
@@ -199,7 +199,7 @@ export const SUB_PAGE_CONTENT = {
     ],
     followUp: {
       'Yes': { type: 'form', title: 'BUSINESS BANK ACCOUNT', fields: ['bankName'], status: 'positive' },
-      'No': { type: 'warning', title: 'BUSINESS BANK ACCOUNT NEEDED', description: 'A business bank account is required for most business financing.', status: 'negative', resource: { name: 'Relay Financial', description: 'Free business banking with smart budgeting', url: 'https://relayfi.com/' } },
+      'No': { type: 'warning', title: 'BUSINESS BANK ACCOUNT NEEDED', description: 'A business bank account is required for most business financing.', status: 'negative', resource: { name: 'Relay Financial', description: 'Free business banking with smart budgeting', url: 'https://relayfi.com/', commission: 'No commission paid to us — included because it\'s free.', alternative: 'Mercury, Bluevine, or any local bank also work. Avoid Chase/BofA at first — they pull personal credit aggressively.' } },
     },
   },
   'merchant-account': {

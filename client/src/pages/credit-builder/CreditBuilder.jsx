@@ -11,7 +11,12 @@ import FundingEvents from './FundingEvents.jsx';
 import SubPage from './SubPage.jsx';
 import VendorStep from './VendorStep.jsx';
 import FundabilityDashboard from './FundabilityDashboard.jsx';
+import CelebrationModal from './CelebrationModal.jsx';
+import FundabilityReport from './FundabilityReport.jsx';
+import { dashboardCaption } from './editorialCaption.js';
 import './credit-builder.css';
+
+const SCORE_MILESTONES = [200, 400, 550, 700, 890];
 
 const VENDOR_STEPS = [3, 5, 6, 7];
 const TENANT_THEME_CLASS = 'cb-theme-income-academy'; // swap for 'cb-theme-kickstart' when white-labeled
@@ -37,9 +42,10 @@ export default function CreditBuilder() {
   const params = useParams();
 
   // Parse URL → state. Pattern: /credit-builder, /credit-builder/dashboard,
-  // /credit-builder/step/:n, /credit-builder/step/:n/:slug
+  // /credit-builder/step/:n, /credit-builder/step/:n/:slug, /credit-builder/report
   const pathMatch = useMemo(() => {
     const segs = location.pathname.replace(/^\/credit-builder\/?/, '').split('/').filter(Boolean);
+    if (segs[0] === 'report') return { tab: 'report', step: 1, sub: null };
     if (segs[0] === 'dashboard') return { tab: 'dashboard', step: 1, sub: null };
     if (segs[0] === 'step') {
       const n = parseInt(segs[1], 10);
@@ -56,6 +62,7 @@ export default function CreditBuilder() {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
   const [historyKey, setHistoryKey] = useState(0); // bump to refresh sparkline
+  const [celebration, setCelebration] = useState(null);
 
   const activeTab = pathMatch.tab;
   const activeStep = pathMatch.step;
@@ -136,6 +143,7 @@ export default function CreditBuilder() {
 
   // Impact-weighted score (see scoreWeights.js)
   const recalcScore = async (currentProgress) => {
+    const previousScore = score?.score || 0;
     const newScore = computeFundabilityScore(currentProgress || progress);
     try {
       const result = await api('/api/credit-builder/score', {
@@ -145,6 +153,23 @@ export default function CreditBuilder() {
       });
       setScore(result);
       setHistoryKey(k => k + 1);
+
+      // Milestone celebration if we crossed any threshold
+      const crossed = SCORE_MILESTONES.find(m => previousScore < m && newScore >= m);
+      if (crossed) {
+        setCelebration({
+          eyebrow: 'Milestone reached',
+          title: <>You crossed <em>{crossed}</em> points.</>,
+          body: crossed >= 700
+            ? 'Your business profile is now in the fundable range. Tier 4 corporate cards become realistic from here.'
+            : crossed >= 550
+            ? 'Advanced building tier. Most underwriters now recognize your business credit independently.'
+            : crossed >= 400
+            ? 'You\'ve completed the foundation and are actively building credit. The hardest part is behind you.'
+            : 'Your fundability foundation is taking shape. Keep going — the next milestones come faster.',
+          stat: { value: newScore, label: 'Fundability score / 890' },
+        });
+      }
     } catch (e) {
       console.error('Failed to update score:', e);
     }
@@ -152,6 +177,7 @@ export default function CreditBuilder() {
 
   const handleVendorAction = async (vendorData) => {
     try {
+      const prevReporting = new Set(vendors.filter(v => v.completed).map(v => v.vendor_name));
       const result = await api('/api/credit-builder/vendors', {
         method: 'PUT',
         token: auth.token,
@@ -159,15 +185,39 @@ export default function CreditBuilder() {
       });
       setVendors(prev => {
         const existing = prev.findIndex(v => v.bureau === result.bureau && v.vendor_name === result.vendor_name);
+        let next;
         if (!result.applied && !result.completed) {
-          return prev.filter((_, i) => i !== existing);
+          next = prev.filter((_, i) => i !== existing);
+        } else if (existing >= 0) {
+          next = [...prev];
+          next[existing] = result;
+        } else {
+          next = [...prev, result];
         }
-        if (existing >= 0) {
-          const updated = [...prev];
-          updated[existing] = result;
-          return updated;
+
+        // Celebrate first transition to Reporting for this vendor
+        const nowReporting = new Set(next.filter(v => v.completed).map(v => v.vendor_name));
+        const flipped = !prevReporting.has(result.vendor_name) && nowReporting.has(result.vendor_name);
+        if (flipped) {
+          const totalReporting = nowReporting.size;
+          const tierUnlock = totalReporting === 3 ? 'Tier 2' : totalReporting === 6 ? 'Tier 3' : totalReporting === 9 ? 'Tier 4' : null;
+          if (tierUnlock) {
+            setCelebration({
+              eyebrow: `${tierUnlock} unlocked`,
+              title: <>You can now apply to <em>{tierUnlock}</em>.</>,
+              body: `${totalReporting} accounts are now reporting to the bureaus. Underwriters at this level start treating your business as independently creditworthy.`,
+              stat: { value: totalReporting, label: 'Reporting accounts' },
+            });
+          } else {
+            setCelebration({
+              eyebrow: 'Account reporting',
+              title: <><em>{result.vendor_name}</em> is reporting.</>,
+              body: 'Your first tradelines being seen by the bureaus is the moment business credit actually starts to compound. Keep going.',
+              stat: { value: totalReporting, label: `Reporting account${totalReporting === 1 ? '' : 's'}` },
+            });
+          }
         }
-        return [...prev, result];
+        return next;
       });
     } catch (e) {
       console.error('Failed to update vendor:', e);
@@ -201,14 +251,29 @@ export default function CreditBuilder() {
     return <div className={`${TENANT_THEME_CLASS} cb-loading`}>Loading Credit Builder…</div>;
   }
 
+  // Printable Fundability Report — bypasses the standard chrome
+  if (activeTab === 'report') {
+    return <div className={TENANT_THEME_CLASS}><FundabilityReport /></div>;
+  }
+
   return (
     <div className={`${TENANT_THEME_CLASS} cb-container`}>
       <div className="cb-header">
         <h1 className="cb-title">Business Credit Builder</h1>
-        <div className="cb-nav-tabs">
-          <span className={`cb-nav-tab ${activeTab === 'builder' ? 'cb-nav-tab-active' : ''}`} onClick={() => setTab('builder')}>Business Credit Builder</span>
-          <span className="cb-nav-divider">|</span>
-          <span className={`cb-nav-tab ${activeTab === 'dashboard' ? 'cb-nav-tab-active' : ''}`} onClick={() => setTab('dashboard')}>Fundability Dashboard</span>
+        <div className="cb-header-row">
+          <div className="cb-nav-tabs">
+            <span className={`cb-nav-tab ${activeTab === 'builder' ? 'cb-nav-tab-active' : ''}`} onClick={() => setTab('builder')}>Business Credit Builder</span>
+            <span className="cb-nav-divider">|</span>
+            <span className={`cb-nav-tab ${activeTab === 'dashboard' ? 'cb-nav-tab-active' : ''}`} onClick={() => setTab('dashboard')}>Fundability Dashboard</span>
+          </div>
+          <button
+            className="cb-report-trigger"
+            onClick={() => navigate('/credit-builder/report')}
+            title="Open a printable Fundability Report (save as PDF from the print dialog)"
+          >
+            <span>Download Report</span>
+            <span className="cb-report-trigger-arrow">↓</span>
+          </button>
         </div>
       </div>
 
@@ -220,6 +285,14 @@ export default function CreditBuilder() {
               progress={progress}
               onNavigateToItem={(step, slug) => navigate(`/credit-builder/step/${step}/${slug}`)}
             />
+            {(() => {
+              const cap = dashboardCaption({ progress, vendors, scoreDelta: 0 });
+              return (
+                <p className="cb-editorial-caption">
+                  {cap.lead}<strong>{cap.emphasis}</strong>{cap.tail}
+                </p>
+              );
+            })()}
           </div>
           <div className="cb-score-col">
             <ScoreGauge score={score.score} maxScore={SCORE_MAX} />
@@ -334,6 +407,15 @@ export default function CreditBuilder() {
           </div>
         </>
       )}
+
+      <CelebrationModal
+        open={!!celebration}
+        eyebrow={celebration?.eyebrow}
+        title={celebration?.title}
+        body={celebration?.body}
+        stat={celebration?.stat}
+        onClose={() => setCelebration(null)}
+      />
     </div>
   );
 }

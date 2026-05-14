@@ -122,10 +122,7 @@ export default function SubPage({ step, subSlug, content, progress, onSelect, on
 
           {followUp.resource && (
             <div className="cb-resource-section">
-              <p className="cb-resource-disclaimer">
-                <em>We hope you love the products and services we recommend! We research and update these on a regular basis.</em>
-              </p>
-              <h4 className="cb-resource-heading">Featured Resource:</h4>
+              <h4 className="cb-resource-heading">Featured Resource</h4>
               <a className="cb-resource-card" href={followUp.resource.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className="cb-resource-icon">🔗</div>
                 <div className="cb-resource-info">
@@ -134,6 +131,16 @@ export default function SubPage({ step, subSlug, content, progress, onSelect, on
                   {followUp.resource.url && <span className="cb-resource-link">Go To Website →</span>}
                 </div>
               </a>
+              {(followUp.resource.commission || followUp.resource.alternative) && (
+                <div className="cb-affiliate-note">
+                  {followUp.resource.commission && (
+                    <><strong>Honest broker:</strong> {followUp.resource.commission}</>
+                  )}
+                  {followUp.resource.alternative && (
+                    <span className="cb-affiliate-alt">{followUp.resource.alternative}</span>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
@@ -232,7 +239,7 @@ export default function SubPage({ step, subSlug, content, progress, onSelect, on
 
           {followUp.resource && (
             <div className="cb-resource-section">
-              <h4 className="cb-resource-heading">Featured Resource:</h4>
+              <h4 className="cb-resource-heading">Featured Resource</h4>
               <a className="cb-resource-card" href={followUp.resource.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className="cb-resource-icon">🔗</div>
                 <div className="cb-resource-info">
@@ -241,6 +248,16 @@ export default function SubPage({ step, subSlug, content, progress, onSelect, on
                   {followUp.resource.url && <span className="cb-resource-link">Go To Website →</span>}
                 </div>
               </a>
+              {(followUp.resource.commission || followUp.resource.alternative) && (
+                <div className="cb-affiliate-note">
+                  {followUp.resource.commission && (
+                    <><strong>Honest broker:</strong> {followUp.resource.commission}</>
+                  )}
+                  {followUp.resource.alternative && (
+                    <span className="cb-affiliate-alt">{followUp.resource.alternative}</span>
+                  )}
+                </div>
+              )}
             </div>
           )}
 

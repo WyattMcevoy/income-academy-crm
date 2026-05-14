@@ -1,0 +1,405 @@
+/* =========================================================================
+   Fundability Report — printable A4/Letter PDF
+   ========================================================================= */
+
+.cb-report-page {
+  background: oklch(96% 0.005 70);
+  min-height: 100vh;
+  padding: 32px 16px 64px;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: oklch(20% 0.02 70);
+}
+
+.cb-report-loading {
+  padding: 80px 32px;
+  text-align: center;
+  color: oklch(56% 0.015 70);
+  font-style: italic;
+}
+
+.cb-report-actions {
+  max-width: 800px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cb-report-print-btn {
+  padding: 12px 24px;
+  background: oklch(75% 0.13 70);
+  color: oklch(20% 0.02 70);
+  border: none;
+  border-radius: 100px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 150ms, box-shadow 150ms;
+}
+.cb-report-print-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px -6px rgba(212, 165, 116, 0.4); }
+
+.cb-report-back {
+  color: oklch(56% 0.015 70);
+  text-decoration: none;
+  font-size: 13px;
+}
+.cb-report-back:hover { color: oklch(20% 0.02 70); }
+
+.cb-report-doc {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 56px 64px;
+  box-shadow: 0 24px 60px -16px rgba(0,0,0,0.12);
+  border-radius: 8px;
+}
+
+/* ---- Header ---- */
+.cb-report-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 28px;
+  border-bottom: 1px solid oklch(20% 0.02 70 / 0.08);
+}
+.cb-report-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cb-report-brand-mark {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 26px;
+  font-weight: 500;
+  color: oklch(75% 0.13 70);
+  letter-spacing: -0.03em;
+}
+.cb-report-brand-name {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: oklch(56% 0.015 70);
+}
+.cb-report-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.cb-report-meta-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: oklch(56% 0.015 70);
+}
+.cb-report-meta-value {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 14px;
+  color: oklch(20% 0.02 70);
+}
+
+.cb-report-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 144, 'wght' 400;
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin: 36px 0 12px;
+}
+.cb-report-title em {
+  font-style: italic;
+  font-weight: 500;
+  color: oklch(75% 0.13 70);
+}
+
+.cb-report-subtitle {
+  font-size: 16px;
+  line-height: 1.55;
+  color: oklch(40% 0.015 70);
+  margin: 0 0 40px;
+  max-width: 540px;
+}
+
+/* ---- Score block ---- */
+.cb-report-score-block {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 28px 0;
+  border-top: 1px solid oklch(20% 0.02 70 / 0.08);
+  border-bottom: 1px solid oklch(20% 0.02 70 / 0.08);
+  margin-bottom: 40px;
+}
+.cb-report-score-num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 144, 'wght' 500;
+  font-size: 96px;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: oklch(20% 0.02 70);
+  font-variant-numeric: tabular-nums;
+}
+.cb-report-score-details { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.cb-report-score-max {
+  font-family: 'Geist Mono', monospace;
+  font-size: 12px;
+  color: oklch(56% 0.015 70);
+  letter-spacing: 0.1em;
+}
+.cb-report-score-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: oklch(40% 0.015 70);
+}
+.cb-report-score-bar {
+  height: 4px;
+  background: oklch(20% 0.02 70 / 0.08);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.cb-report-score-bar-fill {
+  height: 100%;
+  background: oklch(75% 0.13 70);
+}
+
+/* ---- Sections ---- */
+.cb-report-section {
+  margin-bottom: 40px;
+  page-break-inside: avoid;
+}
+.cb-report-h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 500;
+  font-style: italic;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 0 0 18px;
+  color: oklch(20% 0.02 70);
+}
+
+/* Bureau grid */
+.cb-report-bureau-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.cb-report-bureau-card {
+  padding: 18px;
+  background: oklch(98% 0.005 70);
+  border: 1px solid oklch(20% 0.02 70 / 0.08);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cb-report-bureau-name {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: oklch(56% 0.015 70);
+}
+.cb-report-bureau-count {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1;
+  color: oklch(75% 0.13 70);
+  letter-spacing: -0.02em;
+}
+.cb-report-bureau-sub {
+  font-size: 12px;
+  color: oklch(56% 0.015 70);
+}
+
+/* Tier list */
+.cb-report-tier-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid oklch(20% 0.02 70 / 0.08);
+}
+.cb-report-tier-item {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 16px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid oklch(20% 0.02 70 / 0.08);
+}
+.cb-report-tier-num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 22px;
+  color: oklch(75% 0.13 70);
+  letter-spacing: -0.02em;
+}
+.cb-report-tier-body { display: flex; flex-direction: column; gap: 2px; }
+.cb-report-tier-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: oklch(20% 0.02 70);
+}
+.cb-report-tier-count {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: oklch(56% 0.015 70);
+}
+.cb-report-tier-status {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: oklch(56% 0.015 70);
+}
+.cb-report-tier-status.is-complete { color: oklch(60% 0.14 150); }
+
+/* Foundation grid */
+.cb-report-foundation-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+}
+.cb-report-foundation-item {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  gap: 10px;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px dotted oklch(20% 0.02 70 / 0.10);
+  font-size: 13px;
+}
+.cb-report-foundation-check {
+  color: oklch(56% 0.015 70);
+  font-size: 14px;
+}
+.cb-report-foundation-item.is-done .cb-report-foundation-check { color: oklch(60% 0.14 150); }
+.cb-report-foundation-label { color: oklch(30% 0.02 70); }
+.cb-report-foundation-item.is-done .cb-report-foundation-label { color: oklch(20% 0.02 70); font-weight: 500; }
+.cb-report-foundation-pts {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: oklch(56% 0.015 70);
+}
+
+/* Vendor list */
+.cb-report-vendor-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.cb-report-vendor {
+  padding: 8px 0;
+  border-bottom: 1px dotted oklch(20% 0.02 70 / 0.10);
+  font-size: 13px;
+  color: oklch(20% 0.02 70);
+}
+
+/* Funding section */
+.cb-report-funding-total {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 144, 'wght' 500;
+  font-size: 48px;
+  font-weight: 500;
+  color: oklch(75% 0.13 70);
+  line-height: 1;
+  margin: 0 0 4px;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+.cb-report-funding-total-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: oklch(56% 0.015 70);
+}
+.cb-report-funding-list { list-style: none; padding: 0; margin: 20px 0 0; }
+.cb-report-funding-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid oklch(20% 0.02 70 / 0.08);
+  font-size: 13px;
+}
+.cb-report-funding-label { font-weight: 500; color: oklch(20% 0.02 70); }
+.cb-report-funding-source {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: oklch(56% 0.015 70);
+}
+.cb-report-funding-amt {
+  font-family: 'Geist Mono', monospace;
+  font-weight: 600;
+  color: oklch(75% 0.13 70);
+}
+
+/* Footer */
+.cb-report-footer {
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid oklch(20% 0.02 70 / 0.08);
+}
+.cb-report-disclaimer {
+  font-size: 11px;
+  line-height: 1.55;
+  color: oklch(56% 0.015 70);
+  font-style: italic;
+  margin: 0 0 16px;
+}
+.cb-report-footer-mark {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: oklch(56% 0.015 70);
+  text-align: center;
+  margin: 0;
+}
+
+/* ---- Print stylesheet ---- */
+@media print {
+  body { background: #fff; }
+  /* Strip app chrome from the PDF */
+  .no-print, .sidebar, .hamburger, .sidebar-backdrop { display: none !important; }
+  .app-shell { display: block !important; }
+  .app-main { padding: 0 !important; max-width: 100% !important; }
+  .cb-report-page { background: #fff; padding: 0; }
+  .cb-report-doc {
+    box-shadow: none;
+    border-radius: 0;
+    padding: 36px 48px;
+    max-width: 100%;
+  }
+  .cb-report-title { font-size: 44px; }
+  .cb-report-section { page-break-inside: avoid; }
+}
+
+@media (max-width: 720px) {
+  .cb-report-doc { padding: 32px 24px; }
+  .cb-report-title { font-size: 40px; }
+  .cb-report-score-num { font-size: 64px; }
+  .cb-report-bureau-grid { grid-template-columns: 1fr; }
+  .cb-report-foundation-grid, .cb-report-vendor-list { grid-template-columns: 1fr; }
+}
