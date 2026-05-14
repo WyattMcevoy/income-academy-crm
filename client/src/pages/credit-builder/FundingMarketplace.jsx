@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 /**
  * Curated lender / capital partner marketplace.
- * Affiliate-link page with honest broker disclosure per partner.
  * Tabbed by category so it doesn't scroll for ages.
  */
 
@@ -19,7 +18,6 @@ const PARTNERS = [
         creditPull: 'Hard, personal + business',
         pg: 'Yes',
         funding: '$5K – $5M',
-        commission: 'No commission — direct .gov link.',
         note: 'Slow but cheap money. Start here if you can wait 60–90 days for underwriting.',
       },
     ],
@@ -36,7 +34,6 @@ const PARTNERS = [
         creditPull: 'Soft to start',
         pg: 'Usually yes',
         funding: '$5K – $5M',
-        commission: '~$200 if you close a loan through them.',
         note: 'One application matches you to multiple offers. Will spam you with calls — expect 5+ outreach attempts in week one.',
       },
       {
@@ -48,7 +45,6 @@ const PARTNERS = [
         creditPull: 'Soft to compare',
         pg: 'Usually yes',
         funding: '$5K – $500K',
-        commission: '~$50 per filled-out form (lead-share, not closed-loan based).',
         note: 'Useful for rate comparison even if you don\'t click through. Pricing data is public.',
       },
     ],
@@ -65,7 +61,6 @@ const PARTNERS = [
         creditPull: 'Soft, then hard at offer',
         pg: 'Yes (personal guarantee)',
         funding: 'LOC up to $250K',
-        commission: '~$50 if you open a free checking account.',
         note: 'Free business checking + a real LOC. One of the better combos for early-stage operators.',
       },
       {
@@ -77,7 +72,6 @@ const PARTNERS = [
         creditPull: 'Soft',
         pg: 'Yes',
         funding: 'Up to $150K',
-        commission: '~$75 if you draw on a line.',
         note: 'Fast approval, transparent fees. Higher APR than a bank but cleaner than MCA.',
       },
       {
@@ -89,7 +83,6 @@ const PARTNERS = [
         creditPull: 'Hard',
         pg: 'Yes',
         funding: '$5K – $250K',
-        commission: '~$150 per funded loan.',
         note: 'Daily/weekly repayment can strain cash flow. Read the APR carefully — often 30%+ effective.',
       },
       {
@@ -101,7 +94,6 @@ const PARTNERS = [
         creditPull: 'Soft',
         pg: 'Yes',
         funding: '$5K – $400K',
-        commission: '~$100 per funded loan.',
         note: 'Speed (24–48 hrs) is the main value here. Factor rates, not interest rates — math the real cost.',
       },
       {
@@ -113,7 +105,6 @@ const PARTNERS = [
         creditPull: 'Hard',
         pg: 'Yes',
         funding: '$10K – $500K',
-        commission: '~$125 per funded deal.',
         note: 'Multiple product lines (LOC, MCA, equipment). Sales-driven — be ready for follow-up calls.',
       },
     ],
@@ -130,7 +121,6 @@ const PARTNERS = [
         creditPull: 'No personal pull',
         pg: 'No — underwrites on bank balance',
         funding: 'Limit 10–20% of bank balance',
-        commission: '~$200 if you spend $1K in the first 60 days.',
         note: 'Requires $50K+ in business bank account at application. Built for VC-backed startups.',
       },
       {
@@ -142,7 +132,6 @@ const PARTNERS = [
         creditPull: 'No personal pull',
         pg: 'No',
         funding: 'Limit based on bank balance',
-        commission: '~$250 if you reach minimum spend.',
         note: 'Lower bank balance requirement than Brex (~$25K). Strong expense management built in.',
       },
       {
@@ -154,7 +143,6 @@ const PARTNERS = [
         creditPull: 'Soft',
         pg: 'No for most',
         funding: 'Up to $5M for established',
-        commission: '~$50 referral.',
         note: 'Free product, makes money on interchange. Easier approval than Brex/Ramp for non-VC businesses.',
       },
     ],
@@ -170,11 +158,12 @@ export default function FundingMarketplace() {
       <div className="cb-marketplace-header">
         <p className="cb-marketplace-eyebrow">Funding marketplace</p>
         <h2 className="cb-marketplace-title">
-          Capital partners, <em>honestly disclosed</em>.
+          Capital partners, <em>vetted</em>.
         </h2>
         <p className="cb-marketplace-sub">
-          Every lender below is one we'd use ourselves. We disclose what we earn from each
-          partner and what it actually takes to get approved. No "$50K in 30 days" promises.
+          Every lender below is one we'd use ourselves. We show you what it actually takes to
+          get approved — revenue, time in business, credit pull, personal guarantee, funding
+          range. No "$50K in 30 days" promises.
         </p>
       </div>
 
@@ -224,9 +213,6 @@ export default function FundingMarketplace() {
                 >
                   Visit {p.name} <span aria-hidden="true">→</span>
                 </a>
-                <p className="cb-marketplace-card-commission">
-                  <strong>Honest broker:</strong> {p.commission}
-                </p>
               </div>
             </article>
           ))}
@@ -235,9 +221,9 @@ export default function FundingMarketplace() {
 
       <footer className="cb-marketplace-footer">
         <p>
-          We're an affiliate of every partner above. We're not a lender, broker, or financial
-          advisor — and we don't push you to any single product. If you find a better rate elsewhere,
-          take it. The whole point of this page is to make the comparison transparent.
+          We're not a lender, broker, or financial advisor. We don't push you to any single
+          product. If you find a better rate elsewhere, take it. The whole point of this page is
+          to make the comparison transparent.
         </p>
       </footer>
     </div>

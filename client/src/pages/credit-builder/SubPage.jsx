@@ -278,9 +278,6 @@ export default function SubPage({ step, subSlug, content, progress, onSelect, on
           )}
 
           <div className="cb-resource-section">
-            <p className="cb-resource-disclaimer">
-              <em>We hope you love the products and services we recommend! We research and update these on a regular basis. Just so you know, we may receive a commission from links on this page. We are diligent to ensure any compensation we receive does not affect the price or level of service offered to you.</em>
-            </p>
             {followUp.resource && (
               <a className="cb-resource-card cb-resource-card-featured" href={followUp.resource.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className="cb-resource-logo">{followUp.resource.name.charAt(0)}</div>
