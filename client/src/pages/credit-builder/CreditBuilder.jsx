@@ -20,7 +20,15 @@ import './credit-builder.css';
 const SCORE_MILESTONES = [200, 400, 550, 700, 890];
 
 const VENDOR_STEPS = [3, 5, 6, 7];
-const TENANT_THEME_CLASS = 'cb-theme-income-academy'; // swap for 'cb-theme-kickstart' when white-labeled
+
+// Derive the theme class from the authenticated user's tenant.
+// Adding a new tenant only requires adding a row here + matching CSS class.
+function themeClassForTenant(tenantId) {
+  switch (tenantId) {
+    case 'kickstart': return 'cb-theme-kickstart';
+    default:          return 'cb-theme-income-academy';
+  }
+}
 
 // Inject Montserrat once.
 function useEditorialFonts() {
@@ -57,6 +65,8 @@ export default function CreditBuilder() {
     }
     return { tab: 'builder', step: 1, sub: null };
   }, [location.pathname]);
+
+  const themeClass = themeClassForTenant(auth?.user?.tenant_id);
 
   const [progress, setProgress] = useState({});
   const [score, setScore] = useState({ score: 0 });
@@ -262,18 +272,18 @@ export default function CreditBuilder() {
   const handlePrevStep = () => { if (activeStep > 1) setStep(activeStep - 1); };
 
   if (loading) {
-    return <div className={`${TENANT_THEME_CLASS} cb-loading`}>Loading Credit Builder…</div>;
+    return <div className={`${themeClass} cb-loading`}>Loading Credit Builder…</div>;
   }
 
   // Printable Fundability Report — bypasses the standard chrome
   if (activeTab === 'report') {
-    return <div className={TENANT_THEME_CLASS}><FundabilityReport /></div>;
+    return <div className={themeClass}><FundabilityReport /></div>;
   }
 
   // Funding marketplace — third top-level tab
   if (activeTab === 'funding') {
     return (
-      <div className={`${TENANT_THEME_CLASS} cb-container`}>
+      <div className={`${themeClass} cb-container`}>
         <div className="cb-header">
           <h1 className="cb-title">Business Credit Builder</h1>
           <div className="cb-header-row">
@@ -299,7 +309,7 @@ export default function CreditBuilder() {
   }
 
   return (
-    <div className={`${TENANT_THEME_CLASS} cb-container`}>
+    <div className={`${themeClass} cb-container`}>
       <div className="cb-header">
         <h1 className="cb-title">Business Credit Builder</h1>
         <div className="cb-header-row">

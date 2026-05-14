@@ -1,0 +1,2 @@
+ALTER TABLE users DROP COLUMN IF EXISTS external_id;
+ALTER TABLE users DROP COLUMN IF EXISTS tenant_id;
