@@ -525,3 +525,101 @@ code { background: #eef0f4; padding: 1px 5px; border-radius: 3px; font-size: 13p
   border-bottom: 1px solid #f3f4f6;
   color: #374151;
 }
+
+/* ============================================================
+   Admin Evidence tab — proof of delivery for chargebacks
+   ============================================================ */
+
+.admin-evidence { padding: 8px 0; }
+.evidence-search { margin-bottom: 28px; padding: 18px; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; }
+
+.evidence-doc {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 36px 40px;
+  max-width: 980px;
+}
+.evidence-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 18px;
+  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+.evidence-brand { font-weight: 700; font-size: 16px; color: #0b3954; }
+.evidence-meta { font-size: 11px; color: #6b7280; letter-spacing: 0.04em; margin-top: 4px; }
+.evidence-ref { text-align: right; display: flex; flex-direction: column; gap: 2px; }
+.evidence-ref-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #6b7280; }
+.evidence-ref-val { font-weight: 600; color: #0b3954; }
+
+.evidence-doc section { margin-bottom: 28px; page-break-inside: avoid; }
+
+.evidence-h2 {
+  font-size: 16px;
+  color: #0b3954;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.evidence-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 24px;
+}
+.evidence-summary-grid div { display: flex; padding: 4px 0; border-bottom: 1px dotted #e5e7eb; }
+.evidence-summary-grid dt { width: 200px; color: #6b7280; font-size: 12px; }
+.evidence-summary-grid dd { margin: 0; flex: 1; font-size: 13px; color: #1f2937; font-weight: 500; }
+
+.evidence-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.evidence-table th {
+  text-align: left;
+  padding: 8px 10px;
+  background: #f9fafb;
+  border-bottom: 2px solid #e5e7eb;
+  font-weight: 600;
+  color: #374151;
+}
+.evidence-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: top;
+}
+
+.evidence-footer {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 2px solid #e5e7eb;
+  font-size: 11px;
+  color: #6b7280;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.evidence-export-block {
+  margin: 16px 0;
+  padding: 14px 16px;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@media print {
+  .no-print { display: none !important; }
+  .admin-tabs, .page-header, .sidebar, .hamburger { display: none !important; }
+  .app-main { padding: 0 !important; max-width: 100% !important; }
+  .evidence-doc { box-shadow: none; border: none; padding: 24px; }
+  .evidence-doc section { page-break-inside: avoid; }
+}

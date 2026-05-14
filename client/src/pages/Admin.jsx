@@ -101,13 +101,13 @@ export default function Admin() {
       </div>
 
       <div className="admin-tabs">
-        {['overview', 'users', 'activity', 'links'].map(t => (
+        {['overview', 'users', 'activity', 'links', 'evidence'].map(t => (
           <button
             key={t}
             className={`admin-tab ${tab === t ? 'admin-tab-active' : ''}`}
             onClick={() => setTab(t)}
           >
-            {t === 'overview' ? 'Overview' : t === 'users' ? 'Users' : t === 'activity' ? 'Activity Log' : 'Link Health'}
+            {t === 'overview' ? 'Overview' : t === 'users' ? 'Users' : t === 'activity' ? 'Activity Log' : t === 'links' ? 'Link Health' : 'Evidence'}
           </button>
         ))}
       </div>
@@ -270,6 +270,180 @@ export default function Admin() {
             </table>
           </div>
         </div>
+      )}
+
+      {tab === 'evidence' && <EvidenceTab />}
+    </div>
+  );
+}
+
+// ============================================================================
+// Evidence tab — chargeback defense report
+// ============================================================================
+
+function EvidenceTab() {
+  const { auth } = useAuth();
+  const [identifier, setIdentifier] = useState('');
+  const [data, setData] = useState(null);
+  const [err, setErr] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  const lookup = async (e) => {
+    e?.preventDefault();
+    setErr('');
+    setData(null);
+    if (!identifier.trim()) return;
+    setBusy(true);
+    try {
+      const result = await api(`/api/admin/evidence/${encodeURIComponent(identifier.trim())}`, { token: auth.token });
+      setData(result);
+    } catch (e) {
+      setErr(e.message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const printReport = () => window.print();
+
+  const fmt = (ts) => ts ? new Date(ts).toLocaleString() : '—';
+
+  return (
+    <div className="admin-evidence">
+      <div className="evidence-search no-print">
+        <p style={{ color: '#6b7280', fontSize: 14, marginTop: 0, lineHeight: 1.55 }}>
+          Look up by <strong>email</strong>, <strong>user ID</strong>, or <strong>Stripe session/customer ID</strong> (cs_… / cus_… / pi_…).
+          Generates a structured proof-of-delivery report you can save as PDF and upload to a Stripe dispute.
+        </p>
+        <form onSubmit={lookup} style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 8 }}>
+          <input
+            type="text"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            placeholder="customer@example.com or cs_xxx or 42"
+            style={{ flex: 1, padding: '10px 14px', fontSize: 15, border: '1px solid #d1d5db', borderRadius: 6 }}
+            autoFocus
+          />
+          <button type="submit" disabled={busy || !identifier.trim()} style={{ padding: '10px 22px', fontSize: 14 }}>
+            {busy ? 'Looking up…' : 'Look up'}
+          </button>
+          {data && (
+            <button type="button" onClick={printReport} style={{ padding: '10px 22px', fontSize: 14 }}>
+              Save as PDF
+            </button>
+          )}
+        </form>
+        {err && <p style={{ color: '#dc3545', fontSize: 13, marginTop: 12 }}>— {err}</p>}
+      </div>
+
+      {data && (
+        <article className="evidence-doc">
+          <header className="evidence-header">
+            <div>
+              <div className="evidence-brand">Income Academy / Kick Start Companies LLC</div>
+              <div className="evidence-meta">Proof of Delivery & Use · Generated {fmt(new Date().toISOString())}</div>
+            </div>
+            <div className="evidence-ref">
+              <span className="evidence-ref-label">Customer</span>
+              <span className="evidence-ref-val">{data.summary.user?.email || data.summary.lead?.email || 'unknown'}</span>
+            </div>
+          </header>
+
+          <section>
+            <h3 className="evidence-h2">Summary</h3>
+            <div className="evidence-summary-grid">
+              <div><dt>Customer name</dt><dd>{data.summary.user?.name || data.summary.lead?.name || '—'}</dd></div>
+              <div><dt>Customer email</dt><dd>{data.summary.user?.email || data.summary.lead?.email || '—'}</dd></div>
+              <div><dt>User ID</dt><dd>{data.summary.user?.id || '—'}</dd></div>
+              <div><dt>Lead source</dt><dd>{data.summary.lead?.source || '—'}</dd></div>
+              <div><dt>Stripe session</dt><dd style={{ fontFamily: 'monospace', fontSize: 12 }}>{data.summary.lead?.stripe_session_id || '—'}</dd></div>
+              <div><dt>Stripe customer</dt><dd style={{ fontFamily: 'monospace', fontSize: 12 }}>{data.summary.lead?.stripe_customer_id || '—'}</dd></div>
+              <div><dt>Account registered</dt><dd>{fmt(data.summary.registration_at)}</dd></div>
+              <div><dt>First login</dt><dd>{fmt(data.summary.first_login_at)}</dd></div>
+              <div><dt>First Credit Builder access</dt><dd>{fmt(data.summary.first_credit_builder_access_at)}</dd></div>
+              <div><dt>Total logins</dt><dd>{data.summary.total_logins}</dd></div>
+              <div><dt>Credit Builder actions</dt><dd>{data.summary.total_credit_builder_actions}</dd></div>
+              <div><dt>Sub-items completed</dt><dd>{data.summary.completed_sub_items}</dd></div>
+              <div><dt>Vendors applied</dt><dd>{data.summary.vendors_applied}</dd></div>
+              <div><dt>Vendors reporting</dt><dd>{data.summary.vendors_reporting}</dd></div>
+              <div><dt>Funding events logged</dt><dd>{data.summary.funding_events_count}</dd></div>
+              <div><dt>Total approved funding</dt><dd>${Number(data.summary.funding_total).toLocaleString()}</dd></div>
+              <div><dt>Latest Fundability Score</dt><dd>{data.summary.latest_score} / 890</dd></div>
+            </div>
+          </section>
+
+          <section>
+            <h3 className="evidence-h2">Activity Log (chronological)</h3>
+            <table className="evidence-table">
+              <thead>
+                <tr><th>Timestamp</th><th>Event</th><th>Detail</th><th>IP</th></tr>
+              </thead>
+              <tbody>
+                {data.activity.map((a, i) => (
+                  <tr key={i}>
+                    <td style={{ fontFamily: 'monospace', fontSize: 11 }}>{fmt(a.created_at)}</td>
+                    <td>{a.event_type}</td>
+                    <td style={{ fontSize: 12, color: '#374151' }}>
+                      {a.metadata && Object.entries(a.metadata).map(([k, v]) => `${k}: ${typeof v === 'string' ? v : JSON.stringify(v)}`).join(' · ')}
+                    </td>
+                    <td style={{ fontFamily: 'monospace', fontSize: 11, color: '#6b7280' }}>{a.ip_address || '—'}</td>
+                  </tr>
+                ))}
+                {data.activity.length === 0 && (
+                  <tr><td colSpan={4} style={{ color: '#9ca3af', textAlign: 'center', padding: 16 }}>No activity logged.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </section>
+
+          {data.summary.reporting_vendor_names?.length > 0 && (
+            <section>
+              <h3 className="evidence-h2">Reporting Vendor Accounts (proof of value delivered)</h3>
+              <ul style={{ columns: 2, fontSize: 13, color: '#374151' }}>
+                {data.summary.reporting_vendor_names.map(n => <li key={n}>{n}</li>)}
+              </ul>
+            </section>
+          )}
+
+          {data.credit_builder.funding.length > 0 && (
+            <section>
+              <h3 className="evidence-h2">Funding Approvals Logged</h3>
+              <table className="evidence-table">
+                <thead><tr><th>Date</th><th>Label</th><th>Source</th><th>Amount</th></tr></thead>
+                <tbody>
+                  {data.credit_builder.funding.map((f, i) => (
+                    <tr key={i}>
+                      <td style={{ fontFamily: 'monospace', fontSize: 11 }}>{fmt(f.created_at)}</td>
+                      <td>{f.label}</td>
+                      <td style={{ fontSize: 12, color: '#6b7280' }}>{f.source || '—'}</td>
+                      <td style={{ fontFamily: 'monospace' }}>${Number(f.amount).toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+          )}
+
+          {data.lead_notes.length > 0 && (
+            <section>
+              <h3 className="evidence-h2">Lead Notes (purchase / agreement references)</h3>
+              {data.lead_notes.map((n, i) => (
+                <div key={i} style={{ padding: '10px 14px', background: '#f9fafb', borderRadius: 6, marginBottom: 6, fontSize: 12 }}>
+                  <div style={{ color: '#6b7280', fontFamily: 'monospace', fontSize: 11, marginBottom: 4 }}>{fmt(n.created_at)}</div>
+                  <div style={{ whiteSpace: 'pre-wrap' }}>{n.body}</div>
+                </div>
+              ))}
+            </section>
+          )}
+
+          <footer className="evidence-footer">
+            <p>
+              This report is generated from server-side activity logs stored in the Income Academy /
+              Kick Start CRM database. Each row represents an authenticated, server-recorded event
+              with timestamp and IP address. The data is not modifiable by the end user.
+            </p>
+          </footer>
+        </article>
       )}
     </div>
   );

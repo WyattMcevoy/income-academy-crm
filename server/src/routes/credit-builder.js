@@ -4,6 +4,19 @@ import { logActivity } from '../activity.js';
 
 const router = Router();
 
+// Mark the user as having accessed the Credit Builder. Fires once per
+// session and is the load-bearing event for chargeback evidence —
+// proves the product was delivered AND used.
+router.post('/access', async (req, res) => {
+  const isFirst = await pool.query(
+    "SELECT 1 FROM user_activity WHERE user_id = $1 AND event_type IN ('cb_access', 'cb_first_access') LIMIT 1",
+    [req.user.id]
+  );
+  const eventType = isFirst.rowCount === 0 ? 'cb_first_access' : 'cb_access';
+  logActivity(req.user.id, eventType, { path: req.body?.path || '/credit-builder' }, req);
+  res.json({ first: eventType === 'cb_first_access' });
+});
+
 router.get('/progress', async (req, res) => {
   const { rows } = await pool.query(
     'SELECT step, sub_item, selected_option, completed FROM credit_builder_progress WHERE user_id = $1 ORDER BY step, sub_item',

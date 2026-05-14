@@ -105,6 +105,18 @@ export default function CreditBuilder() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
+  // Record Credit Builder access for delivery evidence. Once per browser session.
+  useEffect(() => {
+    const key = `cb_access_pinged_${auth?.user?.id || 'anon'}`;
+    if (sessionStorage.getItem(key)) return;
+    api('/api/credit-builder/access', {
+      method: 'POST',
+      token: auth.token,
+      body: { path: location.pathname },
+    }).catch(() => { /* tracking is best-effort, never block UX */ });
+    sessionStorage.setItem(key, '1');
+  }, [auth.token, auth?.user?.id, location.pathname]);
+
   const currentStep = STEPS.find(s => s.step === activeStep);
 
   const handleSelectOption = async (subSlug, option) => {
