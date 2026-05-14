@@ -107,4 +107,66 @@ router.post('/', intakeLimiter, async (req, res) => {
   }
 });
 
+// =============================================================================
+// Public Fundability Score quiz lead capture.
+// No X-Intake-Token required — exposed to the public landing page.
+// Heavily rate-limited and restricted to a single source tag so a leaked
+// endpoint can only create quiz leads, never inject arbitrary data.
+// =============================================================================
+
+const quizLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 6, // 6 submissions per minute per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many submissions. Try again shortly.' },
+});
+
+router.post('/fundability-quiz', quizLimiter, async (req, res) => {
+  const body = req.body || {};
+  const email = cleanString(body.email, { max: 254 });
+  const firstName = cleanString(body.first_name, { max: 100 });
+
+  if (!email || !email.includes('@') || email.length < 5) {
+    return res.status(400).json({ error: 'Valid email required' });
+  }
+
+  const answers = body.answers && typeof body.answers === 'object' ? body.answers : {};
+  const score = Math.max(0, Math.min(890, parseInt(body.score, 10) || 0));
+
+  const notes = `Fundability Quiz | score: ${score}/890 | answers: ${JSON.stringify(answers).slice(0, 1500)}`;
+
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO leads (
+        user_id, name, first_name, email, source, stage
+      ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
+      [
+        OWNER_USER_ID,
+        firstName || email,
+        firstName,
+        email,
+        'Fundability Quiz',
+        'New Lead',
+      ]
+    );
+
+    if (notes) {
+      await pool.query(
+        `INSERT INTO lead_notes (lead_id, user_id, body) VALUES ($1, $2, $3)`,
+        [rows[0].id, OWNER_USER_ID, notes]
+      );
+    }
+
+    res.status(201).json({ ok: true, score });
+  } catch (err) {
+    if (err.code === '23505') {
+      // Unique-violation on email: don't duplicate, but still return the score.
+      return res.status(200).json({ ok: true, score, deduplicated: true });
+    }
+    console.error('fundability quiz insert failed:', err.code || 'unknown');
+    res.status(500).json({ error: 'Could not save your response' });
+  }
+});
+
 export default router;
