@@ -397,6 +397,9 @@ export const VENDOR_CATALOG = {
     { name: 'Summa Office Supplies', category: 'Office Supplies', bureaus: ['D&B', 'Experian'], terms: 'Net-30, $500–$3K', url: 'https://www.summaofficesupplies.com/' },
     { name: 'Strategic Network Solutions', category: 'IT Supplies & Accessories', bureaus: ['Equifax'], terms: 'Net-30, ~$1K', url: 'https://www.stratnsolutions.com/' },
     { name: 'Shirtsy', category: 'Custom Apparel & Promo', bureaus: ['D&B', 'Equifax'], terms: 'Net-30, ~$1K', url: 'https://www.shirtsy.com/' },
+    { name: 'eCredable Lift', category: 'Business utility reporting', bureaus: ['D&B', 'Experian', 'Equifax'], terms: '$19.95/mo, reports existing bills', url: 'https://www.ecredable.com/' },
+    { name: 'JJ Gold International', category: 'Wholesale apparel & accessories', bureaus: ['Equifax'], terms: 'Net-30, $1K starter', url: 'https://www.jjgoldinternational.com/' },
+    { name: 'Quill Office Supplies', category: 'Office supplies', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Net-30, prepaid first order', url: 'https://www.quill.com/' },
   ],
   2: [
     { name: 'Home Depot Pro', category: 'Building & Construction', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.homedepot.com/c/Pro' },
@@ -406,6 +409,8 @@ export const VENDOR_CATALOG = {
     { name: 'Amazon Business Line of Credit', category: 'General Merchandise', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.amazon.com/gp/cobrandcard/marketing.html?pr=bb' },
     { name: 'Dell Business Credit', category: 'Technology & Computers', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.dell.com/en-us/lp/dell-business-credit' },
     { name: 'Newegg Business', category: 'Electronics & IT', bureaus: ['D&B'], terms: 'Net-30', url: 'https://www.neweggbusiness.com/' },
+    { name: 'Best Buy Business', category: 'Electronics & retail', bureaus: ['D&B', 'Equifax'], terms: 'Revolving', url: 'https://www.bestbuy.com/site/business/best-buy-for-business/pcmcat164800050037.c' },
+    { name: 'Costco Business', category: 'Wholesale retail', bureaus: ['Equifax'], terms: 'Membership + revolving', url: 'https://www.costcobusinessdelivery.com/' },
   ],
   3: [
     { name: 'Shell Fleet Card', category: 'Fuel & Fleet', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Revolving', url: 'https://www.shell.us/business-customers/shell-fleet-solutions.html' },
@@ -414,6 +419,7 @@ export const VENDOR_CATALOG = {
     { name: 'WEX Fleet Card', category: 'Fleet Management', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.wexinc.com/' },
     { name: 'ExxonMobil Business', category: 'Fuel', bureaus: ['D&B'], terms: 'Revolving', url: 'https://www.exxon.com/en/business-fuel-card' },
     { name: 'Chevron/Texaco Business', category: 'Fuel', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.chevronwithtechron.com/station/business-card' },
+    { name: 'Sunoco / Speedway Business', category: 'Fuel & convenience', bureaus: ['D&B', 'Equifax'], terms: 'Revolving', url: 'https://business.sunoco.com/' },
   ],
   4: [
     { name: 'Brex', category: 'Corporate Visa/MC (No PG)', bureaus: ['D&B', 'Experian'], terms: 'Revolving, requires $50K+ in bank', url: 'https://www.brex.com/' },
@@ -421,5 +427,6 @@ export const VENDOR_CATALOG = {
     { name: 'Divvy (BILL)', category: 'Corporate Visa (No PG)', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.divvy.co/' },
     { name: "Sam's Club Business MC", category: 'Retail Revolving', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.samsclub.com/content/credit' },
     { name: 'Costco Business Visa', category: 'Retail Revolving', bureaus: ['D&B', 'Experian'], terms: 'Revolving', url: 'https://www.citi.com/credit-cards/citi-costco-anywhere-visa-business-credit-card' },
+    { name: 'BHG Money', category: 'Working-capital loan (PG required)', bureaus: ['D&B', 'Experian', 'Equifax'], terms: 'Term loan, $20K–$250K', url: 'https://bhgmoney.com/' },
   ],
 };

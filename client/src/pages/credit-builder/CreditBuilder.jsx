@@ -1,27 +1,75 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../auth.jsx';
 import { api } from '../../api.js';
 import { STEPS, SUB_PAGE_CONTENT } from './creditBuilderData.js';
+import { computeFundabilityScore, SCORE_MAX } from './scoreWeights.js';
 import ScoreGauge from './ScoreGauge.jsx';
+import ScoreHistoryChart from './ScoreHistoryChart.jsx';
 import VendorDistribution from './VendorDistribution.jsx';
-import StepSidebar from './StepSidebar.jsx';
+import FundingEvents from './FundingEvents.jsx';
 import SubPage from './SubPage.jsx';
 import VendorStep from './VendorStep.jsx';
 import FundabilityDashboard from './FundabilityDashboard.jsx';
 import './credit-builder.css';
 
 const VENDOR_STEPS = [3, 5, 6, 7];
+const TENANT_THEME_CLASS = 'cb-theme-income-academy'; // swap for 'cb-theme-kickstart' when white-labeled
+
+// Inject editorial fonts once.
+function useEditorialFonts() {
+  useEffect(() => {
+    const id = 'cb-fonts';
+    if (document.getElementById(id)) return;
+    const link = document.createElement('link');
+    link.id = id;
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Geist:wght@400;460;500;600;700&family=Geist+Mono:wght@500;600&display=swap';
+    document.head.appendChild(link);
+  }, []);
+}
 
 export default function CreditBuilder() {
+  useEditorialFonts();
   const { auth } = useAuth();
-  const [activeTab, setActiveTab] = useState('builder');
-  const [activeStep, setActiveStep] = useState(1);
-  const [activeSubItem, setActiveSubItem] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = useParams();
+
+  // Parse URL → state. Pattern: /credit-builder, /credit-builder/dashboard,
+  // /credit-builder/step/:n, /credit-builder/step/:n/:slug
+  const pathMatch = useMemo(() => {
+    const segs = location.pathname.replace(/^\/credit-builder\/?/, '').split('/').filter(Boolean);
+    if (segs[0] === 'dashboard') return { tab: 'dashboard', step: 1, sub: null };
+    if (segs[0] === 'step') {
+      const n = parseInt(segs[1], 10);
+      const step = Number.isInteger(n) && n >= 1 && n <= 7 ? n : 1;
+      const sub = segs[2] || null;
+      return { tab: 'builder', step, sub };
+    }
+    return { tab: 'builder', step: 1, sub: null };
+  }, [location.pathname]);
+
   const [progress, setProgress] = useState({});
-  const [score, setScore] = useState({ score: 0, approved_funding: 0 });
+  const [score, setScore] = useState({ score: 0 });
   const [vendors, setVendors] = useState([]);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [historyKey, setHistoryKey] = useState(0); // bump to refresh sparkline
+
+  const activeTab = pathMatch.tab;
+  const activeStep = pathMatch.step;
+  const activeSubItem = pathMatch.sub;
+
+  const setTab = (tab) => {
+    if (tab === 'dashboard') navigate('/credit-builder/dashboard');
+    else navigate('/credit-builder');
+  };
+  const setStep = (n) => navigate(`/credit-builder/step/${n}`);
+  const setSubItem = (slug) => {
+    if (slug) navigate(`/credit-builder/step/${activeStep}/${slug}`);
+    else navigate(`/credit-builder/step/${activeStep}`);
+  };
 
   const fetchData = useCallback(async () => {
     try {
@@ -76,7 +124,7 @@ export default function CreditBuilder() {
       setProgress(prev => {
         const updated = {
           ...prev,
-          [`${activeStep}:${subSlug}`]: { ...prev[`${activeStep}:${subSlug}`], completed: true },
+          [`${activeStep}:${subSlug}`]: { ...prev[`${activeStep}:${subSlug}`], step: activeStep, sub_item: subSlug, completed: true },
         };
         recalcScore(updated);
         return updated;
@@ -86,10 +134,9 @@ export default function CreditBuilder() {
     }
   };
 
+  // Impact-weighted score (see scoreWeights.js)
   const recalcScore = async (currentProgress) => {
-    const completedCount = Object.values(currentProgress || progress).filter(p => p.completed).length;
-    const totalItems = STEPS.reduce((sum, s) => sum + s.subItems.length, 0);
-    const newScore = Math.round((completedCount / totalItems) * 890);
+    const newScore = computeFundabilityScore(currentProgress || progress);
     try {
       const result = await api('/api/credit-builder/score', {
         method: 'POST',
@@ -97,6 +144,7 @@ export default function CreditBuilder() {
         body: { score: newScore, approved_funding: 0 },
       });
       setScore(result);
+      setHistoryKey(k => k + 1);
     } catch (e) {
       console.error('Failed to update score:', e);
     }
@@ -146,32 +194,21 @@ export default function CreditBuilder() {
     }
   };
 
-  const handleNextStep = () => {
-    if (activeStep < 7) {
-      setActiveStep(activeStep + 1);
-      setActiveSubItem(null);
-    }
-  };
-
-  const handlePrevStep = () => {
-    if (activeStep > 1) {
-      setActiveStep(activeStep - 1);
-      setActiveSubItem(null);
-    }
-  };
+  const handleNextStep = () => { if (activeStep < 7) setStep(activeStep + 1); };
+  const handlePrevStep = () => { if (activeStep > 1) setStep(activeStep - 1); };
 
   if (loading) {
-    return <div className="cb-loading">Loading Credit Builder...</div>;
+    return <div className={`${TENANT_THEME_CLASS} cb-loading`}>Loading Credit Builder…</div>;
   }
 
   return (
-    <div className="cb-container">
+    <div className={`${TENANT_THEME_CLASS} cb-container`}>
       <div className="cb-header">
         <h1 className="cb-title">Business Credit Builder</h1>
         <div className="cb-nav-tabs">
-          <span className={`cb-nav-tab ${activeTab === 'builder' ? 'cb-nav-tab-active' : ''}`} onClick={() => setActiveTab('builder')}>Business Credit Builder</span>
+          <span className={`cb-nav-tab ${activeTab === 'builder' ? 'cb-nav-tab-active' : ''}`} onClick={() => setTab('builder')}>Business Credit Builder</span>
           <span className="cb-nav-divider">|</span>
-          <span className={`cb-nav-tab ${activeTab === 'dashboard' ? 'cb-nav-tab-active' : ''}`} onClick={() => setActiveTab('dashboard')}>Fundability Dashboard</span>
+          <span className={`cb-nav-tab ${activeTab === 'dashboard' ? 'cb-nav-tab-active' : ''}`} onClick={() => setTab('dashboard')}>Fundability Dashboard</span>
         </div>
       </div>
 
@@ -181,37 +218,24 @@ export default function CreditBuilder() {
             <FundabilityDashboard
               score={score.score}
               progress={progress}
-              onNavigateToItem={(step, slug) => {
-                setActiveTab('builder');
-                setActiveStep(step);
-                setActiveSubItem(slug);
-              }}
+              onNavigateToItem={(step, slug) => navigate(`/credit-builder/step/${step}/${slug}`)}
             />
           </div>
           <div className="cb-score-col">
-            <ScoreGauge score={score.score} maxScore={890} />
-            <div className="cb-score-stats">
-              <div className="cb-stat-row">
-                <span>Approved Funding</span>
-                <span>${score.approved_funding?.toLocaleString() || 0}</span>
-              </div>
-              <div className="cb-stat-row">
-                <span>Revenue vs Funding</span>
-                <span>{score.score > 0 ? Math.round((score.approved_funding / score.score) * 100) : 0}%</span>
-              </div>
-            </div>
+            <ScoreGauge score={score.score} maxScore={SCORE_MAX} />
+            <ScoreHistoryChart refreshKey={historyKey} maxScore={SCORE_MAX} />
+            <FundingEvents />
             <VendorDistribution vendors={vendors} />
           </div>
         </div>
       ) : (
         <>
-          {/* Progress bar */}
           <div className="cb-progress-bar">
             {STEPS.map(s => (
               <button
                 key={s.step}
                 className={`cb-progress-step ${activeStep === s.step ? 'cb-progress-step-active' : ''} ${getStepProgress(s.step) === 100 ? 'cb-progress-step-done' : ''}`}
-                onClick={() => { setActiveStep(s.step); setActiveSubItem(null); }}
+                onClick={() => setStep(s.step)}
               >
                 {s.step}/7
               </button>
@@ -219,13 +243,12 @@ export default function CreditBuilder() {
           </div>
 
           <div className="cb-main">
-            {/* Left column: Step list */}
             <div className="cb-steps-col">
               {STEPS.map(s => (
                 <button
                   key={s.step}
                   className={`cb-step-card ${activeStep === s.step ? 'cb-step-card-active' : ''}`}
-                  onClick={() => { setActiveStep(s.step); setActiveSubItem(null); }}
+                  onClick={() => setStep(s.step)}
                 >
                   <span className="cb-step-icon">{s.icon}</span>
                   <div className="cb-step-info">
@@ -236,7 +259,6 @@ export default function CreditBuilder() {
               ))}
             </div>
 
-            {/* Center column: Step detail / sub-page */}
             <div className="cb-content-col">
               {activeSubItem ? (
                 <SubPage
@@ -247,8 +269,8 @@ export default function CreditBuilder() {
                   formData={formData[activeSubItem]}
                   onSelect={(option) => handleSelectOption(activeSubItem, option)}
                   onComplete={() => handleComplete(activeSubItem)}
-                  onBack={() => setActiveSubItem(null)}
-                  onNavigate={(slug) => setActiveSubItem(slug)}
+                  onBack={() => setSubItem(null)}
+                  onNavigate={(slug) => setSubItem(slug)}
                   onSaveForm={(data) => handleSaveForm(activeSubItem, data)}
                 />
               ) : VENDOR_STEPS.includes(activeStep) ? (
@@ -258,7 +280,7 @@ export default function CreditBuilder() {
                   targetCount={SUB_PAGE_CONTENT[currentStep?.subItems[0]?.slug]?.targetCount || 3}
                   progress={progress}
                   vendors={vendors}
-                  onNavigateStep={(stepNum) => { setActiveStep(stepNum); setActiveSubItem(null); }}
+                  onNavigateStep={(stepNum) => setStep(stepNum)}
                   onVendorAction={handleVendorAction}
                 />
               ) : (
@@ -282,7 +304,7 @@ export default function CreditBuilder() {
                         <button
                           key={si.slug}
                           className={`cb-sub-item ${status === 'positive' ? 'cb-sub-item-done' : ''} ${status === 'negative' ? 'cb-sub-item-warning' : ''}`}
-                          onClick={() => setActiveSubItem(si.slug)}
+                          onClick={() => setSubItem(si.slug)}
                         >
                           <span className="cb-sub-item-status">{statusIcon}</span>
                           <span className="cb-sub-item-name">{si.name}</span>
@@ -293,33 +315,20 @@ export default function CreditBuilder() {
 
                   <div className="cb-step-nav">
                     {activeStep > 1 && (
-                      <button className="cb-btn cb-btn-outline" onClick={handlePrevStep}>
-                        ← Previous
-                      </button>
+                      <button className="cb-btn cb-btn-outline" onClick={handlePrevStep}>← Previous</button>
                     )}
                     {activeStep < 7 && (
-                      <button className="cb-btn cb-btn-primary" onClick={handleNextStep}>
-                        Next →
-                      </button>
+                      <button className="cb-btn cb-btn-primary" onClick={handleNextStep}>Next →</button>
                     )}
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Right column: Score + Vendors */}
             <div className="cb-score-col">
-              <ScoreGauge score={score.score} maxScore={890} />
-              <div className="cb-score-stats">
-                <div className="cb-stat-row">
-                  <span>Approved Funding</span>
-                  <span>${score.approved_funding?.toLocaleString() || 0}</span>
-                </div>
-                <div className="cb-stat-row">
-                  <span>Revenue vs Funding</span>
-                  <span>{score.score > 0 ? Math.round((score.approved_funding / score.score) * 100) : 0}%</span>
-                </div>
-              </div>
+              <ScoreGauge score={score.score} maxScore={SCORE_MAX} />
+              <ScoreHistoryChart refreshKey={historyKey} maxScore={SCORE_MAX} />
+              <FundingEvents />
               <VendorDistribution vendors={vendors} />
             </div>
           </div>

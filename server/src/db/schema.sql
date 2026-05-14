@@ -101,22 +101,26 @@ CREATE TABLE IF NOT EXISTS credit_builder_progress (
   sub_item TEXT NOT NULL,
   selected_option TEXT,
   completed BOOLEAN NOT NULL DEFAULT FALSE,
+  tenant_id TEXT NOT NULL DEFAULT 'income-academy',
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(user_id, step, sub_item)
 );
 
 CREATE INDEX IF NOT EXISTS cb_progress_user_idx ON credit_builder_progress(user_id);
 CREATE INDEX IF NOT EXISTS cb_progress_step_idx ON credit_builder_progress(user_id, step);
+CREATE INDEX IF NOT EXISTS cb_progress_tenant_idx ON credit_builder_progress(tenant_id);
 
 CREATE TABLE IF NOT EXISTS credit_builder_scores (
   id SERIAL PRIMARY KEY,
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   score INTEGER NOT NULL DEFAULT 0,
   approved_funding INTEGER NOT NULL DEFAULT 0,
+  tenant_id TEXT NOT NULL DEFAULT 'income-academy',
   recorded_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS cb_scores_user_idx ON credit_builder_scores(user_id);
+CREATE INDEX IF NOT EXISTS cb_scores_tenant_idx ON credit_builder_scores(tenant_id);
 
 CREATE TABLE IF NOT EXISTS credit_builder_vendors (
   id SERIAL PRIMARY KEY,
@@ -126,11 +130,13 @@ CREATE TABLE IF NOT EXISTS credit_builder_vendors (
   tier INTEGER NOT NULL DEFAULT 1,
   applied BOOLEAN NOT NULL DEFAULT FALSE,
   completed BOOLEAN NOT NULL DEFAULT FALSE,
+  tenant_id TEXT NOT NULL DEFAULT 'income-academy',
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(user_id, bureau, vendor_name)
 );
 
 CREATE INDEX IF NOT EXISTS cb_vendors_user_idx ON credit_builder_vendors(user_id);
+CREATE INDEX IF NOT EXISTS cb_vendors_tenant_idx ON credit_builder_vendors(tenant_id);
 
 -- Credit Builder: form data entered in sub-pages.
 CREATE TABLE IF NOT EXISTS credit_builder_form_data (
@@ -138,11 +144,29 @@ CREATE TABLE IF NOT EXISTS credit_builder_form_data (
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   sub_item TEXT NOT NULL,
   form_data JSONB NOT NULL DEFAULT '{}',
+  tenant_id TEXT NOT NULL DEFAULT 'income-academy',
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(user_id, sub_item)
 );
 
 CREATE INDEX IF NOT EXISTS cb_form_data_user_idx ON credit_builder_form_data(user_id);
+CREATE INDEX IF NOT EXISTS cb_form_data_tenant_idx ON credit_builder_form_data(tenant_id);
+
+-- User-logged funding events (LOC, business card limits, vendor credit lines).
+CREATE TABLE IF NOT EXISTS credit_builder_funding_events (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  tenant_id TEXT NOT NULL DEFAULT 'income-academy',
+  label TEXT NOT NULL,
+  amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+  source TEXT,
+  approved_on DATE,
+  notes TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS cb_funding_events_user_idx ON credit_builder_funding_events(user_id);
+CREATE INDEX IF NOT EXISTS cb_funding_events_tenant_idx ON credit_builder_funding_events(tenant_id);
 
 -- User activity / event log
 CREATE TABLE IF NOT EXISTS user_activity (
