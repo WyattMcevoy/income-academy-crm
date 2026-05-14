@@ -1842,3 +1842,305 @@
   color: var(--cb-ink-mute);
 }
 .cb-marketplace-footer p { margin: 0; }
+
+/* ============================================================
+   Accessibility pass — larger fonts + bigger click targets
+   Optimized for the 50+ audience. Everything bumped ~12–15%.
+   ============================================================ */
+
+/* Base body inside the credit builder */
+.cb-container { font-size: 16px; line-height: 1.55; }
+
+/* Headings */
+.cb-title { font-size: 32px; }
+.cb-step-overview-title { font-size: 26px; }
+.cb-vendor-page-title { font-size: 26px; }
+.cb-vendor-page-subtitle { font-size: 14px; }
+.cb-subpage-section { font-size: 26px; }
+.cb-marketplace-title { font-size: clamp(34px, 5vw, 56px); }
+.cb-vendor-catalog-title { font-size: 22px; }
+.cb-tier-reality-title { font-size: 20px; }
+
+/* Nav tabs */
+.cb-nav-tabs { font-size: 16px; }
+.cb-nav-tab { font-size: 15px; }
+
+/* Step cards (left rail) */
+.cb-step-card { padding: 16px 18px; }
+.cb-step-icon { font-size: 30px; }
+.cb-step-label { font-size: 12px; }
+.cb-step-name { font-size: 15px; }
+
+/* Progress bar */
+.cb-progress-step { padding: 12px 6px; font-size: 13px; }
+
+/* Sub-items in step overview */
+.cb-sub-item { padding: 14px 18px; font-size: 16px; min-height: 52px; }
+.cb-sub-item-status { font-size: 20px; }
+
+/* Info boxes */
+.cb-info-title { font-size: 16px; }
+.cb-info-desc { font-size: 15px; line-height: 1.6; }
+
+/* Option cards (multiple-choice) */
+.cb-option-card { padding: 20px 22px; min-height: 64px; }
+.cb-option-label { font-size: 16px; }
+.cb-option-icon { font-size: 26px; }
+
+/* Form inputs in sub-pages */
+.cb-input { padding: 12px 14px; font-size: 16px; min-height: 48px; }
+
+/* Buttons — generous targets */
+.cb-btn { padding: 12px 22px; font-size: 15px; min-height: 48px; }
+.cb-btn-sm { padding: 10px 18px !important; font-size: 14px !important; min-height: 42px; }
+.cb-btn-save { padding: 12px 24px; font-size: 15px; }
+
+/* Resource cards */
+.cb-resource-card { padding: 18px 22px; }
+.cb-resource-name { font-size: 16px; }
+.cb-resource-desc { font-size: 13px; }
+.cb-resource-link { font-size: 14px; }
+
+/* Vendor cards */
+.cb-vendor-card { padding: 20px 22px; }
+.cb-vendor-card-name { font-size: 17px; }
+.cb-vendor-card-category { font-size: 13px; }
+.cb-vendor-card-terms { font-size: 12px; }
+.cb-vendor-bureau-badge { font-size: 11px; padding: 3px 10px; }
+
+/* Score block (right rail) */
+.cb-score-number { font-size: 76px; }
+.cb-score-tier { font-size: 12px; }
+.cb-score-tier-label { font-size: 13px; }
+
+/* Funding events */
+.cb-funding-total-value { font-size: 28px; }
+.cb-funding-item { font-size: 14px; padding: 10px 0; }
+
+/* Sparkline caption */
+.cb-spark-caption { font-size: 13px; }
+.cb-spark-delta { font-size: 16px; }
+
+/* Prereq items */
+.cb-prereq-item { padding: 14px 18px; font-size: 15px; min-height: 52px; }
+.cb-prereq-section-title { font-size: 18px; }
+.cb-prereq-item-info { width: 24px; height: 24px; font-size: 12px; }
+
+/* Editorial caption */
+.cb-editorial-caption { font-size: 15px; padding: 16px 20px; }
+
+/* Tier reality */
+.cb-tier-reality-card { font-size: 14px; padding: 16px 18px; }
+.cb-tier-reality-card p { font-size: 14px; }
+.cb-tier-reality-timing { font-size: 14px; }
+
+/* ============================================================
+   Collapsible prerequisite block
+   ============================================================ */
+
+.cb-prereq-collapse {
+  margin: 16px 0 24px;
+  background: var(--cb-bg-page-card);
+  border: 1px solid var(--cb-hair-light);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cb-prereq-toggle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  color: var(--cb-ink-dark);
+  text-align: left;
+  min-height: 56px;
+  transition: background 120ms;
+}
+.cb-prereq-toggle:hover { background: var(--cb-brand-soft); }
+
+.cb-prereq-toggle-status { font-size: 20px; }
+.cb-prereq-toggle-label { flex: 1; }
+.cb-prereq-toggle-label strong { font-weight: 600; color: var(--cb-brand); }
+.cb-prereq-toggle-chevron {
+  font-size: 13px;
+  color: var(--cb-brand);
+  font-weight: 600;
+}
+
+.cb-prereq-details {
+  padding: 8px 20px 20px;
+  border-top: 1px solid var(--cb-hair-light);
+}
+
+/* ============================================================
+   Vendor catalog header + pagination
+   ============================================================ */
+
+.cb-vendor-catalog-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.cb-vendor-catalog-counter {
+  font-family: var(--cb-font-mono);
+  font-size: 12px;
+  color: var(--cb-ink-mute);
+  letter-spacing: 0.04em;
+}
+
+.cb-vendor-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 16px 0;
+  flex-wrap: wrap;
+}
+
+.cb-vendor-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #fff;
+  border: 2px solid var(--cb-brand-line);
+  color: var(--cb-brand);
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 48px;
+  min-width: 130px;
+  transition: background 150ms, transform 120ms, border-color 150ms;
+}
+.cb-vendor-page-btn:hover:not(:disabled) {
+  background: var(--cb-brand-soft);
+  border-color: var(--cb-brand);
+  transform: translateY(-1px);
+}
+.cb-vendor-page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: var(--cb-hair-light);
+  color: var(--cb-ink-mute);
+}
+
+.cb-vendor-page-dots {
+  display: flex;
+  gap: 8px;
+}
+.cb-vendor-page-dot {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--cb-hair);
+  border-radius: 50%;
+  color: var(--cb-ink-mute);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms, color 120ms;
+}
+.cb-vendor-page-dot:hover {
+  border-color: var(--cb-brand-line);
+  color: var(--cb-brand);
+}
+.cb-vendor-page-dot.is-active {
+  background: var(--cb-brand);
+  border-color: var(--cb-brand);
+  color: #fff;
+}
+
+@media (max-width: 540px) {
+  .cb-vendor-pagination {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .cb-vendor-page-btn { width: 100%; }
+  .cb-vendor-page-dots { order: -1; }
+}
+
+/* ============================================================
+   Funding marketplace tabs
+   ============================================================ */
+
+.cb-marketplace-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 28px;
+  border-bottom: 2px solid var(--cb-hair-light);
+  padding-bottom: 0;
+  flex-wrap: wrap;
+}
+
+.cb-marketplace-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--cb-ink-mute);
+  cursor: pointer;
+  transition: color 150ms, border-color 150ms;
+  min-height: 52px;
+}
+.cb-marketplace-tab:hover {
+  color: var(--cb-ink-dark);
+}
+.cb-marketplace-tab.is-active {
+  color: var(--cb-brand);
+  border-bottom-color: var(--cb-brand);
+}
+
+.cb-marketplace-tab-num {
+  font-family: var(--cb-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--cb-brand);
+  font-weight: 500;
+}
+.cb-marketplace-tab-label { flex: 1; text-align: left; }
+.cb-marketplace-tab-count {
+  background: var(--cb-bg-elev);
+  color: var(--cb-ink-mute);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-weight: 600;
+  min-width: 22px;
+  text-align: center;
+}
+.cb-marketplace-tab.is-active .cb-marketplace-tab-count {
+  background: var(--cb-brand-soft);
+  color: var(--cb-brand);
+}
+
+@media (max-width: 720px) {
+  .cb-marketplace-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .cb-marketplace-tab { flex-shrink: 0; padding: 12px 14px; }
+}
