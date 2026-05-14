@@ -219,7 +219,7 @@ export default function FundabilityQuiz() {
               </form>
 
               <p className="fq-fine-print">
-                We don't sell your data. We don't share it with lenders unless you ask us to. We're an honest broker — see our policy for the full receipts.
+                We don't sell your data. We don't share it with lenders unless you ask us to.
               </p>
             </div>
           )}

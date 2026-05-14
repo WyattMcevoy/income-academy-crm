@@ -1450,34 +1450,6 @@
 .cb-celebrate-btn-ghost:hover { color: var(--cb-ink); background: transparent; }
 
 /* ============================================================
-   Per-link affiliate disclosure inline
-   ============================================================ */
-
-.cb-affiliate-note {
-  margin-top: 8px;
-  padding: 8px 12px;
-  background: var(--cb-bg-page);
-  border: 1px dashed var(--cb-hair-strong);
-  border-radius: 6px;
-  font-family: var(--cb-font-mono);
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-  color: var(--cb-ink-mute);
-}
-.cb-affiliate-note strong {
-  color: var(--cb-ink-dark);
-  font-family: var(--cb-font-body);
-  font-weight: 600;
-  letter-spacing: 0;
-}
-.cb-affiliate-alt {
-  display: block;
-  margin-top: 4px;
-  color: var(--cb-ink-dim);
-}
-
-/* ============================================================
    Mobile pass — collapse the 3-column grid below ~960px
    ============================================================ */
 
@@ -1565,7 +1537,7 @@
 }
 
 /* ============================================================
-   "What this tier achieves" honest broker section
+   "What this tier achieves" realistic-expectations section
    ============================================================ */
 
 .cb-tier-reality {
@@ -1812,21 +1784,6 @@
   font-style: italic;
   font-size: 16px;
   margin-left: 6px;
-}
-
-.cb-marketplace-card-commission {
-  margin: 0;
-  font-family: var(--cb-font-mono);
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-  color: var(--cb-ink-mute);
-}
-.cb-marketplace-card-commission strong {
-  color: var(--cb-ink-dark);
-  font-family: var(--cb-font-body);
-  font-weight: 600;
-  letter-spacing: 0;
 }
 
 .cb-marketplace-footer {

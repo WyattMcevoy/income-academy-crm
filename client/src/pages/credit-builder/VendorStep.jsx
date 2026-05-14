@@ -257,7 +257,7 @@ export default function VendorStep({
         )}
       </div>
 
-      {/* What this tier actually achieves (honest broker section) */}
+      {/* What this tier actually achieves — realistic-expectations section */}
       {TIER_REALITY[tierNumber] && (
         <div className="cb-tier-reality">
           <h3 className="cb-tier-reality-title">What Tier {tierNumber} actually achieves</h3>
