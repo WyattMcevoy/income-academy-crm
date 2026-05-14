@@ -13,6 +13,7 @@ import VendorStep from './VendorStep.jsx';
 import FundabilityDashboard from './FundabilityDashboard.jsx';
 import CelebrationModal from './CelebrationModal.jsx';
 import FundabilityReport from './FundabilityReport.jsx';
+import FundingMarketplace from './FundingMarketplace.jsx';
 import { dashboardCaption } from './editorialCaption.js';
 import './credit-builder.css';
 
