@@ -2,7 +2,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useAuth } from './auth.jsx';
 
 // Public marketing pages that should never render the auth'd app shell.
-const PUBLIC_FULLSCREEN_PATHS = ['/login', '/register', '/fundability-score', '/credit-builder/sso'];
+const PUBLIC_FULLSCREEN_PATHS = ['/login', '/register', '/fundability-score', '/credit-builder/sso', '/credit-workshop'];
 import Sidebar from './components/Sidebar.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
@@ -15,6 +15,7 @@ import CreditBuilder from './pages/credit-builder/CreditBuilder.jsx';
 import Admin from './pages/Admin.jsx';
 import FundabilityQuiz from './pages/FundabilityQuiz.jsx';
 import SsoLanding from './pages/SsoLanding.jsx';
+import CreditWorkshopLanding from './pages/CreditWorkshopLanding.jsx';
 
 function Protected({ children }) {
   const { auth } = useAuth();
@@ -43,6 +44,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/fundability-score" element={<FundabilityQuiz />} />
+        <Route path="/credit-workshop" element={<CreditWorkshopLanding />} />
         {/* SSO must be declared BEFORE the /credit-builder/* catch-all */}
         <Route path="/credit-builder/sso" element={<SsoLanding />} />
         <Route path="/" element={<Protected><Dashboard /></Protected>} />
