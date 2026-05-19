@@ -18,11 +18,11 @@ const TRUST_STRIP = [
   'CPA-reviewed playbook',
   '90-day money-back guarantee',
   'Reports to D&B, Experian, Equifax',
-  'Flat $350 — no upsells',
+  'Flat $500 — no upsells',
 ];
 
 const COMPARISON_ROWS = [
-  { label: 'Price', cw: '$350', cs: '$2,997', diy: '$0 (your time)' },
+  { label: 'Price', cw: '$500', cs: '$2,997', diy: '$0 (your time)' },
   { label: 'CPA-reviewed playbook', cw: true, cs: false, diy: false },
   { label: '90-day money-back guarantee', cw: true, cs: false, diy: 'n/a' },
   { label: 'Lives inside your existing CRM', cw: true, cs: false, diy: false },
@@ -49,7 +49,7 @@ const FEATURES = [
   },
   {
     icon: '💵',
-    title: 'Flat $350 — No Upsells',
+    title: 'Flat $500 — No Upsells',
     body: 'Everything required is included. No "premium tier" coaching upsells. No surprise add-ons.',
   },
 ];
@@ -104,11 +104,11 @@ const FAQS = [
   },
   {
     q: 'How is this different from Credit Suite?',
-    a: 'Three ways. Price: $350 vs $2,997. Guarantee: 90-day money-back vs none. Coaching: real CPAs vs phone agents. Plus it lives inside the CRM you already use to sign Kick Start documents — no separate login.',
+    a: 'Three ways. Price: $500 vs $2,997. Guarantee: 90-day money-back vs none. Coaching: real CPAs vs phone agents. Plus it lives inside the CRM you already use to sign Kick Start documents — no separate login.',
   },
   {
     q: 'What\'s the 90-day money-back guarantee?',
-    a: 'If you don\'t have 3 vendor accounts reporting to at least one credit bureau within 90 days of starting, we refund your $350 in full. The "3 reporting tradelines" is a deliverable outcome — not a vague score promise.',
+    a: 'If you don\'t have 3 vendor accounts reporting to at least one credit bureau within 90 days of starting, we refund your $500 in full. The "3 reporting tradelines" is a deliverable outcome — not a vague score promise.',
   },
   {
     q: 'Will this hurt my personal credit?',
@@ -116,7 +116,7 @@ const FAQS = [
   },
   {
     q: 'Do I have to apply for loans through you?',
-    a: 'No. The funding marketplace is optional. You can use the lenders we recommend, you can use your own bank, or you can sit on a stronger credit file without borrowing at all. The $350 buys the credit-building system, not a loan obligation.',
+    a: 'No. The funding marketplace is optional. You can use the lenders we recommend, you can use your own bank, or you can sit on a stronger credit file without borrowing at all. The $500 buys the credit-building system, not a loan obligation.',
   },
   {
     q: 'What happens after the 12 weeks?',
@@ -124,7 +124,7 @@ const FAQS = [
   },
   {
     q: 'Can I do this myself for free?',
-    a: 'Technically yes. Most people don\'t. The $350 buys you the 7-step sequence in the right order, the 28+ pre-vetted vendor accounts, the CPA review, the dashboard, and 90 days of accountability. We\'ll show you the DIY checklist if you ask — many customers buy after looking at it.',
+    a: 'Technically yes. Most people don\'t. The $500 buys you the 7-step sequence in the right order, the 28+ pre-vetted vendor accounts, the CPA review, the dashboard, and 90 days of accountability. We\'ll show you the DIY checklist if you ask — many customers buy after looking at it.',
   },
 ];
 
@@ -181,7 +181,7 @@ export default function CreditWorkshopLanding() {
             Business credit done in <em>9 months</em> — or your money back.
           </h1>
           <p className="cw-hero-sub">
-            The CPA-backed credit-readiness program built for new LLCs. Flat <strong>$350</strong>.
+            The CPA-backed credit-readiness program built for new LLCs. Flat <strong>$500</strong>.
             No $2,997 coaching contracts. No upsells. Just the playbook to get bank-loan-ready.
           </p>
           <div className="cw-hero-ctas">
@@ -190,7 +190,7 @@ export default function CreditWorkshopLanding() {
               <span className="cw-btn-arrow" aria-hidden="true">→</span>
             </Link>
             <a href="#pricing" className="cw-btn cw-btn-ghost" onClick={scrollTo('pricing')}>
-              See what's included ($350, flat)
+              See what's included ($500, flat)
             </a>
           </div>
           <ul className="cw-trust-strip">
@@ -288,7 +288,7 @@ export default function CreditWorkshopLanding() {
       <section className="cw-compare" id="compare">
         <div className="cw-container">
           <span className="cw-eyebrow">The honest comparison</span>
-          <h2 className="cw-h2">Why pay $2,997 for what's actually a $350 problem?</h2>
+          <h2 className="cw-h2">Why pay $2,997 for what's actually a $500 problem?</h2>
           <p className="cw-h2-sub">No FUD. Here's exactly what you get from each option.</p>
 
           <div className="cw-table-wrap">
@@ -323,7 +323,7 @@ export default function CreditWorkshopLanding() {
       <section className="cw-features">
         <div className="cw-container">
           <span className="cw-eyebrow">Why it works</span>
-          <h2 className="cw-h2">Four reasons we beat $2,997 competitors at $350.</h2>
+          <h2 className="cw-h2">Four reasons we beat $2,997 competitors at $500.</h2>
           <div className="cw-features-grid">
             {FEATURES.map((f) => (
               <div key={f.title} className="cw-feature-card">
@@ -360,17 +360,17 @@ export default function CreditWorkshopLanding() {
       <section className="cw-pricing" id="pricing">
         <div className="cw-container cw-pricing-container">
           <span className="cw-eyebrow">One price. One outcome. One guarantee.</span>
-          <h2 className="cw-h2 cw-h2-light">Flat $350. No upsells. 90-day money-back.</h2>
+          <h2 className="cw-h2 cw-h2-light">Flat $500. No upsells. 90-day money-back.</h2>
 
           <div className="cw-pricing-card">
             <span className="cw-pricing-badge">90-day money-back guarantee</span>
             <div className="cw-pricing-price">
               <span className="cw-pricing-currency">$</span>
-              <span className="cw-pricing-amount">350</span>
+              <span className="cw-pricing-amount">500</span>
               <span className="cw-pricing-period">flat</span>
             </div>
             <p className="cw-pricing-or">
-              or <strong>$97 setup + $39/mo × 9 months</strong> if you'd rather spread it
+              or <strong>$100 setup + $50/mo × 8 months</strong> if you'd rather spread it
             </p>
 
             <ul className="cw-pricing-list">
@@ -421,7 +421,7 @@ export default function CreditWorkshopLanding() {
             <span className="cw-btn-arrow" aria-hidden="true">→</span>
           </Link>
           <p className="cw-final-cta-fine">
-            $350 · 90-day money-back guarantee · Lives in your existing CRM
+            $500 · 90-day money-back guarantee · Lives in your existing CRM
           </p>
         </div>
       </section>
