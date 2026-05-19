@@ -331,11 +331,13 @@ export default function CreditBuilder() {
       <div className="cb-header">
         <div className="cb-brand-block">
           <span className="cb-brand-mark" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
-              <rect x="2" y="2" width="28" height="28" rx="6" fill="#0b3954"/>
-              <rect x="8" y="16" width="5" height="10" rx="1" fill="#4A9D7C"/>
-              <rect x="14" y="10" width="5" height="16" rx="1" fill="#4A9D7C"/>
-              <path d="M7 14 L14 8 L20 12 L26 6" stroke="#4A9D7C" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <rect x="0" y="0" width="32" height="32" rx="6" fill="#1e3a5c"/>
+              {/* Two white bars (shortest + medium) */}
+              <rect x="7" y="19" width="4" height="7" rx="0.5" fill="#ffffff"/>
+              <rect x="13" y="14" width="4" height="12" rx="0.5" fill="#ffffff"/>
+              {/* Green arrow (tallest), arrowhead pointing up */}
+              <polygon points="22,5 18,11 20,11 20,26 24,26 24,11 26,11" fill="#4A9D7C"/>
             </svg>
           </span>
           <div className="cb-brand-text">
