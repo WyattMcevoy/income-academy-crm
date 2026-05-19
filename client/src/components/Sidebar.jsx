@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth.jsx';
 
@@ -18,6 +18,29 @@ const NAV_ITEMS = [
 const COLLAPSED_STORAGE_KEY = 'ia_sidebar_collapsed';
 const HIDDEN_STORAGE_KEY = 'ia_sidebar_hidden';
 
+// ---------- Fullscreen helpers (cross-browser) ----------
+function isFullscreen() {
+  return !!(
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.msFullscreenElement
+  );
+}
+
+function requestFullscreen(el = document.documentElement) {
+  if (el.requestFullscreen) return el.requestFullscreen();
+  if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+  if (el.msRequestFullscreen) return el.msRequestFullscreen();
+  return Promise.resolve();
+}
+
+function exitFullscreenSafe() {
+  if (document.exitFullscreen) return document.exitFullscreen();
+  if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+  if (document.msExitFullscreen) return document.msExitFullscreen();
+  return Promise.resolve();
+}
+
 export default function Sidebar() {
   const { auth, logout } = useAuth();
   const nav = useNavigate();
@@ -28,31 +51,69 @@ export default function Sidebar() {
   const [hidden, setHidden] = useState(() => {
     try { return localStorage.getItem(HIDDEN_STORAGE_KEY) === '1'; } catch { return false; }
   });
+  const [showHint, setShowHint] = useState(false);
 
-  // Persist + reflect on <body> so .app-main can pad correctly
+  // Persist + reflect collapse state on <body>
   useEffect(() => {
     try { localStorage.setItem(COLLAPSED_STORAGE_KEY, collapsed ? '1' : '0'); } catch {}
     document.body.classList.toggle('sidebar-collapsed', collapsed);
     return () => document.body.classList.remove('sidebar-collapsed');
   }, [collapsed]);
 
+  // Persist + reflect hidden state on <body>
   useEffect(() => {
     try { localStorage.setItem(HIDDEN_STORAGE_KEY, hidden ? '1' : '0'); } catch {}
     document.body.classList.toggle('sidebar-hidden', hidden);
     return () => document.body.classList.remove('sidebar-hidden');
   }, [hidden]);
 
-  // Keyboard shortcut: Cmd/Ctrl + . toggles presentation mode
+  // Sync sidebar hidden state with browser fullscreen (so Esc exits cleanly)
+  useEffect(() => {
+    const onFsChange = () => {
+      if (!isFullscreen() && hidden) {
+        setHidden(false);
+        setShowHint(false);
+      }
+    };
+    document.addEventListener('fullscreenchange', onFsChange);
+    document.addEventListener('webkitfullscreenchange', onFsChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', onFsChange);
+      document.removeEventListener('webkitfullscreenchange', onFsChange);
+    };
+  }, [hidden]);
+
+  // Combined toggle: sidebar hide + browser fullscreen, all in one
+  const togglePresentation = useCallback(async () => {
+    if (isFullscreen()) {
+      try { await exitFullscreenSafe(); } catch {}
+      setHidden(false);
+      setShowHint(false);
+    } else {
+      try { await requestFullscreen(); } catch (e) {
+        // Fullscreen denied (rare, but possible on some embeds).
+        // Still hide the sidebar so they at least get a cleaner demo.
+        console.warn('Fullscreen request denied:', e?.message);
+      }
+      setHidden(true);
+      setShowHint(true);
+      // Auto-dismiss the hint after 5 seconds
+      setTimeout(() => setShowHint(false), 5000);
+    }
+  }, []);
+
+  // Keyboard shortcut: Cmd/Ctrl + Shift + P toggles full presentation mode
+  // ("P" for Presentation. Avoids macOS-reserved combos like Cmd+. )
   useEffect(() => {
     const onKey = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === '.') {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'P' || e.key === 'p')) {
         e.preventDefault();
-        setHidden(h => !h);
+        togglePresentation();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [togglePresentation]);
 
   if (!auth) return null;
 
@@ -63,8 +124,10 @@ export default function Sidebar() {
 
   const closeMobile = () => setOpen(false);
   const toggleCollapsed = () => setCollapsed(v => !v);
-  const hideEntirely = () => setHidden(true);
-  const showSidebar = () => setHidden(false);
+  const showSidebar = () => {
+    if (isFullscreen()) exitFullscreenSafe().catch(() => {});
+    setHidden(false);
+  };
 
   return (
     <>
@@ -72,11 +135,18 @@ export default function Sidebar() {
       <button
         className="sidebar-restore"
         onClick={showSidebar}
-        title="Show sidebar (Cmd/Ctrl + .)"
+        title="Exit presentation (⌘⇧P or Esc)"
         aria-label="Show sidebar"
       >
         ☰
       </button>
+
+      {/* Toast hint that briefly appears when entering presentation mode */}
+      {showHint && (
+        <div className="sidebar-hint" role="status">
+          Presentation mode — press <kbd>Esc</kbd> or <kbd>⌘⇧P</kbd> to exit
+        </div>
+      )}
 
       <button
         className="hamburger"
@@ -142,10 +212,10 @@ export default function Sidebar() {
           </button>
           <button
             className="sidebar-hide-btn"
-            onClick={hideEntirely}
-            title="Hide sidebar for presentation (Cmd/Ctrl + .)"
+            onClick={togglePresentation}
+            title="Hide sidebar + go fullscreen (⌘⇧P)"
           >
-            Hide for presentation
+            Presentation mode
           </button>
         </div>
       </aside>
