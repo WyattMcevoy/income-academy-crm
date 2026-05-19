@@ -333,7 +333,7 @@ function EvidenceTab() {
     lines.push(`  Vendors applied:         ${s.vendors_applied}`);
     lines.push(`  Vendors reporting:       ${s.vendors_reporting}`);
     lines.push(`  Funding logged:          $${Number(s.funding_total).toLocaleString()} across ${s.funding_events_count} events`);
-    lines.push(`  Latest fundability:      ${s.latest_score} / 890`);
+    lines.push(`  Latest score:      ${s.latest_score} / 890`);
     lines.push('');
     lines.push('The customer was granted access, accessed the product, and used it');
     lines.push('per the activity log above. Server-side timestamps and IPs are');

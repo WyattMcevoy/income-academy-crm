@@ -77,11 +77,11 @@ const SUBSET_MAX = QUESTIONS.reduce((sum, q) => sum + Math.max(...q.options.map(
 const DISPLAY_MAX = 890;
 
 function tierFor(score) {
-  if (score >= 700) return { label: 'Revolving / Fundable', body: 'Your fundability is in the top range. No-PG corporate cards and bank LOCs are realistic — keep your tradelines reporting.' };
+  if (score >= 700) return { label: 'Revolving / Fundable', body: 'Your credit readiness is in the top range. No-PG corporate cards and bank LOCs are realistic — keep your tradelines reporting.' };
   if (score >= 550) return { label: 'Advanced Building', body: 'Underwriters are likely starting to recognize your business credit profile independently. Stay disciplined on reporting.' };
   if (score >= 400) return { label: 'Building Credit', body: 'Foundation is in place. Apply for Tier 2 retail revolving accounts and keep adding reporting tradelines.' };
   if (score >= 200) return { label: 'Foundation Complete', body: 'You have the structure to apply for Tier 1 vendor accounts. The next 90 days matter most.' };
-  return { label: 'Establishing Foundation', body: 'Most of the fundability work is still ahead of you — and that\'s normal. The Credit Builder walks you through every step in order.' };
+  return { label: 'Establishing Foundation', body: 'Most of the credit-building work is still ahead of you — and that\'s normal. The Credit Builder walks you through every step in order.' };
 }
 
 function injectFonts() {
@@ -231,7 +231,7 @@ export default function FundabilityQuiz() {
                 <div className="fq-score-num">{score}</div>
                 <div className="fq-score-meta">
                   <span className="fq-score-max">/ {DISPLAY_MAX}</span>
-                  <span className="fq-score-mono-label">Fundability score</span>
+                  <span className="fq-score-mono-label">Credit Readiness score</span>
                   <div className="fq-score-bar">
                     <div className="fq-score-bar-fill" style={{ width: `${(score / DISPLAY_MAX) * 100}%` }} />
                   </div>
@@ -243,7 +243,7 @@ export default function FundabilityQuiz() {
 
               <div className="fq-result-cta">
                 <p className="fq-result-cta-lead">
-                  This is a directional snapshot from 7 questions. The full Fundability profile —
+                  This is a directional snapshot from 7 questions. The full Credit Readiness profile —
                   with 22 weighted factors, 4 vendor tiers, and 26 curated reporting accounts —
                   is what your bankers actually want to see.
                 </p>
@@ -259,7 +259,7 @@ export default function FundabilityQuiz() {
 
         <footer className="fq-footer">
           <span className="auth-pill">Snapshot</span>
-          <span>This is not a credit decision. Your real fundability requires verification with the bureaus.</span>
+          <span>This is not a credit decision. Your real creditworthiness requires verification with the bureaus.</span>
         </footer>
       </div>
     </div>
