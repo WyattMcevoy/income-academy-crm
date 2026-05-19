@@ -16,6 +16,7 @@ const NAV_ITEMS = [
 ];
 
 const COLLAPSED_STORAGE_KEY = 'ia_sidebar_collapsed';
+const HIDDEN_STORAGE_KEY = 'ia_sidebar_hidden';
 
 export default function Sidebar() {
   const { auth, logout } = useAuth();
@@ -24,6 +25,9 @@ export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(() => {
     try { return localStorage.getItem(COLLAPSED_STORAGE_KEY) === '1'; } catch { return false; }
   });
+  const [hidden, setHidden] = useState(() => {
+    try { return localStorage.getItem(HIDDEN_STORAGE_KEY) === '1'; } catch { return false; }
+  });
 
   // Persist + reflect on <body> so .app-main can pad correctly
   useEffect(() => {
@@ -31,6 +35,24 @@ export default function Sidebar() {
     document.body.classList.toggle('sidebar-collapsed', collapsed);
     return () => document.body.classList.remove('sidebar-collapsed');
   }, [collapsed]);
+
+  useEffect(() => {
+    try { localStorage.setItem(HIDDEN_STORAGE_KEY, hidden ? '1' : '0'); } catch {}
+    document.body.classList.toggle('sidebar-hidden', hidden);
+    return () => document.body.classList.remove('sidebar-hidden');
+  }, [hidden]);
+
+  // Keyboard shortcut: Cmd/Ctrl + . toggles presentation mode
+  useEffect(() => {
+    const onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === '.') {
+        e.preventDefault();
+        setHidden(h => !h);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   if (!auth) return null;
 
@@ -41,9 +63,21 @@ export default function Sidebar() {
 
   const closeMobile = () => setOpen(false);
   const toggleCollapsed = () => setCollapsed(v => !v);
+  const hideEntirely = () => setHidden(true);
+  const showSidebar = () => setHidden(false);
 
   return (
     <>
+      {/* Floating "show sidebar" button — visible only when sidebar is hidden */}
+      <button
+        className="sidebar-restore"
+        onClick={showSidebar}
+        title="Show sidebar (Cmd/Ctrl + .)"
+        aria-label="Show sidebar"
+      >
+        ☰
+      </button>
+
       <button
         className="hamburger"
         aria-label="Open menu"
@@ -105,6 +139,13 @@ export default function Sidebar() {
           <button className="sidebar-logout" onClick={onLogout} title={collapsed ? 'Log out' : undefined}>
             <span className="sidebar-logout-icon" aria-hidden="true">⎋</span>
             <span className="sidebar-logout-label">Log out</span>
+          </button>
+          <button
+            className="sidebar-hide-btn"
+            onClick={hideEntirely}
+            title="Hide sidebar for presentation (Cmd/Ctrl + .)"
+          >
+            Hide for presentation
           </button>
         </div>
       </aside>
