@@ -8,6 +8,9 @@ import ScoreGauge from './ScoreGauge.jsx';
 import ScoreHistoryChart from './ScoreHistoryChart.jsx';
 import VendorDistribution from './VendorDistribution.jsx';
 import FundingEvents from './FundingEvents.jsx';
+import NextMilestone from './NextMilestone.jsx';
+import RecentActivity from './RecentActivity.jsx';
+import TipCallout from './TipCallout.jsx';
 import SubPage from './SubPage.jsx';
 import VendorStep from './VendorStep.jsx';
 import FundabilityDashboard from './FundabilityDashboard.jsx';
@@ -285,7 +288,22 @@ export default function CreditBuilder() {
     return (
       <div className={`${themeClass} cb-container`}>
         <div className="cb-header">
-          <h1 className="cb-title">Business Credit Builder</h1>
+          <div className="cb-brand-block">
+            <span className="cb-brand-mark" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+                <rect x="2" y="2" width="28" height="28" rx="6" fill="#0b3954"/>
+                <rect x="8" y="16" width="5" height="10" rx="1" fill="#4A9D7C"/>
+                <rect x="14" y="10" width="5" height="16" rx="1" fill="#4A9D7C"/>
+                <path d="M7 14 L14 8 L20 12 L26 6" stroke="#4A9D7C" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+              </svg>
+            </span>
+            <div className="cb-brand-text">
+              <span className="cb-brand-name">
+                Credit <span className="cb-brand-name-accent">Workshop</span>
+              </span>
+              <span className="cb-brand-sub">Business Credit Builder</span>
+            </div>
+          </div>
           <div className="cb-header-row">
             <div className="cb-nav-tabs">
               <span className="cb-nav-tab" onClick={() => setTab('builder')}>Business Credit Builder</span>
@@ -311,7 +329,22 @@ export default function CreditBuilder() {
   return (
     <div className={`${themeClass} cb-container`}>
       <div className="cb-header">
-        <h1 className="cb-title">Business Credit Builder</h1>
+        <div className="cb-brand-block">
+          <span className="cb-brand-mark" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+              <rect x="2" y="2" width="28" height="28" rx="6" fill="#0b3954"/>
+              <rect x="8" y="16" width="5" height="10" rx="1" fill="#4A9D7C"/>
+              <rect x="14" y="10" width="5" height="16" rx="1" fill="#4A9D7C"/>
+              <path d="M7 14 L14 8 L20 12 L26 6" stroke="#4A9D7C" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+            </svg>
+          </span>
+          <div className="cb-brand-text">
+            <span className="cb-brand-name">
+              Credit <span className="cb-brand-name-accent">Workshop</span>
+            </span>
+            <span className="cb-brand-sub">Business Credit Builder</span>
+          </div>
+        </div>
         <div className="cb-header-row">
           <div className="cb-nav-tabs">
             <span className={`cb-nav-tab ${activeTab === 'builder' ? 'cb-nav-tab-active' : ''}`} onClick={() => setTab('builder')}>Business Credit Builder</span>
@@ -350,9 +383,10 @@ export default function CreditBuilder() {
           </div>
           <div className="cb-score-col">
             <ScoreGauge score={score.score} maxScore={SCORE_MAX} />
-            <ScoreHistoryChart refreshKey={historyKey} maxScore={SCORE_MAX} />
             <FundingEvents />
-            <VendorDistribution vendors={vendors} />
+            <NextMilestone progress={progress} activeStep={activeStep} />
+            <RecentActivity progress={progress} />
+            <ScoreHistoryChart refreshKey={historyKey} maxScore={SCORE_MAX} />
           </div>
         </div>
       ) : (
@@ -454,11 +488,14 @@ export default function CreditBuilder() {
 
             <div className="cb-score-col">
               <ScoreGauge score={score.score} maxScore={SCORE_MAX} />
-              <ScoreHistoryChart refreshKey={historyKey} maxScore={SCORE_MAX} />
               <FundingEvents />
-              <VendorDistribution vendors={vendors} />
+              <NextMilestone progress={progress} activeStep={activeStep} />
+              <RecentActivity progress={progress} />
+              <ScoreHistoryChart refreshKey={historyKey} maxScore={SCORE_MAX} />
             </div>
           </div>
+
+          <TipCallout progress={progress} activeStep={activeStep} />
         </>
       )}
 
