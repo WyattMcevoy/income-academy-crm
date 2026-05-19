@@ -461,7 +461,14 @@
 .cb-score-col {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px; /* matches .cb-steps-col on the left */
+}
+/* Each right-column card has its own legacy margin from earlier
+   sessions. The parent flex gap above is the single source of truth
+   for spacing — zero out the per-card margins so they don't double up. */
+.cb-score-col > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .cb-gauge {
