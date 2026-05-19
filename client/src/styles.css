@@ -661,3 +661,20 @@ code { background: #eef0f4; padding: 1px 5px; border-radius: 3px; font-size: 13p
   85%  { opacity: 1; transform: translateX(-50%) translateY(0); }
   100% { opacity: 0; transform: translateX(-50%) translateY(8px); }
 }
+
+/* ============================================================
+   Sidebar — external link indicator (opens in new tab)
+   ============================================================ */
+
+.sidebar-external-mark {
+  margin-left: auto;
+  font-size: 11px;
+  color: #6b7280;
+  opacity: 0.7;
+  transition: opacity 120ms, color 120ms;
+}
+.sidebar-link-external:hover .sidebar-external-mark {
+  opacity: 1;
+  color: #fff;
+}
+.sidebar-collapsed .sidebar-external-mark { display: none; }

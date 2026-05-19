@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { label: 'Invoices', path: '/invoices', icon: '💵', enabled: false, note: 'Phase 6' },
   { label: 'Campaigns', path: '/campaigns', icon: '📧', enabled: false, note: 'Phase 12' },
   { label: 'Credit Builder', path: '/credit-builder', icon: '📊', enabled: true },
+  { label: 'Workshop Site', path: '/credit-workshop', icon: '🌐', enabled: true, external: true },
   { label: 'Expenses', path: '/expenses', icon: '💰', enabled: true },
   { label: 'Admin', path: '/admin', icon: '🛡️', enabled: true, adminOnly: true },
   { label: 'Settings', path: '/settings', icon: '⚙️', enabled: false, note: 'Later' },
@@ -174,7 +175,21 @@ export default function Sidebar() {
 
         <nav className="sidebar-nav">
           {NAV_ITEMS.filter(item => !item.adminOnly || auth.user?.is_admin).map((item) =>
-            item.enabled ? (
+            item.enabled && item.external ? (
+              <a
+                key={item.path}
+                href={item.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={closeMobile}
+                title={collapsed ? `${item.label} (opens in new tab)` : 'Opens in new tab'}
+                className="sidebar-link sidebar-link-external"
+              >
+                <span className="sidebar-icon" aria-hidden="true">{item.icon}</span>
+                <span className="sidebar-label">{item.label}</span>
+                <span className="sidebar-external-mark" aria-hidden="true">↗</span>
+              </a>
+            ) : item.enabled ? (
               <NavLink
                 key={item.path}
                 to={item.path}
