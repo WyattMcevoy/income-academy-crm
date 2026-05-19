@@ -409,19 +409,33 @@ export default function CreditBuilder() {
 
           <div className="cb-main">
             <div className="cb-steps-col">
-              {STEPS.map(s => (
-                <button
-                  key={s.step}
-                  className={`cb-step-card ${activeStep === s.step ? 'cb-step-card-active' : ''}`}
-                  onClick={() => setStep(s.step)}
-                >
-                  <span className="cb-step-icon">{s.icon}</span>
-                  <div className="cb-step-info">
-                    <span className="cb-step-label">STEP {s.step}</span>
-                    <span className="cb-step-name">{s.name}</span>
-                  </div>
-                </button>
-              ))}
+              {STEPS.map(s => {
+                const total = s.subItems.length;
+                const done = s.subItems.filter(si => progress[`${s.step}:${si.slug}`]?.completed).length;
+                const pct = total > 0 ? (done / total) * 100 : 0;
+                const isComplete = total > 0 && done === total;
+                return (
+                  <button
+                    key={s.step}
+                    className={`cb-step-card ${activeStep === s.step ? 'cb-step-card-active' : ''} ${isComplete ? 'cb-step-card-done' : ''}`}
+                    onClick={() => setStep(s.step)}
+                  >
+                    <span className="cb-step-icon">{s.icon}</span>
+                    <div className="cb-step-info">
+                      <span className="cb-step-label">STEP {s.step}</span>
+                      <span className="cb-step-name">{s.name}</span>
+                      <div className="cb-step-meta">
+                        <div className="cb-step-progress" aria-hidden="true">
+                          <div className="cb-step-progress-fill" style={{ width: `${pct}%` }} />
+                        </div>
+                        <span className="cb-step-count">
+                          {isComplete ? '✓ Complete' : `${done} / ${total}`}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
 
             <div className="cb-content-col">
