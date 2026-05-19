@@ -142,14 +142,14 @@
 .cb-steps-col {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .cb-step-card {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 20px;
   background: #fff;
   border: 2px solid #e5e7eb;
   border-radius: 10px;
@@ -157,16 +157,24 @@
   transition: border-color 150ms, box-shadow 150ms;
   text-align: left;
   font-family: inherit;
+  min-height: 96px;
 }
 .cb-step-card:hover { border-color: var(--cb-brand); box-shadow: 0 2px 8px var(--cb-brand-soft); }
 .cb-step-card-active {
   border-color: var(--cb-brand);
-  box-shadow: 0 2px 8px rgba(25, 100, 153, 0.15);
+  box-shadow: 0 2px 8px rgba(74, 157, 124, 0.15);
+}
+.cb-step-card-done { background: var(--cb-brand-soft); }
+.cb-step-card-done .cb-step-name { color: var(--cb-brand); }
+
+.cb-step-icon {
+  font-size: 30px;
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 2px;
 }
 
-.cb-step-icon { font-size: 28px; flex-shrink: 0; }
-
-.cb-step-info { display: flex; flex-direction: column; gap: 2px; }
+.cb-step-info { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
 .cb-step-label {
   font-size: 11px;
   font-weight: 600;
@@ -178,7 +186,38 @@
   font-size: 14px;
   font-weight: 600;
   color: var(--cb-ink-dark);
+  line-height: 1.35;
 }
+
+/* Progress row inside each step card */
+.cb-step-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+.cb-step-progress {
+  flex: 1;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 100px;
+  overflow: hidden;
+}
+.cb-step-progress-fill {
+  height: 100%;
+  background: var(--cb-brand);
+  border-radius: inherit;
+  transition: width 400ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.cb-step-count {
+  font-family: var(--cb-font-mono, 'SF Mono', monospace);
+  font-size: 11px;
+  color: var(--cb-ink-mute);
+  font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.cb-step-card-done .cb-step-count { color: var(--cb-brand); }
 
 /* ---- Center: Content area ---- */
 
