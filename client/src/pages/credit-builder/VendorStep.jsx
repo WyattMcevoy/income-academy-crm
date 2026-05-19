@@ -45,7 +45,7 @@ const TIER_REALITY = {
     realistic: 'At 9+ reporting accounts, your D&B Paydex should be 80+ if all payments are on time. This is the inflection point for real underwriting.',
   },
   4: {
-    achieves: 'No-PG corporate cards (Brex, Ramp, Divvy) become approvable if you also have meaningful business bank balance ($25K–$50K+). Real fundability.',
+    achieves: 'No-PG corporate cards (Brex, Ramp, Divvy) become approvable if you also have meaningful business bank balance ($25K–$50K+). Real funding access.',
     doesnt: 'Tier 4 cards still underwrite on business bank balance and revenue — not just your credit file. Tradelines alone are not enough.',
     realistic: 'Most users hit Tier 4 around month 9–18 from starting. SBA loans become realistic at 24 months in business with strong tradelines.',
   },
@@ -184,7 +184,7 @@ export default function VendorStep({
               </div>
               <p className="cb-vendor-warning-desc">
                 {step === 3
-                  ? 'Before applying for any trade vendors, you must have completed the minimum Fundability Foundation Factors.'
+                  ? 'Before applying for any trade vendors, you must have completed the minimum Credit Foundation Factors.'
                   : `You must first have ${prereq.requiredVendors} accounts reporting before you can start applying for Tier ${tierNumber} accounts`}
               </p>
             </div>

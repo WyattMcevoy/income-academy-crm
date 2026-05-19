@@ -1,7 +1,7 @@
 export const STEPS = [
   {
     step: 1,
-    name: 'Fundability Foundation',
+    name: 'Credit Foundation',
     slug: 'foundation',
     icon: '🏗️',
     subItems: [
@@ -86,7 +86,7 @@ export const STEPS = [
 export const SUB_PAGE_CONTENT = {
   'business-address': {
     title: 'What type of business address do you have?',
-    description: "Many lenders and creditors prefer businesses to have a specific address 'type' to qualify for certain funding programs. This means your Fundability score can increase based on the kind of business address you have. Select which type of address you use right now for your business.",
+    description: "Many lenders and creditors prefer businesses to have a specific address 'type' to qualify for certain funding programs. This means your Credit Readiness score can increase based on the kind of business address you have. Select which type of address you use right now for your business.",
     options: [
       { value: 'Commercial Address', icon: '🏢' },
       { value: 'Home Address', icon: '🏠' },
@@ -95,11 +95,11 @@ export const SUB_PAGE_CONTENT = {
       { value: 'Registered Agent', icon: '📍' },
     ],
     followUp: {
-      'Commercial Address': { type: 'form', title: 'ENTER YOUR COMMERCIAL BUSINESS ADDRESS.', description: 'A commercial address is ideal for fundability.', fields: ['businessName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipCode'], status: 'positive' },
-      'Home Address': { type: 'form', title: 'ENTER YOUR HOME BUSINESS ADDRESS.', description: "A home business address can be used without negatively impacting overall fundability, but only for industries that don't require a physical business location.", fields: ['businessName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipCode'], status: 'positive' },
+      'Commercial Address': { type: 'form', title: 'ENTER YOUR COMMERCIAL BUSINESS ADDRESS.', description: 'A commercial address is ideal for business credibility.', fields: ['businessName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipCode'], status: 'positive' },
+      'Home Address': { type: 'form', title: 'ENTER YOUR HOME BUSINESS ADDRESS.', description: "A home business address can be used without negatively impacting overall business credibility, but only for industries that don't require a physical business location.", fields: ['businessName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipCode'], status: 'positive' },
       'PO Box': { type: 'warning', title: 'PO BOX NOT RECOMMENDED', description: 'A PO Box is not considered a valid business address by most lenders. Consider upgrading to a commercial or virtual address.', status: 'negative', resource: { name: 'iPostal1', description: 'Virtual Business Address Service', url: 'https://ipostal1.com/virtual-business-address.php' } },
       'Virtual Address': { type: 'form', title: 'ENTER YOUR VIRTUAL BUSINESS ADDRESS.', description: 'A virtual address is a great alternative to a commercial address.', fields: ['businessName', 'addressLine1', 'addressLine2', 'city', 'state', 'zipCode'], status: 'positive' },
-      'Registered Agent': { type: 'warning', title: 'REGISTERED AGENT ADDRESS', description: 'A registered agent address may not be ideal for fundability. Consider getting a separate business address.', status: 'negative', resource: { name: 'Northwest Registered Agent', description: 'Registered Agent + Business Address', url: 'https://www.northwestregisteredagent.com/' } },
+      'Registered Agent': { type: 'warning', title: 'REGISTERED AGENT ADDRESS', description: 'A registered agent address may not be ideal for business credibility. Consider getting a separate business address.', status: 'negative', resource: { name: 'Northwest Registered Agent', description: 'Registered Agent + Business Address', url: 'https://www.northwestregisteredagent.com/' } },
     },
   },
   'business-entity': {
@@ -112,10 +112,10 @@ export const SUB_PAGE_CONTENT = {
       { value: 'Sole Proprietor', icon: '👤' },
     ],
     followUp: {
-      'LLC': { type: 'success', title: 'GREAT CHOICE!', description: 'An LLC is one of the best entity types for fundability.', status: 'positive' },
-      'S or C Corp': { type: 'success', title: 'GREAT CHOICE!', description: 'A Corporation is one of the best entity types for fundability.', status: 'positive' },
+      'LLC': { type: 'success', title: 'GREAT CHOICE!', description: 'An LLC is one of the best entity types for business credit.', status: 'positive' },
+      'S or C Corp': { type: 'success', title: 'GREAT CHOICE!', description: 'A Corporation is one of the best entity types for business credit.', status: 'positive' },
       'Partnership': { type: 'info', title: 'PARTNERSHIP', description: 'A partnership is an acceptable entity type but may have limitations with some lenders.', status: 'positive' },
-      'Sole Proprietor': { type: 'warning', title: 'SOLE PROPRIETORSHIP NOT RECOMMENDED', description: 'A Sole Proprietorship is NOT a legal entity. You should form an LLC or Corporation to improve your fundability.', status: 'negative', resource: { name: 'Bizee (formerly IncFile)', description: 'Form an LLC or Corporation', url: 'https://bizee.com/' } },
+      'Sole Proprietor': { type: 'warning', title: 'SOLE PROPRIETORSHIP NOT RECOMMENDED', description: 'A Sole Proprietorship is NOT a legal entity. You should form an LLC or Corporation to improve your business credibility.', status: 'negative', resource: { name: 'Bizee (formerly IncFile)', description: 'Form an LLC or Corporation', url: 'https://bizee.com/' } },
     },
   },
   'foreign-filing': {
@@ -156,7 +156,7 @@ export const SUB_PAGE_CONTENT = {
   },
   'business-phone': {
     title: 'Do you have a business phone number?',
-    description: "Home numbers and personal cell phone numbers decrease your Fundability because the business appears less credible. Your business landline or VOIP(voice over internet protocol) must be in your business's name.",
+    description: "Home numbers and personal cell phone numbers decrease your business credibility because the business appears less credible. Your business landline or VOIP(voice over internet protocol) must be in your business's name.",
     options: [
       { value: 'Yes', icon: '✅' },
       { value: 'No', icon: '❌' },
@@ -168,7 +168,7 @@ export const SUB_PAGE_CONTENT = {
   },
   'website-email': {
     title: 'Do you have a professional website and email?',
-    description: "Lenders and creditors search online to confirm the credibility of your business. A professional looking website and email can increase your fundability but aren't required to get financing.",
+    description: "Lenders and creditors search online to confirm the credibility of your business. A professional looking website and email can increase your business credibility but aren't required to get financing.",
     options: [
       { value: 'Yes', icon: '✅' },
       { value: 'No', icon: '❌' },
@@ -211,7 +211,7 @@ export const SUB_PAGE_CONTENT = {
     ],
     followUp: {
       'Yes': { type: 'success', status: 'positive' },
-      'No': { type: 'info', title: 'MERCHANT ACCOUNT', description: 'A merchant account is not required but can improve your fundability.', status: 'neutral' },
+      'No': { type: 'info', title: 'MERCHANT ACCOUNT', description: 'A merchant account is not required but can improve your business credibility.', status: 'neutral' },
     },
   },
   'business-industry': {
@@ -228,7 +228,7 @@ export const SUB_PAGE_CONTENT = {
   },
   'time-in-business': {
     title: 'When was your entity formed?',
-    description: 'Time in business is a key factor in fundability. You need to have your business entity set up first.',
+    description: 'Time in business is a key factor in business credibility. You need to have your business entity set up first.',
     requiresPrior: 'business-entity',
     options: [
       { value: 'Go to Business Entity', icon: '➡️', navigateTo: 'business-entity' },
@@ -282,7 +282,7 @@ export const SUB_PAGE_CONTENT = {
       { value: 'No', icon: '✅' },
     ],
     followUp: {
-      'Yes': { type: 'warning', title: 'DISPUTE INACCURACIES', description: 'You should dispute any inaccurate derogatory items on your business credit reports. This can significantly improve your fundability.', status: 'negative', resource: { name: 'DisputeBee', description: 'DIY credit dispute software', url: 'https://disputebee.com/' } },
+      'Yes': { type: 'warning', title: 'DISPUTE INACCURACIES', description: 'You should dispute any inaccurate derogatory items on your business credit reports. This can significantly improve your business credibility.', status: 'negative', resource: { name: 'DisputeBee', description: 'DIY credit dispute software', url: 'https://disputebee.com/' } },
       'No': { type: 'success', title: 'REPORTS LOOK GOOD!', description: 'Great — no inaccuracies to address. You can proceed to the next step.', status: 'positive' },
     },
   },

@@ -6,7 +6,7 @@ import { computeFundabilityScore, SCORE_MAX, getItemWeight } from './scoreWeight
 import './fundability-report.css';
 
 /**
- * Printable Fundability Report. Branded, exportable via the browser's
+ * Printable Credit Readiness Report. Branded, exportable via the browser's
  * Save-as-PDF print flow. No new dependencies — uses @media print.
  *
  * Route: /credit-builder/report
@@ -34,7 +34,7 @@ export default function FundabilityReport() {
 
   useEffect(() => { load(); }, [load]);
 
-  if (!data) return <div className="cb-report-loading">Preparing your Fundability Report…</div>;
+  if (!data) return <div className="cb-report-loading">Preparing your Credit Readiness Report…</div>;
 
   const { progressMap, vendors, funding, score } = data;
   const reportingByBureau = { 'D&B': 0, 'Experian': 0, 'Equifax': 0 };
@@ -185,7 +185,7 @@ export default function FundabilityReport() {
             your business credit reports when meeting with bankers, lenders, and CPAs.
           </p>
           <p className="cb-report-footer-mark">
-            Income Academy · Fundability Report · {today}
+            Income Academy · Credit Readiness Report · {today}
           </p>
         </footer>
       </article>

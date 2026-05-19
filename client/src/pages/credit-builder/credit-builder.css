@@ -911,7 +911,7 @@
 .cb-sub-item-negative .cb-sub-item-status { color: var(--cb-negative); }
 .cb-sub-item-neutral .cb-sub-item-status { color: #6b7280; }
 
-/* ---- Fundability Dashboard ---- */
+/* ---- Credit Dashboard ---- */
 
 .cb-fd-container {
   display: flex;

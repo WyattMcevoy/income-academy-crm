@@ -1,4 +1,4 @@
-// Impact-weighted fundability scoring.
+// Impact-weighted credit readiness scoring.
 // Each sub-item carries the points it adds to the 0–890 Credit Readiness Score
 // when marked complete. Weights are based on what actually moves underwriting
 // decisions (entity, EIN, bank account, bureau verification, vendor tiers
@@ -7,7 +7,7 @@
 // Sum of all weights = 890.
 
 export const SCORE_WEIGHTS = {
-  // Step 1 — Fundability Foundation (350 pts)
+  // Step 1 — Credit Foundation (350 pts)
   'business-entity': 60,
   'ein': 60,
   'business-bank-account': 50,
@@ -19,7 +19,7 @@ export const SCORE_WEIGHTS = {
   'business-industry': 15,
   'business-licenses': 10,
   'website-email': 10,
-  'merchant-account': 0, // peripheral, no fundability weight
+  'merchant-account': 0, // peripheral, no Credit Readiness weight
 
   // Step 2 — Bureau Profile Verification (200 pts)
   'dnb-verification': 70,
@@ -49,7 +49,7 @@ export const SCORE_WEIGHTS = {
 export const SCORE_MAX = 890;
 
 /**
- * Compute the fundability score from a progress map.
+ * Compute the credit readiness score from a progress map.
  * progress is keyed by `${step}:${slug}` (matching the existing structure).
  */
 export function computeFundabilityScore(progress = {}) {

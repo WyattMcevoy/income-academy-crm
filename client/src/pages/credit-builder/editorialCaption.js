@@ -26,7 +26,7 @@ export function dashboardCaption({ progress = {}, vendors = [], scoreDelta = 0 }
     const remaining = foundation.total - foundation.done;
     return {
       lead: `You're ${foundation.done} of ${foundation.total} through your `,
-      emphasis: 'Fundability Foundation',
+      emphasis: 'Credit Foundation',
       tail: `. ${remaining} more step${remaining === 1 ? '' : 's'} before Tier 1 unlocks.`,
     };
   }
@@ -68,7 +68,7 @@ export function dashboardCaption({ progress = {}, vendors = [], scoreDelta = 0 }
   }
   if (scoreDelta > 0) {
     return {
-      lead: 'Your fundability has grown by ',
+      lead: 'Your Credit Readiness has grown by ',
       emphasis: `+${scoreDelta} points`,
       tail: ' this period. Keep maintaining your reporting accounts.',
     };

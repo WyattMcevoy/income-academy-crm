@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import '../auth.css';
 
 const FEATURES = [
-  { num: '01', label: 'Business credit, methodically.', body: 'Track your fundability score, vendor tiers, and bureau reporting in one operating system.' },
+  { num: '01', label: 'Business credit, methodically.', body: 'Track your credit readiness score, vendor tiers, and bureau reporting in one operating system.' },
   { num: '02', label: 'Pipeline that earns its keep.', body: 'Leads, clients, expenses, and revenue — all the surface area, none of the clutter.' },
   { num: '03', label: 'Built for serious operators.', body: 'Designed for people building real income, not chasing dashboards.' },
 ];
@@ -36,7 +36,7 @@ export default function AuthLayout({ children }) {
               people building <em>real income</em>.
             </h1>
             <p className="auth-headline-sub">
-              Funding, fundability, and the pipeline that gets you there — one elegant workspace.
+              Funding, credit readiness, and the pipeline that gets you there — one elegant workspace.
             </p>
           </div>
 

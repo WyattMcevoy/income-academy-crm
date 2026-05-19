@@ -194,8 +194,8 @@ export default function CreditBuilder() {
             ? 'Advanced building tier. Most underwriters now recognize your business credit independently.'
             : crossed >= 400
             ? 'You\'ve completed the foundation and are actively building credit. The hardest part is behind you.'
-            : 'Your fundability foundation is taking shape. Keep going — the next milestones come faster.',
-          stat: { value: newScore, label: 'Fundability score / 890' },
+            : 'Your credit readiness foundation is taking shape. Keep going — the next milestones come faster.',
+          stat: { value: newScore, label: 'Credit Readiness score / 890' },
         });
       }
     } catch (e) {
@@ -279,7 +279,7 @@ export default function CreditBuilder() {
     return <div className={`${themeClass} cb-loading`}>Loading Credit Builder…</div>;
   }
 
-  // Printable Fundability Report — bypasses the standard chrome
+  // Printable Credit Readiness Report — bypasses the standard chrome
   if (activeTab === 'report') {
     return <div className={themeClass}><FundabilityReport /></div>;
   }
@@ -309,7 +309,7 @@ export default function CreditBuilder() {
             <div className="cb-nav-tabs">
               <span className="cb-nav-tab" onClick={() => setTab('builder')}>Business Credit Builder</span>
               <span className="cb-nav-divider">|</span>
-              <span className="cb-nav-tab" onClick={() => setTab('dashboard')}>Fundability Dashboard</span>
+              <span className="cb-nav-tab" onClick={() => setTab('dashboard')}>Credit Dashboard</span>
               <span className="cb-nav-divider">|</span>
               <span className="cb-nav-tab cb-nav-tab-active">Funding Marketplace</span>
             </div>
@@ -352,14 +352,14 @@ export default function CreditBuilder() {
           <div className="cb-nav-tabs">
             <span className={`cb-nav-tab ${activeTab === 'builder' ? 'cb-nav-tab-active' : ''}`} onClick={() => setTab('builder')}>Business Credit Builder</span>
             <span className="cb-nav-divider">|</span>
-            <span className={`cb-nav-tab ${activeTab === 'dashboard' ? 'cb-nav-tab-active' : ''}`} onClick={() => setTab('dashboard')}>Fundability Dashboard</span>
+            <span className={`cb-nav-tab ${activeTab === 'dashboard' ? 'cb-nav-tab-active' : ''}`} onClick={() => setTab('dashboard')}>Credit Dashboard</span>
             <span className="cb-nav-divider">|</span>
             <span className={`cb-nav-tab ${activeTab === 'funding' ? 'cb-nav-tab-active' : ''}`} onClick={() => navigate('/credit-builder/funding')}>Funding Marketplace</span>
           </div>
           <button
             className="cb-report-trigger"
             onClick={() => navigate('/credit-builder/report')}
-            title="Open a printable Fundability Report (save as PDF from the print dialog)"
+            title="Open a printable Credit Readiness Report (save as PDF from the print dialog)"
           >
             <span>Download Report</span>
             <span className="cb-report-trigger-arrow">↓</span>
