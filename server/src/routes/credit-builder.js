@@ -19,7 +19,7 @@ router.post('/access', async (req, res) => {
 
 router.get('/progress', async (req, res) => {
   const { rows } = await pool.query(
-    'SELECT step, sub_item, selected_option, completed FROM credit_builder_progress WHERE user_id = $1 ORDER BY step, sub_item',
+    'SELECT step, sub_item, selected_option, completed, updated_at FROM credit_builder_progress WHERE user_id = $1 ORDER BY step, sub_item',
     [req.user.id]
   );
   res.json(rows);
