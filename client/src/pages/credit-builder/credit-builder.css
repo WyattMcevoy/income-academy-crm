@@ -2536,3 +2536,367 @@ body.sidebar-hidden .sidebar-restore { display: flex; }
   color: #fff;
 }
 .sidebar-collapsed .sidebar-hide-btn { display: none; }
+
+/* =============================================================================
+   ============ V4 POLISH PASS — universal card/surface/value consistency ============
+   Applies the landing page's design tokens to every remaining surface in the
+   credit builder so sub-pages, the dashboard tab, the funding tab, modals,
+   vendor lists, info boxes, and the quiz all match. Layered at the end so
+   these rules win the cascade over earlier section-specific styles.
+   ============================================================================= */
+
+/* ---- Universal card surface treatment ---- */
+.cb-milestone-card,
+.cb-recent-card,
+.cb-tier-progress-card,
+.cb-tip-callout,
+.cb-info-box,
+.cb-celebrate-card,
+.cb-vendor-page,
+.cb-prereq-collapse,
+.cb-options-grid {
+  border-radius: 14px;
+}
+
+.cb-milestone-card,
+.cb-recent-card,
+.cb-tier-progress-card{
+  background: #fff;
+  border: 1px solid var(--cb-hair);
+  box-shadow: 0 1px 2px rgba(10,37,64,0.04);
+  transition: box-shadow .25s;
+  padding: 22px 20px;
+}
+.cb-milestone-card:hover,
+.cb-recent-card:hover,
+.cb-tier-progress-card:hover{
+  box-shadow: 0 8px 24px -6px rgba(10,37,64,0.10);
+}
+
+/* ---- Eyebrows everywhere — Geist Mono, consistent tracking ---- */
+.cb-milestone-eyebrow,
+.cb-recent-eyebrow,
+.cb-funding-total-label,
+.cb-celebrate-eyebrow {
+  font-family: var(--cb-font-mono) !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+  letter-spacing: .14em !important;
+  text-transform: uppercase !important;
+  color: var(--cb-ink-mute) !important;
+}
+
+/* ---- Big value numbers — Inter Tight 700 navy, tabular ---- */
+.cb-milestone-pts,
+.cb-celebrate-stat-num {
+  font-family: var(--cb-font-display) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.025em !important;
+  font-variant-numeric: tabular-nums !important;
+  color: var(--cb-ink-dark) !important;
+}
+
+.cb-milestone-label,
+.cb-recent-name,
+.cb-celebrate-title {
+  font-family: var(--cb-font-display) !important;
+  letter-spacing: -0.015em !important;
+}
+
+/* ---- OPTION CARDS (Yes/No, multiple-choice) — v4 clean ---- */
+.cb-option-card {
+  background: #fff !important;
+  border: 1px solid var(--cb-hair) !important;
+  border-radius: 12px !important;
+  padding: 18px 22px !important;
+  transition: border-color .2s, background .2s, transform .15s, box-shadow .25s !important;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.cb-option-card:hover {
+  border-color: var(--cb-brand) !important;
+  background: var(--cb-bg-elev) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 22px -6px rgba(74,157,124,0.18) !important;
+}
+.cb-option-selected {
+  border-color: var(--cb-brand) !important;
+  background: var(--cb-brand-soft) !important;
+  box-shadow: 0 0 0 3px rgba(74,157,124,0.14) !important;
+}
+.cb-option-icon { font-size: 22px !important; }
+.cb-option-label {
+  font-family: var(--cb-font-body) !important;
+  font-weight: 500 !important;
+  font-size: 15.5px !important;
+  color: var(--cb-ink-dark) !important;
+}
+
+/* ---- INFO BOXES (positive / warning / success / amber callouts) ---- */
+.cb-info-box {
+  border: 1px solid var(--cb-hair);
+  box-shadow: 0 1px 2px rgba(10,37,64,0.04);
+  padding: 18px 20px;
+}
+.cb-info-box-warning{
+  background: linear-gradient(135deg, #FEF2F2 0%, #FFE4E4 100%) !important;
+  border: 1px solid #FCA5A5 !important;
+  color: var(--cb-ink) !important;
+}
+.cb-info-box-warning .cb-info-title{ color: #991B1B !important; }
+.cb-info-box-warning .cb-info-desc{ color: #7F1D1D !important; }
+.cb-info-box-success{
+  background: linear-gradient(135deg, rgba(74,157,124,0.06) 0%, rgba(74,157,124,0.12) 100%) !important;
+  border: 1px solid var(--cb-brand-line) !important;
+}
+.cb-info-box-amber{
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%) !important;
+  border: 1px solid #FCD34D !important;
+}
+.cb-info-title,
+.cb-info-title-amber {
+  font-family: var(--cb-font-display) !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  letter-spacing: -0.01em !important;
+  margin-bottom: 6px !important;
+}
+.cb-info-desc,
+.cb-info-desc-dark {
+  font-family: var(--cb-font-body) !important;
+  font-size: 14.5px !important;
+  line-height: 1.5 !important;
+  color: var(--cb-ink-dim) !important;
+}
+
+/* ---- TEXT INPUTS — v4 (10px radius, sage focus glow) ---- */
+.cb-input,
+.cb-funding-input {
+  background: #fff !important;
+  border: 1px solid var(--cb-hair) !important;
+  border-radius: 10px !important;
+  padding: 12px 14px !important;
+  font-family: var(--cb-font-body) !important;
+  font-size: 15px !important;
+  color: var(--cb-ink-dark) !important;
+  transition: border-color .2s, box-shadow .2s !important;
+}
+.cb-input:focus,
+.cb-funding-input:focus {
+  outline: none !important;
+  border-color: var(--cb-brand) !important;
+  box-shadow: 0 0 0 4px rgba(74,157,124,0.12) !important;
+}
+.cb-input::placeholder,
+.cb-funding-input::placeholder {
+  color: var(--cb-ink-mute) !important;
+  opacity: .55 !important;
+}
+
+/* ---- VENDOR STEP PAGES + VENDOR CATALOG cards ---- */
+.cb-vendor-page,
+.cb-prereq-collapse{
+  background: #fff;
+  border: 1px solid var(--cb-hair);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(10,37,64,0.04);
+  padding: 28px;
+}
+.cb-vendor-page-title{
+  font-family: var(--cb-font-display) !important;
+  font-weight: 700 !important;
+  font-size: 26px !important;
+  letter-spacing: -0.02em !important;
+  color: var(--cb-ink-dark) !important;
+}
+.cb-vendor-page-subtitle{
+  font-family: var(--cb-font-body) !important;
+  font-size: 15.5px !important;
+  color: var(--cb-ink-dim) !important;
+  line-height: 1.5 !important;
+}
+.cb-vendor-item,
+.cb-prereq-item{
+  background: #fff !important;
+  border: 1px solid var(--cb-hair) !important;
+  border-radius: 10px !important;
+  padding: 14px 18px !important;
+  transition: border-color .18s, background .18s, transform .15s, box-shadow .2s !important;
+}
+.cb-vendor-item:hover,
+.cb-prereq-item:hover{
+  border-color: var(--cb-brand) !important;
+  background: var(--cb-bg-elev) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px -6px rgba(74,157,124,0.18) !important;
+}
+.cb-vendor-item-num{
+  font-family: var(--cb-font-mono) !important;
+  font-size: 12px !important;
+  color: var(--cb-brand-deep) !important;
+}
+.cb-vendor-item-label,
+.cb-prereq-item-name{
+  font-family: var(--cb-font-body) !important;
+  font-weight: 500 !important;
+  font-size: 14.5px !important;
+  color: var(--cb-ink-dark) !important;
+}
+
+/* ---- DASHBOARD tab (Credit Dashboard panel) ---- */
+.cb-dashboard,
+.cb-dashboard-card,
+.cb-dashboard-panel{
+  background: #fff;
+  border: 1px solid var(--cb-hair);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(10,37,64,0.04);
+  padding: 24px;
+}
+.cb-dashboard h2,
+.cb-dashboard h3 {
+  font-family: var(--cb-font-display) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--cb-ink-dark) !important;
+}
+
+/* ---- FUNDING MARKETPLACE tab — cards & tabs ---- */
+.cb-fm-card,
+.cb-fm-processor,
+.cb-fm-listing{
+  background: #fff;
+  border: 1px solid var(--cb-hair);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(10,37,64,0.04);
+  padding: 22px;
+  transition: border-color .2s, box-shadow .25s, transform .2s;
+}
+.cb-fm-card:hover,
+.cb-fm-processor:hover,
+.cb-fm-listing:hover{
+  border-color: var(--cb-brand);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px -8px rgba(74,157,124,0.18);
+}
+
+/* ---- CELEBRATION MODAL — v4 polish ---- */
+.cb-celebrate-overlay{
+  backdrop-filter: blur(8px) saturate(140%);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  background: rgba(10,37,64,0.45) !important;
+}
+.cb-celebrate-card{
+  background: #fff !important;
+  border: 1px solid var(--cb-hair) !important;
+  border-radius: 20px !important;
+  box-shadow:
+    0 1px 2px rgba(10,37,64,0.04),
+    0 32px 80px -24px rgba(10,37,64,0.40) !important;
+  padding: 40px !important;
+}
+.cb-celebrate-title{
+  font-family: var(--cb-font-display) !important;
+  font-weight: 800 !important;
+  font-size: 36px !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.025em !important;
+  color: var(--cb-ink-dark) !important;
+}
+.cb-celebrate-title em{
+  font-style: normal !important;
+  background: linear-gradient(135deg, var(--cb-ink) 0%, var(--cb-brand) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.cb-celebrate-stat-num{
+  font-size: 56px !important;
+  line-height: 1 !important;
+}
+.cb-celebrate-btn{
+  background: var(--cb-ink) !important;
+  color: #fff !important;
+  font-family: var(--cb-font-body) !important;
+  font-weight: 600 !important;
+  border-radius: 999px !important;
+  padding: 14px 24px !important;
+  box-shadow: 0 4px 14px rgba(10,37,64,0.18) !important;
+}
+.cb-celebrate-btn:hover{
+  background: var(--cb-ink) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(10,37,64,0.25) !important;
+}
+
+/* ---- TIP CALLOUT — v4 alert style ---- */
+.cb-tip-callout{
+  background: linear-gradient(135deg, rgba(99,91,255,0.04) 0%, rgba(0,212,255,0.04) 100%) !important;
+  border: 1px solid rgba(99,91,255,0.18) !important;
+  box-shadow: 0 1px 2px rgba(10,37,64,0.04) !important;
+}
+
+/* ---- HEADER ROW / Download Report button row ---- */
+.cb-header-row{ align-items: center; }
+
+/* ---- CREDIT WORKSHOP BRAND BLOCK at top of credit builder ---- */
+.cb-brand-block{
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
+.cb-brand-block img,
+.cb-brand-block svg{ display: none; }
+.cb-brand-block::before{
+  content: "";
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--cb-brand) 0%, var(--cb-accent) 100%);
+  color: #fff;
+  border-radius: 10px;
+  display: inline-grid;
+  place-items: center;
+  font-family: var(--cb-font-body);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ---- Smaller numeric values (recent activity time, vendor pct, etc) get
+        consistent Geist Mono tabular treatment ---- */
+.cb-recent-time,
+.cb-vendor-pct,
+.cb-step-count,
+.cb-funding-item-amount {
+  font-family: var(--cb-font-mono) !important;
+  font-variant-numeric: tabular-nums !important;
+  letter-spacing: 0 !important;
+}
+
+/* ---- Drop legacy Fraunces / serif overrides if anything still tries to
+        apply Fraunces (left over from editorial style) ---- */
+.cb-container,
+.cb-container * {
+  font-family: var(--cb-font-body);
+}
+.cb-title,
+.cb-score-number,
+.cb-funding-total-value,
+.cb-milestone-pts,
+.cb-celebrate-title,
+.cb-celebrate-stat-num,
+.cb-vendor-page-title,
+.cb-step-overview-title,
+.cb-info-title,
+.cb-info-title-amber{
+  font-family: var(--cb-font-display);
+}
+
+/* ---- Editorial caption rows in the dashboard (left over from v3) ---- */
+.cb-editorial-caption{
+  font-family: var(--cb-font-mono) !important;
+  font-style: normal !important;
+  font-size: 12px !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
+  color: var(--cb-ink-mute) !important;
+}
