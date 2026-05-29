@@ -41,7 +41,10 @@ function Shell({ children }) {
   const isPublicFullscreen = PUBLIC_FULLSCREEN_PATHS.some(p =>
     location.pathname === p || location.pathname.startsWith(p + '/')
   );
-  if (!auth || isPublicFullscreen) return <>{children}</>;
+  // Root on the Credit Workshop brand renders the public landing — never
+  // show the authenticated sidebar there, even if the visitor is logged in.
+  const isCwLandingRoot = brand.id === 'credit-workshop' && location.pathname === '/';
+  if (!auth || isPublicFullscreen || isCwLandingRoot) return <>{children}</>;
   return (
     <div className="app-shell" data-brand={brand.id}>
       <Sidebar />
