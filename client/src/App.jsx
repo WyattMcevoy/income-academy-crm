@@ -22,6 +22,17 @@ function Protected({ children }) {
   return auth ? children : <Navigate to="/login" replace />;
 }
 
+// Hostname-aware root: thecreditworkshop.biz (and www) serves the public
+// marketing landing at /. dashboard.incomeacademy.biz still serves the
+// authenticated dashboard at /. Single React build, two product surfaces.
+const PUBLIC_LANDING_HOSTS = /^(www\.)?thecreditworkshop\.(biz|com)$/i;
+function RootRoute() {
+  if (typeof window !== 'undefined' && PUBLIC_LANDING_HOSTS.test(window.location.hostname)) {
+    return <CreditWorkshopLanding />;
+  }
+  return <Protected><Dashboard /></Protected>;
+}
+
 function Shell({ children }) {
   const { auth } = useAuth();
   const location = useLocation();
@@ -47,7 +58,7 @@ export default function App() {
         <Route path="/credit-workshop" element={<CreditWorkshopLanding />} />
         {/* SSO must be declared BEFORE the /credit-builder/* catch-all */}
         <Route path="/credit-builder/sso" element={<SsoLanding />} />
-        <Route path="/" element={<Protected><Dashboard /></Protected>} />
+        <Route path="/" element={<RootRoute />} />
         <Route path="/leads" element={<Protected><Pipeline /></Protected>} />
         <Route path="/leads/:id" element={<Protected><LeadDetail /></Protected>} />
         <Route path="/clients" element={<Protected><Clients /></Protected>} />
