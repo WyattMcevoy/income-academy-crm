@@ -60,17 +60,18 @@ export default function SubPage({ step, subSlug, content, progress, onSelect, on
     return (
       <div className="cb-subpage">
         <div className="cb-subpage-header">
-          <h2 className="cb-subpage-section">{content.stepSection || 'Foundation'}</h2>
-          <span className="cb-subpage-subtitle">{content.title?.split(' ').slice(0, 3).join(' ').toUpperCase()}</span>
+          <span className="cb-subpage-subtitle">Step {step} · {content.stepSection || 'Foundation'}</span>
+          <h2 className="cb-subpage-section">{content.title}</h2>
         </div>
 
-        <div className="cb-info-box">
-          <div className="cb-info-icon">ℹ️</div>
-          <div className="cb-info-content">
-            <h3 className="cb-info-title">{content.title}</h3>
-            {content.description && <p className="cb-info-desc">{content.description}</p>}
+        {content.description && (
+          <div className="cb-info-box">
+            <div className="cb-info-icon">ℹ️</div>
+            <div className="cb-info-content">
+              <p className="cb-info-desc">{content.description}</p>
+            </div>
           </div>
-        </div>
+        )}
 
         {content.options && content.options.length > 0 && (
           <div className={`cb-options-grid ${content.options.length <= 2 ? 'cb-options-two' : ''}`}>

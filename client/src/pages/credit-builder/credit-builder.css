@@ -2896,3 +2896,188 @@ body.sidebar-hidden .sidebar-restore { display: flex; }
   text-transform: uppercase !important;
   color: var(--cb-ink-mute) !important;
 }
+
+/* =============================================================================
+   ============ V4 AESTHETIC MATCH — page atmosphere + brand polish ============
+   Final pass to make the credit-builder feel like the same product as
+   thecreditworkshop.biz/ landing. Adds aurora bg glow, gradient brand text,
+   premium info-box styling, fixes washed-out callouts.
+   ============================================================================= */
+
+/* ---- Page atmosphere: subtle aurora gradient like landing ---- */
+.cb-container{
+  background:
+    radial-gradient(circle at 12% 0%, rgba(99,91,255,0.05), transparent 40%),
+    radial-gradient(circle at 88% 100%, rgba(0,212,255,0.04), transparent 45%),
+    var(--cb-bg-page);
+  padding: 36px 32px 64px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ---- BRAND BLOCK: premium gradient mark + gradient title ---- */
+.cb-brand-block{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+.cb-brand-mark{
+  width: 56px; height: 56px;
+  background: linear-gradient(135deg, var(--cb-brand) 0%, var(--cb-accent) 100%);
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow:
+    0 1px 2px rgba(10,37,64,0.06),
+    0 8px 22px -8px rgba(99,91,255,0.30);
+}
+.cb-brand-mark svg{
+  display: block;
+  width: 32px; height: 32px;
+  /* Original svg has a navy rect bg — hide it, just show the trending-up mark */
+}
+.cb-brand-mark svg rect:first-child{ display: none; }   /* hide the navy bg square */
+.cb-brand-mark svg rect:not(:first-child){ fill: #fff !important; }
+.cb-brand-mark svg polygon{ fill: #fff !important; }
+
+.cb-brand-text{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cb-brand-name{
+  font-family: var(--cb-font-display) !important;
+  font-weight: 800 !important;
+  font-size: 30px !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.025em !important;
+  color: var(--cb-ink-dark) !important;
+}
+.cb-brand-name-accent{
+  background: linear-gradient(120deg, var(--cb-accent) 0%, var(--cb-brand) 50%, #00D4FF 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  font-weight: 800 !important;
+}
+.cb-brand-sub{
+  font-family: var(--cb-font-body) !important;
+  font-size: 14.5px !important;
+  font-weight: 500 !important;
+  color: var(--cb-ink-mute) !important;
+  letter-spacing: 0 !important;
+}
+
+/* ---- SUB-PAGE refinements: cleaner header, premium info-box ---- */
+.cb-subpage-header{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.cb-subpage-subtitle{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--cb-font-body) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: .02em !important;
+  text-transform: none !important;
+  color: var(--cb-brand-deep) !important;
+  background: var(--cb-brand-soft) !important;
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+  align-self: flex-start !important;
+}
+.cb-subpage-section{
+  font-family: var(--cb-font-display) !important;
+  font-weight: 700 !important;
+  font-size: 32px !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.025em !important;
+  color: var(--cb-ink-dark) !important;
+  margin: 0 !important;
+}
+
+/* ---- INFO-BOX (the gentle ℹ️ callout): premium card with crisp text ---- */
+.cb-info-box{
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 20px 22px !important;
+  background: linear-gradient(135deg, #F6F9FC 0%, #EFF3F8 100%) !important;
+  border: 1px solid var(--cb-hair) !important;
+  border-left: 3px solid var(--cb-brand) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 2px rgba(10,37,64,0.04) !important;
+  margin-bottom: 24px;
+}
+.cb-info-icon{
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(74,157,124,0.14);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+.cb-info-desc{
+  font-family: var(--cb-font-body) !important;
+  font-size: 15.5px !important;
+  line-height: 1.55 !important;
+  color: var(--cb-ink-dim) !important;
+  margin: 0 !important;
+}
+
+/* ---- WARNING + SUCCESS info-boxes inherit the same shape ---- */
+.cb-info-box-warning{
+  border-left: 3px solid #DE3618 !important;
+  background: linear-gradient(135deg, #FEF2F2 0%, #FFE4E4 100%) !important;
+}
+.cb-info-box-warning .cb-info-icon{ background: rgba(222,54,24,0.14); }
+.cb-info-box-success{
+  border-left: 3px solid var(--cb-brand) !important;
+  background: linear-gradient(135deg, rgba(74,157,124,0.06) 0%, rgba(74,157,124,0.14) 100%) !important;
+}
+.cb-info-box-amber{
+  border-left: 3px solid #B45309 !important;
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%) !important;
+}
+.cb-info-box-amber .cb-info-icon{ background: rgba(180,83,9,0.14); }
+
+/* ---- SUB-PAGE ACTIONS row (Go Back / Save buttons) ---- */
+.cb-subpage-actions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--cb-hair-light);
+}
+
+/* ---- OPTIONS GRID layout ---- */
+.cb-options-grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.cb-options-grid.cb-options-two{
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 720px){
+  .cb-options-grid.cb-options-two{ grid-template-columns: 1fr; }
+}
+
+/* ---- Slight refinement to credit dashboard / funding tab containers ---- */
+.cb-funding-form{
+  padding-top: 14px;
+  border-top: 1px solid var(--cb-hair-light);
+  margin-top: 14px;
+}
