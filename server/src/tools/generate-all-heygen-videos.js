@@ -728,7 +728,7 @@ async function generateVideo(video) {
       },
       background: {
         type: 'color',
-        value: '#0f172a', // Income Academy navy
+        value: '#f8fafc', // Soft off-white — clean for course module videos
       },
     }],
     dimension: DIMENSION,

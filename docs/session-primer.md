@@ -2,7 +2,7 @@
 
 **Purpose**: paste at the start of a fresh Claude Code session so the new chat has full context on this project without needing to re-read prior conversation history.
 
-**Last updated**: April 29, 2026 — after demo-wiring session (full restoration of operational details that were lopped off in earlier rewrite)
+**Last updated**: May 29, 2026 — batch video generator built (36 scripts), video 1 confirmed complete, smoke tests 14/14
 
 ---
 
@@ -146,23 +146,19 @@ Tracked in CRM at `dashboard.incomeacademy.biz` → Expenses page (server route 
 ### AI Avatar Videos — IN PROGRESS
 - **Saffron (HeyGen)** is the chosen avatar — grey hair, glasses, blazer, sitting at table, 60s-appearing woman
 - **Name used in videos**: Linda
-- **3 scripts written** in `/tmp/linda_video1_script.txt`, video2, video3
-- **Video 1 RENDERED + DOWNLOADED** (Apr 29) → `marketing/videos/heygen/be490f1bcc8e4f9cbd0f17d16dd2f561.mp4` (7.6 MB, ~42s)
-- **PROBLEM**: Saffron's look IDs (from HeyGen public library) don't work via HeyGen API — they're in HeyGen's library namespace, not user's workspace
-- **Solution still pending**: capture workspace look_id from HeyGen UI's network requests (open DevTools → create video → grab look_id from request payload)
-- **Once workspace look_id is captured**: build `server/src/tools/generate-all-heygen-videos.js` to auto-generate all 36 modules via API
-
-**Saffron look IDs (all 6, none API-accessible yet)**:
-- c6b7c53155974e4a9e4d901997d8e772
-- a8014afbc19046c6bc0319fc45f7c55f
-- **7f2bb6c600f34e3699e58d3e8f4a2905** ← sitting at table (the chosen one)
-- 487782f5ec67446282218564 64e4dd54
-- 2596de3df44343849a7deee10813ae6d
-- 0a0902604047445e9dedcb6c58f2a0df
+- **Video 1 RENDERED + DOWNLOADED** (Apr 29) → `marketing/videos/heygen/be490f1bcc8e4f9cbd0f17d16dd2f561.mp4` (7.9 MB, 34.2s)
+- **Batch generator BUILT** (May 29) → `server/src/tools/generate-all-heygen-videos.js`
+  - All 36 module scripts embedded (~140-185 words each, targeting 63-84s per video)
+  - avatar_id: `7f2bb6c600f34e3699e58d3e8f4a2905` (Saffron sitting-at-table — CONFIRMED API-accessible after UI workaround)
+  - voice_id: `0258bbc2cd8648cfa357adfb833f6d7b` (Saffron voice, fetched from /v2/voices)
+  - Commands: `--dry-run`, `--test`, `--course=ai|affiliate|estate|bookkeeping`, `--module=ai-0`, `--wait`
+  - Download companion: `server/src/tools/download-all-heygen-videos.js`
+  - Manifest: `marketing/videos/heygen/manifest.json` (tracks all job IDs + status)
+- **GATE**: Wyatt needs to watch Video 1 and approve Linda before batch generation starts
 
 **HeyGen account**: wyatt.mcevoy@gmail.com, $10 added to API balance
-**HeyGen API key**: leaked in chat once — should rotate. Currently in `server/.env` as `HEYGEN_API_KEY`.
-**HeyGen free plan**: 3 videos available
+**HeyGen API key**: leaked in prior chat — should rotate. Currently in `server/.env` as `HEYGEN_API_KEY`.
+**HeyGen free plan**: 3 videos available; API credits charged per video beyond free tier
 
 ### Course content (in `docs/courses/`)
 Each of 4 courses has:
@@ -194,6 +190,8 @@ Each of 4 courses has:
 - `fetch-ghl-config.js` — auto-populate ghl-config.js from GHL REST API (currently dead-end, see "Known watchouts")
 - `upload-ghl-thumbnails.js` — API thumbnail upload + UI fallback
 - `heygen-fetch-video.js` — poll a HeyGen video by ID, download MP4 once ready
+- `generate-all-heygen-videos.js` — **batch generate all 36 module intro videos** (all scripts embedded, --dry-run/--course/--module/--wait flags)
+- `download-all-heygen-videos.js` — poll manifest + download any completed renders
 - `wire-demo.js` — one-shot orchestrator running the demo-wiring sequence
 - `macos-file-picker.sh` — AppleScript helper to drive NSOpenPanel (requires Accessibility permission)
 - `ghl-create-foundation-pass.js`, `ghl-add-bookkeeping-modules.js`, `ghl-add-estate-sale-modules-5-8.js`, `ghl-portal-css.js` — GHL automation scripts (Playwright-based)
@@ -241,9 +239,11 @@ These are gated by identity verification or Wyatt's time — Claude genuinely ca
 ### Demo-wiring blockers (Apr 29)
 - [ ] **Grant Accessibility permission to Terminal** in System Settings → Privacy & Security → Accessibility (gates the 5 remaining UI uploads)
 - [ ] Upload 4 course thumbnails to GHL (PNGs at `marketing/brand/png-exports/course-thumbs/`)
-- [ ] Upload Video 1 to AI Side Income → Module 1 lesson
-- [ ] Wyatt's reaction to Linda Video 1 (gates next 35 module videos)
-- [ ] Capture Saffron workspace look_id from HeyGen UI DevTools
+- [ ] Upload Video 1 to AI Side Income → Module 0 lesson (file: `marketing/videos/heygen/be490f1bcc8e4f9cbd0f17d16dd2f561.mp4`)
+- [ ] **Wyatt watches Video 1 and approves Linda** — this is the gate for batch generation
+- [ ] When approved: `node server/src/tools/generate-all-heygen-videos.js --course=ai` (then estate, affiliate, bookkeeping)
+- [x] ~~Capture Saffron workspace look_id~~ — look_id `7f2bb6c600f34e3699e58d3e8f4a2905` IS the API avatar_id (confirmed)
+- [x] ~~Build batch video generator~~ — done: `server/src/tools/generate-all-heygen-videos.js` with all 36 scripts
 
 ### GHL portal completion (the largest content lift)
 - [ ] Set up `portal.incomeacademy.biz` custom domain in GHL + Namecheap CNAME
