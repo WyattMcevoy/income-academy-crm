@@ -29,18 +29,16 @@ const CW_FEATURES = [
 export default function AuthLayout({ children }) {
   const brand = useBrand();
 
-  // Load fonts that match the active brand.
+  // Auth uses the v4 Stripe-style skin universally now — load Inter once.
   useEffect(() => {
-    const id = 'auth-fonts-' + brand.id;
+    const id = 'auth-fonts-v4';
     if (document.getElementById(id)) return;
     const link = document.createElement('link');
     link.id = id;
     link.rel = 'stylesheet';
-    link.href = brand.id === 'credit-workshop'
-      ? 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&family=Geist+Mono:wght@400;500&display=swap'
-      : 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@500&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&family=Geist+Mono:wght@400;500&display=swap';
     document.head.appendChild(link);
-  }, [brand]);
+  }, []);
 
   const features = brand.id === 'credit-workshop' ? CW_FEATURES : IA_FEATURES;
 
