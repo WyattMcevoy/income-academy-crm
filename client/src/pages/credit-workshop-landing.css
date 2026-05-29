@@ -124,7 +124,7 @@
 @media (max-width: 760px){ .cw4-nav-links{ display: none; } }
 
 /* ============ BUTTONS ============ */
-.cw4-btn{
+.cw4 .cw4-btn{
   display: inline-flex; align-items: center; gap: 8px;
   padding: 10px 18px;
   font-family: var(--cw4-sans);
@@ -135,20 +135,23 @@
   white-space: nowrap;
   cursor: pointer;
 }
-.cw4-btn--primary{
+.cw4 .cw4-btn--primary{
   background: var(--cw4-ink);
   color: #fff;
   box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 4px 14px rgba(10,37,64,0.18);
 }
-.cw4-btn--primary:hover{
+.cw4 .cw4-btn--primary:hover{
+  color: #fff;
   transform: translateY(-1px);
   box-shadow: 0 2px 0 rgba(0,0,0,0.08), 0 10px 24px rgba(10,37,64,0.25);
 }
-.cw4-btn--ghost{
+.cw4 .cw4-btn--ghost{
   color: var(--cw4-ink);
   background: transparent;
 }
-.cw4-btn--ghost:hover{ color: var(--cw4-brand-deep); }
+.cw4 .cw4-btn--ghost:hover{ color: var(--cw4-brand-deep); }
+.cw4 .cw4-price-cta{ color: #fff; }
+.cw4 .cw4-price-cta:hover{ color: #fff; }
 .cw4-arr{ width: 14px; height: 14px; }
 
 /* ============ HERO ============ */
