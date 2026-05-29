@@ -156,6 +156,18 @@ export default function CreditBuilder() {
         token: auth.token,
         body: { step: activeStep, sub_item: subSlug, completed: true },
       });
+      // Compute the next still-incomplete sub-item in this step BEFORE state update,
+      // so we can navigate the user there after the completion has been persisted.
+      const stepDef = STEPS.find(s => s.step === activeStep);
+      let nextSlug = null;
+      if (stepDef?.subItems) {
+        const nextItem = stepDef.subItems.find(si => {
+          if (si.slug === subSlug) return false;        // skip the one just completed
+          const entry = progress[`${activeStep}:${si.slug}`];
+          return !entry?.completed;                     // still incomplete
+        });
+        nextSlug = nextItem?.slug || null;
+      }
       setProgress(prev => {
         const updated = {
           ...prev,
@@ -164,6 +176,12 @@ export default function CreditBuilder() {
         recalcScore(updated);
         return updated;
       });
+      // Auto-advance to next incomplete sub-item. If none remain in this step,
+      // stay on the page so the completion banner is visible and the user can
+      // pick the next step manually from the left sidebar.
+      if (nextSlug) {
+        setSubItem(nextSlug);
+      }
     } catch (e) {
       console.error('Failed to mark complete:', e);
     }
@@ -441,6 +459,13 @@ export default function CreditBuilder() {
             <div className="cb-content-col">
               {activeSubItem ? (
                 <SubPage
+                  // Force remount on sub-item change so SubPage's local state
+                  // (selectedOption, showFollowUp, localFormData) resets cleanly.
+                  // Without this, navigating EIN(Yes complete) → Business Address
+                  // carries 'Yes' + showFollowUp=true into Business Address whose
+                  // options are Commercial/Home/PO Box/etc — none match 'Yes' — so
+                  // content.followUp['Yes'] is undefined and the page renders blank.
+                  key={`${activeStep}:${activeSubItem}`}
                   step={activeStep}
                   subSlug={activeSubItem}
                   content={SUB_PAGE_CONTENT[activeSubItem]}

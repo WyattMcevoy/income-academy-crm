@@ -120,14 +120,14 @@ export const SUB_PAGE_CONTENT = {
   },
   'foreign-filing': {
     title: 'Have you foreign filed?',
-    description: 'Your business address is located in a different state than your business entity. Underwriters will check to see if you have foreign filed in the state your business is physically located.',
+    description: 'Is your business address located in a different state than your business entity? Underwriters will check to see if you have foreign filed in the state your business is physically located.',
     options: [
-      { value: 'Yes', icon: '✅' },
-      { value: 'No', icon: '❌' },
+      { value: 'Yes', icon: '❌' },
+      { value: 'No', icon: '✅' },
     ],
     followUp: {
-      'Yes': { type: 'success', status: 'positive' },
-      'No': { type: 'warning', title: 'FOREIGN FILING NEEDED', description: 'If your business operates in a different state than where it was formed, you need to foreign file.', status: 'negative' },
+      'Yes': { type: 'warning', title: 'FOREIGN FILING NEEDED', description: 'If your business operates in a different state than where it was formed, you need to foreign file. While you work on this, you can continue to build your Credit Readiness Score by clicking on the right side to the next factor.', status: 'negative' },
+      'No': { type: 'success', status: 'positive' },
     },
   },
   'ownership': {
