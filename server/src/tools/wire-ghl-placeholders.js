@@ -1,60 +1,54 @@
 #!/usr/bin/env node
 /**
- * Wire GHL placeholders across all marketing pages in one command.
- *
- * Run once you have the GHL IDs from the GHL dashboard.
+ * Wire all launch-day placeholders across the marketing site in one command.
  *
  * Usage:
  *   node server/src/tools/wire-ghl-placeholders.js \
  *     --chat-widget-id=abc123 \
  *     --ebay-form-id=xyz789 \
- *     --quiz-form-id=def456
+ *     --quiz-form-id=def456 \
+ *     --stripe-live-url=https://buy.stripe.com/live_xxxx \
+ *     --paypal-url=https://www.paypal.com/ncp/payment/xxxx
  *
- * Or set env vars:
- *   GHL_CHAT_WIDGET_ID=abc123 \
- *   GHL_EBAY_FORM_ID=xyz789 \
- *   GHL_QUIZ_FORM_ID=def456 \
- *   node server/src/tools/wire-ghl-placeholders.js
- *
+ * All flags are optional — run with just the ones you have.
  * --dry-run: shows what would change without writing files
  *
- * ── How to get each ID ──────────────────────────────────────────────────────
+ * ── How to get each value ────────────────────────────────────────────────────
  *
- * Chat widget ID:
- *   1. GHL → Sites → Chat Widget
- *   2. Create/open widget → Get embed code
- *   3. Copy data-widget-id="XXXXX" value
- *   4. Pass as --chat-widget-id=XXXXX
- *      (Script wraps it in the full <script> tag automatically)
+ * --chat-widget-id:
+ *   GHL → Sites → Chat Widget → Get embed code → data-widget-id="XXXXX"
  *
- * eBay apply form ID:
- *   1. GHL → Sites → Forms → open your "eBay Application" form
- *   2. Click Share/Embed → copy the ID from the embed URL:
- *      api.leadconnectorhq.com/widget/form/FORM_ID_HERE
- *   3. Pass as --ebay-form-id=XXXXX
+ * --ebay-form-id:
+ *   GHL → Sites → Forms → eBay Application form → Embed URL → /form/XXXXX
  *
- * Quiz email capture form ID:
- *   1. GHL → Sites → Forms → open your quiz lead-capture form
- *   2. Same as above, grab form ID
- *   3. Pass as --quiz-form-id=XXXXX
+ * --quiz-form-id:
+ *   GHL → Sites → Forms → quiz lead-capture form → Embed URL → /form/XXXXX
+ *
+ * --stripe-live-url:
+ *   After running setup-stripe-bundle.js --live → copy the Payment Link URL
+ *   Format: https://buy.stripe.com/live_XXXXXXXX
+ *
+ * --paypal-url:
+ *   PayPal → Pay & Get Paid → Payment Buttons → create $47 button → copy URL
+ *   See docs/paypal-setup.md for full walkthrough
  *
  * ── What gets changed ───────────────────────────────────────────────────────
  *
- * Chat widget (<script> tag) inserted just before </body> in:
- *   marketing/index.html
- *   marketing/checkout.html
- *   marketing/success.html
- *   marketing/apply-ebay/index.html
- *   marketing/members/index.html
- *   marketing/ai/index.html
- *   marketing/affiliate/index.html
- *   marketing/quiz/index.html
+ * Chat widget (<script> tag) just before </body> in 8 pages:
+ *   marketing/index.html, checkout.html, success.html, apply-ebay/index.html,
+ *   members/index.html, ai/index.html, affiliate/index.html, quiz/index.html
  *
  * eBay form action URL in:
  *   marketing/apply-ebay/index.html
  *
  * Quiz form action URL in:
  *   marketing/quiz/index.html
+ *
+ * Stripe live URL (replaces test URL) in:
+ *   marketing/checkout.html
+ *
+ * PayPal link (replaces PAYPAL_LINK_PLACEHOLDER) in:
+ *   marketing/checkout.html
  */
 
 import fs from 'node:fs';
@@ -81,9 +75,11 @@ function getArg(name) {
   return process.env[envMap[name] || envKey] || null;
 }
 
-const chatWidgetId = getArg('chat-widget-id');
-const ebayFormId   = getArg('ebay-form-id');
-const quizFormId   = getArg('quiz-form-id');
+const chatWidgetId  = getArg('chat-widget-id');
+const ebayFormId    = getArg('ebay-form-id');
+const quizFormId    = getArg('quiz-form-id');
+const stripeLiveUrl = getArg('stripe-live-url');
+const paypalUrl     = getArg('paypal-url');
 
 // ─── Chat widget <script> template ─────────────────────────────────────────
 
@@ -127,19 +123,23 @@ function patchFile(relPath, patches) {
 console.log('\n🔌  GHL Placeholder Wiring Tool');
 console.log(`   Mode: ${DRY_RUN ? '🟡 DRY-RUN (no writes)' : '🟢 LIVE'}\n`);
 
-if (!chatWidgetId && !ebayFormId && !quizFormId) {
+if (!chatWidgetId && !ebayFormId && !quizFormId && !stripeLiveUrl && !paypalUrl) {
   console.log(`Usage:
   node server/src/tools/wire-ghl-placeholders.js \\
     --chat-widget-id=YOUR_WIDGET_ID \\
     --ebay-form-id=YOUR_EBAY_FORM_ID \\
-    --quiz-form-id=YOUR_QUIZ_FORM_ID
+    --quiz-form-id=YOUR_QUIZ_FORM_ID \\
+    --stripe-live-url=https://buy.stripe.com/live_xxxx \\
+    --paypal-url=https://www.paypal.com/ncp/payment/xxxx
 
-All three are optional — run with just the ones you have.
+All flags optional — run with just the ones you have.
 
-How to get each ID:
-  Chat widget ID:  GHL → Sites → Chat Widget → Get embed code → data-widget-id="..."
-  eBay form ID:    GHL → Sites → Forms → [eBay form] → Embed URL → /form/XXXXX
-  Quiz form ID:    GHL → Sites → Forms → [Quiz form] → Embed URL → /form/XXXXX
+How to get each:
+  Chat widget ID:    GHL → Sites → Chat Widget → Get embed code → data-widget-id="..."
+  eBay form ID:      GHL → Sites → Forms → [eBay form] → Embed URL → /form/XXXXX
+  Quiz form ID:      GHL → Sites → Forms → [Quiz form] → Embed URL → /form/XXXXX
+  Stripe live URL:   After running setup-stripe-bundle.js --live → copy Payment Link URL
+  PayPal URL:        PayPal → Pay & Get Paid → Payment Buttons → see docs/paypal-setup.md
 `);
   process.exit(0);
 }
@@ -213,6 +213,34 @@ if (quizFormId) {
       search: "action.indexOf('QUIZ_FORM_PLACEHOLDER') !== -1",
       replace: `action.indexOf('${quizFormId}') === -1`,
       description: 'Quiz form validation check',
+    },
+  ]);
+  if (changed) totalChanged++;
+}
+
+// ─── 4. Stripe live URL ───────────────────────────────────────────────────
+
+if (stripeLiveUrl) {
+  console.log(`\n💳 Stripe → ${stripeLiveUrl}`);
+  const changed = patchFile('marketing/checkout.html', [
+    {
+      search: 'https://buy.stripe.com/test_00w14g7eD9nY1t5co26wE00',
+      replace: stripeLiveUrl,
+      description: 'Stripe test URL → live URL in checkout',
+    },
+  ]);
+  if (changed) totalChanged++;
+}
+
+// ─── 5. PayPal link ───────────────────────────────────────────────────────
+
+if (paypalUrl) {
+  console.log(`\n🅿️  PayPal → ${paypalUrl}`);
+  const changed = patchFile('marketing/checkout.html', [
+    {
+      search: 'PAYPAL_LINK_PLACEHOLDER',
+      replace: paypalUrl,
+      description: 'PayPal link placeholder → real URL',
     },
   ]);
   if (changed) totalChanged++;
