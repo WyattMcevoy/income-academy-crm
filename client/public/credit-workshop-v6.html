@@ -1,0 +1,1772 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Credit Workshop — the file you own</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --paper:       #FFFFFF;
+    --paper-soft:  #F6F9FC;
+    --paper-deep:  #EFF3F8;
+    --ink:         #0A2540;
+    --ink-soft:    #1A2B47;
+    --ink-mute:    #425466;
+    --mute:        #697386;
+    --hair:        #E3E8EE;
+    --sage:        #4A9D7C;
+    --sage-deep:   #2F6952;
+    --sage-soft:   rgba(74,157,124,0.10);
+    --indigo:      #635BFF;
+    --cyan:        #00D4FF;
+    --pink:        #FF80B5;
+    --gold:        #FFD166;
+    --manila:      #E8C896;
+    --manila-deep: #D4A574;
+    --manila-dark: #B8915D;
+
+    --display: "Inter Tight", "Inter", -apple-system, sans-serif;
+    --sans: "Inter", -apple-system, system-ui, sans-serif;
+    --mono: "Geist Mono", ui-monospace, Menlo, monospace;
+
+    --mx: 50vw;
+    --my: 50vh;
+  }
+
+  *,*::before,*::after{ box-sizing: border-box; }
+  html{ -webkit-text-size-adjust: 100%; }
+  body{
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    cursor: none;
+  }
+  @media (hover: none){ body{ cursor: auto; } }
+  ::selection{ background: var(--indigo); color: #fff; }
+  a{ color: inherit; text-decoration: none; }
+
+  /* ============ AMBIENT BG ============ */
+  .bg-aurora{
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .bg-aurora::before,
+  .bg-aurora::after{
+    content: "";
+    position: absolute;
+    width: 60vw; height: 60vw;
+    border-radius: 50%;
+    opacity: .35;
+    filter: blur(80px);
+    will-change: transform;
+  }
+  .bg-aurora::before{
+    top: -20vw; left: -10vw;
+    background: radial-gradient(circle, var(--indigo) 0%, transparent 65%);
+    animation: drift1 28s ease-in-out infinite alternate;
+  }
+  .bg-aurora::after{
+    bottom: -20vw; right: -10vw;
+    background: radial-gradient(circle, var(--cyan) 0%, transparent 65%);
+    animation: drift2 32s ease-in-out infinite alternate;
+  }
+  @keyframes drift1{
+    0%   { transform: translate(0,0) scale(1); }
+    100% { transform: translate(20vw, 15vh) scale(1.2); }
+  }
+  @keyframes drift2{
+    0%   { transform: translate(0,0) scale(1); }
+    100% { transform: translate(-15vw, -10vh) scale(1.15); }
+  }
+  /* mouse-tracked glow */
+  .bg-spot{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background: radial-gradient(360px circle at var(--mx) var(--my),
+      rgba(74,157,124,0.08),
+      transparent 60%);
+  }
+
+  /* paper grain */
+  .bg-grain{
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    opacity: .28;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.05  0 0 0 0 0.1  0 0 0 0 0.17  0 0 0 0.22 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* ============ CUSTOM CURSOR ============ */
+  .cursor-dot, .cursor-ring{
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    border-radius: 50%;
+    will-change: transform;
+  }
+  .cursor-dot{ width: 6px; height: 6px; background: var(--ink); transform: translate3d(-50%,-50%,0); }
+  .cursor-ring{
+    width: 36px; height: 36px;
+    border: 1px solid rgba(10,37,64,0.35);
+    transform: translate3d(-50%,-50%,0);
+    transition: width .35s cubic-bezier(.2,.7,.2,1),
+                height .35s cubic-bezier(.2,.7,.2,1),
+                background .25s, border-color .25s;
+  }
+  .cursor-ring.is-active{
+    width: 60px; height: 60px;
+    background: var(--sage);
+    border-color: var(--sage);
+    mix-blend-mode: multiply;
+  }
+  @media (hover: none){ .cursor-dot, .cursor-ring{ display: none; } }
+
+  /* ============ SCROLL PROGRESS RAIL ============ */
+  .progress-rail{
+    position: fixed;
+    top: 50%; left: 24px;
+    transform: translateY(-50%);
+    width: 1px; height: 280px;
+    background: rgba(10,37,64,0.10);
+    z-index: 40;
+  }
+  .progress-rail-fill{
+    position: absolute;
+    top: 0; left: -1px;
+    width: 3px;
+    background: var(--sage);
+    border-radius: 999px;
+    height: 0%;
+    transition: height .15s linear;
+  }
+  .progress-rail-num{
+    position: fixed;
+    top: 50%; left: 24px;
+    transform: translateY(170px);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    color: var(--mute);
+    z-index: 40;
+  }
+  @media (max-width: 760px){ .progress-rail, .progress-rail-num{ display: none; } }
+
+  /* ============ LAYOUT ============ */
+  .wrap{
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 56px);
+    position: relative;
+    z-index: 3;
+  }
+  .file-tag{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
+    padding: 6px 12px;
+    background: var(--sage-soft);
+    border-radius: 999px;
+  }
+  .file-tag::before{
+    content: ""; width: 6px; height: 6px; background: var(--sage); border-radius: 50%;
+  }
+
+  /* ============ NAV ============ */
+  nav.top{
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 50;
+    padding: 18px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+    mix-blend-mode: difference;
+    color: #fff;
+  }
+  nav.top .brand{
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+  }
+  nav.top .meta{
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    opacity: .65;
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    position: relative;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  h1.hero-h{
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(56px, 10vw, 152px);
+    line-height: .95;
+    letter-spacing: -0.04em;
+    text-align: center;
+    margin: 0;
+    color: var(--ink);
+    position: relative;
+    z-index: 4;
+    max-width: 14ch;
+  }
+  h1.hero-h .grad{
+    background: linear-gradient(120deg, var(--indigo) 0%, var(--sage) 50%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+  }
+  .split-char{
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(80%) rotate(8deg);
+    transform-origin: center bottom;
+    will-change: transform, opacity;
+  }
+  .split-word{ display: inline-block; white-space: nowrap; }
+
+  .hero-sub{
+    position: absolute;
+    bottom: 80px; left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--mute);
+    z-index: 4;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .hero-sub::after{
+    content: "";
+    width: 1px; height: 28px;
+    background: var(--mute);
+    animation: pulseLine 2s ease-in-out infinite;
+  }
+  @keyframes pulseLine{
+    0%,100% { opacity: .3; transform: scaleY(.5); transform-origin: top; }
+    50%     { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* ============ THE FOLDER (3D-feeling CSS) ============ */
+  .folder-stage{
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .folder{
+    position: relative;
+    width: 380px;
+    height: 280px;
+    transform-style: preserve-3d;
+    transform: rotateX(8deg) rotateY(-18deg);
+    will-change: transform;
+  }
+  .folder-back{
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(160deg, var(--manila) 0%, var(--manila-deep) 60%, var(--manila-dark) 100%);
+    border-radius: 4px 14px 14px 14px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.35) inset,
+      0 30px 60px -20px rgba(10,37,64,0.40),
+      0 80px 120px -40px rgba(99,91,255,0.15);
+  }
+  .folder-tab{
+    position: absolute;
+    top: -22px;
+    left: 0;
+    width: 130px;
+    height: 28px;
+    background: linear-gradient(160deg, var(--manila) 0%, var(--manila-deep) 100%);
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.35) inset;
+  }
+  .folder-front{
+    position: absolute;
+    inset: 24px 0 0 0;
+    background: linear-gradient(170deg, #F0D2A0 0%, var(--manila) 40%, var(--manila-deep) 100%);
+    border-radius: 4px 14px 14px 14px;
+    transform: translateZ(8px);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.5) inset,
+      0 -1px 0 rgba(10,37,64,0.06) inset;
+  }
+  .folder-label{
+    position: absolute;
+    top: 70px; left: 36px; right: 36px;
+    transform: translateZ(12px);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(10,37,64,0.6);
+    line-height: 1.8;
+  }
+  .folder-label .line{
+    display: block;
+    height: 1px;
+    background: rgba(10,37,64,0.25);
+    margin-top: 6px;
+  }
+  .folder-label .line.w-60{ width: 60%; }
+  .folder-label .line.w-80{ width: 80%; }
+  .folder-label .line.w-40{ width: 40%; }
+
+  /* papers — animated into the folder */
+  .paper{
+    position: absolute;
+    width: 260px;
+    height: 180px;
+    background: #FFFFFF;
+    border-radius: 4px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.6) inset,
+      0 12px 28px -6px rgba(10,37,64,0.22),
+      0 4px 8px rgba(10,37,64,0.06);
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateZ(20px);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .paper::before{
+    content: "";
+    position: absolute;
+    top: 14px; left: 18px; right: 18px;
+    height: 8px;
+    background: linear-gradient(90deg, var(--ink) 60%, transparent 60%);
+    background-size: 100px 100%;
+    background-repeat: repeat-x;
+    opacity: .9;
+  }
+  .paper::after{
+    content: "";
+    position: absolute;
+    top: 30px; left: 18px; right: 50%;
+    height: 4px;
+    background: var(--ink-mute);
+    opacity: .35;
+  }
+  .paper .row{
+    position: absolute;
+    left: 18px; right: 18px;
+    height: 3px;
+    background: var(--ink-mute);
+    opacity: .25;
+    border-radius: 1px;
+  }
+  .paper .row.r1{ top: 50px; }
+  .paper .row.r2{ top: 62px; width: 60%; }
+  .paper .row.r3{ top: 90px; }
+  .paper .row.r4{ top: 102px; width: 70%; }
+  .paper .stamp{
+    position: absolute;
+    bottom: 16px; right: 16px;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    border: 2px solid var(--sage);
+    display: grid; place-items: center;
+    font-family: var(--display);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--sage);
+    transform: rotate(-12deg);
+    opacity: 0;
+  }
+  .paper.has-stamp .stamp{ opacity: 1; }
+  .paper .stamp small{
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: .12em;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .paper.p1{ background: #FFFCF7; }
+  .paper.p2{ background: #FAFAF7; }
+  .paper.p3{ background: #FFFFFE; }
+  .paper.p4{ background: #FBF8F2; }
+
+  /* ============ SECTION ============ */
+  section.block{
+    position: relative;
+    padding: 14vh 0;
+    z-index: 3;
+  }
+
+  /* ============ DIAGNOSIS ============ */
+  .diagnose{
+    text-align: center;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .diagnose h2{
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(36px, 5.5vw, 76px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 24px 0;
+  }
+  .diagnose h2 em{
+    font-style: normal;
+    background: linear-gradient(120deg, var(--indigo) 0%, var(--sage) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .diagnose p{
+    font-family: var(--display);
+    font-size: clamp(18px, 2vw, 24px);
+    color: var(--ink-mute);
+    line-height: 1.5;
+    max-width: 56ch;
+    margin: 0 auto;
+  }
+
+  /* ============ METHOD — pinned section ============ */
+  .method-pin{
+    position: relative;
+    height: 400vh;
+  }
+  .method-stick{
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+    gap: 48px;
+    padding: 0 clamp(40px, 6vw, 96px);
+    overflow: hidden;
+  }
+  .method-copy{ position: relative; z-index: 3; }
+  .method-copy .file-tag{ margin-bottom: 20px; }
+  .method-frames{
+    position: relative;
+    height: 320px;
+  }
+  .method-frame{
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .method-frame.is-active{ opacity: 1; transform: none; }
+  .method-frame h3{
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(48px, 7vw, 88px);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin: 0 0 24px;
+  }
+  .method-frame h3 em{
+    font-style: normal;
+    background: linear-gradient(120deg, var(--sage) 0%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .method-frame p{
+    font-family: var(--display);
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink-mute);
+    max-width: 44ch;
+    margin: 0 0 28px;
+  }
+  .method-frame ul{
+    list-style: none;
+    padding: 0; margin: 0;
+    display: grid; gap: 10px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-soft);
+    letter-spacing: .04em;
+  }
+  .method-frame ul li{
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 8px 0;
+    border-top: 1px solid var(--hair);
+  }
+  .method-frame ul li::before{
+    content: ""; width: 6px; height: 6px;
+    background: var(--sage); border-radius: 50%;
+    flex-shrink: 0; transform: translateY(-2px);
+  }
+  .method-progress{
+    position: absolute;
+    top: 32px; left: clamp(40px, 6vw, 96px);
+    display: flex; gap: 8px;
+    z-index: 3;
+  }
+  .method-progress div{
+    width: 40px; height: 3px;
+    background: var(--hair);
+    border-radius: 999px;
+    transition: background .35s;
+  }
+  .method-progress div.is-active{ background: var(--sage); }
+  .method-progress div.is-done{ background: var(--sage); opacity: .35; }
+
+  .method-folder-wrap{
+    position: relative;
+    display: grid; place-items: center;
+    height: 100%;
+  }
+  /* re-use .folder inside the method section */
+
+  /* ============ BUREAU RINGS ============ */
+  .bureaus{
+    padding: 14vh 0;
+    text-align: center;
+  }
+  .bureaus h2{
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(40px, 6vw, 80px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 18px 0 16px;
+    color: var(--ink);
+  }
+  .bureaus h2 em{
+    font-style: normal;
+    background: linear-gradient(120deg, var(--indigo) 0%, var(--sage) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .bureaus .lede{
+    font-family: var(--display);
+    font-size: 19px;
+    color: var(--ink-mute);
+    max-width: 56ch;
+    margin: 0 auto 80px;
+    line-height: 1.5;
+  }
+  .ring-row{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 980px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .ring-row::before{
+    content: "";
+    position: absolute;
+    top: 50%; left: 12%; right: 12%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--sage), var(--sage), var(--sage), transparent);
+    opacity: 0;
+    z-index: 0;
+    transition: opacity 1.2s ease 0.8s;
+  }
+  .ring-row.is-synced::before{ opacity: 0.5; }
+
+  .ring{
+    position: relative;
+    aspect-ratio: 1;
+    display: grid; place-items: center;
+    z-index: 1;
+  }
+  .ring svg{ width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring .track{
+    fill: none;
+    stroke: var(--hair);
+    stroke-width: 4;
+  }
+  .ring .fill{
+    fill: none;
+    stroke: var(--sage);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 502;
+    stroke-dashoffset: 502;
+    transition: stroke-dashoffset 2.4s cubic-bezier(.2,.7,.2,1);
+    filter: drop-shadow(0 4px 14px rgba(74,157,124,0.4));
+  }
+  .ring-row.is-synced .ring .fill{ stroke-dashoffset: 100; }
+  .ring-center{
+    position: absolute;
+    text-align: center;
+  }
+  .ring-center .n{
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 64px;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(135deg, var(--ink) 0%, var(--sage) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .ring-center .label{
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-top: 8px;
+  }
+  @media (max-width: 760px){
+    .ring-row{ grid-template-columns: 1fr; gap: 32px; }
+    .ring-row::before{ display: none; }
+  }
+
+  /* ============ COMPARISON ============ */
+  .compare-stage{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .compare-panel{
+    padding: 48px 36px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    min-height: 460px;
+  }
+  .compare-panel.them{
+    background: linear-gradient(160deg, #FFF1F1 0%, #FFFFFF 100%);
+    border: 1px solid #FED7D7;
+  }
+  .compare-panel.us{
+    background: linear-gradient(160deg, var(--sage-soft) 0%, #FFFFFF 100%);
+    border: 1px solid var(--sage);
+  }
+  .compare-panel h3{
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  .compare-panel .sub{
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 32px;
+  }
+
+  /* hamster wheel viz */
+  .wheel-stage{
+    position: relative;
+    height: 200px;
+    display: grid; place-items: center;
+    margin-bottom: 20px;
+  }
+  .wheel{
+    width: 160px; height: 160px;
+    border: 3px solid #DC2626;
+    border-radius: 50%;
+    position: relative;
+    animation: spinWheel 4s linear infinite;
+  }
+  .wheel::before, .wheel::after{
+    content: "";
+    position: absolute; inset: 12px;
+    border-radius: 50%;
+    border: 2px dashed rgba(220,38,38,0.4);
+  }
+  .wheel::after{
+    inset: 30px;
+    border: 1px solid rgba(220,38,38,0.25);
+  }
+  .wheel .center-dot{
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #DC2626;
+    text-align: center;
+    line-height: 1.3;
+  }
+  @keyframes spinWheel{
+    from { transform: rotate(0); }
+    to   { transform: rotate(360deg); }
+  }
+  .compare-panel .meta{
+    font-family: var(--display);
+    font-size: 17px;
+    color: var(--ink-mute);
+    line-height: 1.5;
+  }
+  .compare-panel.them .meta strong{ color: #991B1B; }
+  .compare-panel.us .meta strong{ color: var(--sage-deep); }
+
+  /* path-to-finish viz */
+  .path-stage{
+    position: relative;
+    height: 200px;
+    margin-bottom: 20px;
+  }
+  .path-stage svg{
+    width: 100%; height: 100%;
+  }
+  .path-stage .path-line{
+    fill: none;
+    stroke: var(--sage);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 500;
+    stroke-dashoffset: 500;
+    transition: stroke-dashoffset 2.4s cubic-bezier(.2,.7,.2,1);
+  }
+  .compare-panel.us.in-view .path-line{ stroke-dashoffset: 0; }
+  .path-stage .milestone{
+    fill: var(--sage);
+    opacity: 0;
+    transition: opacity .4s;
+  }
+  .compare-panel.us.in-view .milestone{ opacity: 1; }
+  .compare-panel.us.in-view .milestone:nth-of-type(1){ transition-delay: .5s; }
+  .compare-panel.us.in-view .milestone:nth-of-type(2){ transition-delay: 1.0s; }
+  .compare-panel.us.in-view .milestone:nth-of-type(3){ transition-delay: 1.6s; }
+  .compare-panel.us.in-view .milestone:nth-of-type(4){ transition-delay: 2.2s; }
+
+  @media (max-width: 760px){
+    .compare-stage{ grid-template-columns: 1fr; }
+  }
+
+  /* ============ VENDOR LADDER ============ */
+  .ladder-sec{
+    padding: 14vh 0;
+  }
+  .ladder-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    max-width: 1140px;
+    margin: 0 auto;
+    align-items: center;
+  }
+  .ladder-copy h2{
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 16px 0 18px;
+  }
+  .ladder-copy h2 em{
+    font-style: normal;
+    background: linear-gradient(120deg, var(--sage) 0%, var(--indigo) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .ladder-copy p{
+    font-family: var(--display);
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink-mute);
+    max-width: 44ch;
+  }
+  .ladder-stage{
+    position: relative;
+    height: 420px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 8px;
+    justify-content: flex-start;
+  }
+  .ladder-tier{
+    background: #fff;
+    border: 1px solid var(--hair);
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 1px 2px rgba(10,37,64,0.04);
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity .8s ease, transform .8s ease, border-color .3s, box-shadow .3s;
+  }
+  .ladder-tier.is-visible{ opacity: 1; transform: none; }
+  .ladder-tier.lit{
+    border-color: var(--sage);
+    box-shadow: 0 8px 24px -6px rgba(74,157,124,0.30);
+  }
+  .ladder-tier.t1{ width: 100%; }
+  .ladder-tier.t2{ width: 88%; margin-left: 6%; }
+  .ladder-tier.t3{ width: 76%; margin-left: 12%; }
+  .ladder-tier.t4{ width: 64%; margin-left: 18%; }
+  .ladder-tier .name{
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .ladder-tier .vendors{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--mute);
+    letter-spacing: .04em;
+  }
+  .ladder-tier .check{
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--hair);
+    color: transparent;
+    display: grid; place-items: center;
+    font-weight: 700;
+    margin-left: 16px;
+    transition: background .3s, color .3s;
+  }
+  .ladder-tier.lit .check{
+    background: var(--sage);
+    color: #fff;
+  }
+  @media (max-width: 920px){
+    .ladder-grid{ grid-template-columns: 1fr; gap: 48px; }
+  }
+
+  /* ============ FUNDING FLOW ============ */
+  .funding-sec{
+    padding: 14vh 0;
+    text-align: center;
+  }
+  .funding-sec h2{
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(40px, 6vw, 80px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 18px 0 16px;
+  }
+  .funding-sec h2 em{
+    font-style: normal;
+    background: linear-gradient(120deg, var(--indigo) 0%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .funding-sec .lede{
+    font-family: var(--display);
+    font-size: 19px;
+    color: var(--ink-mute);
+    max-width: 56ch;
+    margin: 0 auto 60px;
+    line-height: 1.5;
+  }
+  .flow-stage{
+    position: relative;
+    height: 360px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .flow-stage svg{ width: 100%; height: 100%; }
+  .flow-vault{
+    position: absolute;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    width: 160px; height: 140px;
+    background: linear-gradient(160deg, var(--ink) 0%, var(--ink-soft) 100%);
+    border-radius: 14px;
+    display: grid; place-items: center;
+    color: var(--cyan);
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 38px;
+    letter-spacing: -0.025em;
+    box-shadow:
+      0 1px 2px rgba(10,37,64,0.04),
+      0 30px 60px -20px rgba(99,91,255,0.50),
+      0 0 80px rgba(0,212,255,0.30);
+  }
+  .flow-vault::before{
+    content: "VAULT";
+    position: absolute;
+    top: 12px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .2em;
+    color: rgba(255,255,255,0.45);
+  }
+  .pipe{
+    position: absolute;
+    top: 0;
+    width: 100px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    font-weight: 500;
+  }
+  .pipe.p1{ left: 8%; }
+  .pipe.p2{ left: 28%; }
+  .pipe.p3{ left: 50%; transform: translateX(-50%); }
+  .pipe.p4{ right: 28%; }
+  .pipe.p5{ right: 8%; }
+  .pipe-dot{
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--sage);
+    margin: 0 auto 8px;
+    box-shadow: 0 0 18px var(--sage);
+  }
+  .flow-line{
+    stroke: var(--sage);
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 6 8;
+    opacity: 0.5;
+    animation: flowDash 1.6s linear infinite;
+  }
+  @keyframes flowDash{
+    to { stroke-dashoffset: -28; }
+  }
+
+  /* ============ PRICING ============ */
+  .pricing{
+    padding: 16vh 0;
+    text-align: center;
+    position: relative;
+  }
+  .pricing h2{
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 18px 0 12px;
+  }
+  .pricing .lede{
+    font-family: var(--display);
+    font-size: 19px;
+    color: var(--ink-mute);
+    max-width: 56ch;
+    margin: 0 auto 56px;
+  }
+  .price-mega{
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(120px, 22vw, 320px);
+    line-height: .85;
+    letter-spacing: -0.06em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    display: flex; justify-content: center;
+    margin-bottom: 12px;
+  }
+  .price-mega .currency{
+    font-size: .45em;
+    color: var(--mute);
+    margin-right: 14px;
+    margin-top: 14px;
+  }
+  .price-mega .digit{
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(50%);
+  }
+  .price-meta{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--mute);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+  .trust-pills{
+    display: inline-flex; gap: 12px; flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 48px;
+  }
+  .trust-pill{
+    padding: 8px 16px;
+    border: 1px solid var(--hair);
+    background: var(--paper);
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .trust-pill::before{
+    content: "✓"; color: var(--sage); font-weight: 700;
+  }
+
+  .timeline-ribbon{
+    max-width: 760px;
+    margin: 0 auto 60px;
+    position: relative;
+    padding: 32px 0;
+  }
+  .timeline-ribbon::before{
+    content: ""; position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--sage) 0%, var(--cyan) 100%);
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 1.8s cubic-bezier(.2,.7,.2,1);
+  }
+  .timeline-ribbon.in-view::before{ transform: scaleX(1); }
+  .timeline-ribbon .stops{
+    display: flex; justify-content: space-between;
+    position: relative;
+    z-index: 1;
+  }
+  .timeline-ribbon .stop{
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px;
+  }
+  .timeline-ribbon .dot{
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--sage);
+    box-shadow: 0 0 0 6px var(--paper);
+    opacity: 0;
+    transform: scale(.3);
+    transition: opacity .4s, transform .4s;
+  }
+  .timeline-ribbon.in-view .stop:nth-child(1) .dot{ opacity: 1; transform: none; transition-delay: .4s;}
+  .timeline-ribbon.in-view .stop:nth-child(2) .dot{ opacity: 1; transform: none; transition-delay: .9s;}
+  .timeline-ribbon.in-view .stop:nth-child(3) .dot{ opacity: 1; transform: none; transition-delay: 1.4s;}
+  .timeline-ribbon.in-view .stop:nth-child(4) .dot{ opacity: 1; transform: none; transition-delay: 1.9s;}
+  .timeline-ribbon .label{
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .cta-mega{
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 18px 36px;
+    background: var(--ink);
+    color: #fff;
+    border: 0;
+    border-radius: 999px;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 17px;
+    cursor: none;
+    box-shadow:
+      0 1px 0 rgba(0,0,0,0.08),
+      0 12px 28px rgba(10,37,64,0.30);
+    transition: transform .25s, box-shadow .3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-mega::before{
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--sage) 0%, var(--indigo) 100%);
+    transform: translateY(101%);
+    transition: transform .45s cubic-bezier(.83,0,.17,1);
+    z-index: 0;
+  }
+  .cta-mega > *{ position: relative; z-index: 1; }
+  .cta-mega:hover::before{ transform: none; }
+  .cta-mega:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(10,37,64,0.35);
+  }
+
+  /* ============ FOOTER ============ */
+  footer.demo{
+    padding: 100px 32px 60px;
+    background: var(--ink);
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    position: relative;
+    z-index: 3;
+  }
+  footer.demo .meta{
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+  footer.demo .h{
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(60px, 11vw, 180px);
+    line-height: .95;
+    letter-spacing: -0.045em;
+    color: #fff;
+    margin: 32px 0;
+  }
+  footer.demo .h .grad{
+    background: linear-gradient(120deg, var(--cyan) 0%, var(--sage) 60%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ============ UTILITIES ============ */
+  .reveal{
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.1s cubic-bezier(.2,.7,.2,1), transform 1.1s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.in{ opacity: 1; transform: none; }
+
+</style>
+</head>
+<body>
+
+<!-- ambient bg layers -->
+<div class="bg-aurora" aria-hidden="true"></div>
+<div class="bg-spot" aria-hidden="true"></div>
+<div class="bg-grain" aria-hidden="true"></div>
+
+<!-- custom cursor -->
+<div class="cursor-dot" id="cdot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cring" aria-hidden="true"></div>
+
+<!-- scroll progress rail -->
+<div class="progress-rail" aria-hidden="true">
+  <div class="progress-rail-fill" id="rail"></div>
+</div>
+<div class="progress-rail-num" id="rnum">FILE 01</div>
+
+<!-- nav -->
+<nav class="top">
+  <span class="brand">Credit Workshop</span>
+  <span class="meta">v6 · Demo</span>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="folder-stage" id="heroFolder">
+    <div class="folder" id="folder">
+      <div class="folder-back"></div>
+      <div class="folder-tab"></div>
+      <!-- papers (will animate in across the scroll story) -->
+      <div class="paper p1" id="paper1">
+        <span class="row r1"></span>
+        <span class="row r2"></span>
+        <span class="row r3"></span>
+        <span class="row r4"></span>
+      </div>
+      <div class="paper p2" id="paper2">
+        <span class="row r1"></span>
+        <span class="row r2"></span>
+        <span class="row r3"></span>
+        <span class="row r4"></span>
+      </div>
+      <div class="paper p3 has-stamp" id="paper3">
+        <span class="row r1"></span>
+        <span class="row r2"></span>
+        <span class="row r3"></span>
+        <span class="stamp">PAYDEX<br/><small>80</small></span>
+      </div>
+      <div class="paper p4" id="paper4">
+        <span class="row r1"></span>
+        <span class="row r2"></span>
+        <span class="row r3"></span>
+        <span class="row r4"></span>
+      </div>
+      <div class="folder-front">
+        <div class="folder-label">
+          File · Operator
+          <span class="line w-60"></span>
+          <span class="line w-80"></span>
+          <span class="line w-40"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h1 class="hero-h" data-split>
+    The file <span class="grad">you own</span>
+  </h1>
+
+  <div class="hero-sub">
+    Scroll to begin
+  </div>
+</section>
+
+<!-- ============ DIAGNOSIS ============ -->
+<section class="block">
+  <div class="wrap diagnose">
+    <span class="file-tag reveal">File 02 · Diagnosis</span>
+    <h2 class="reveal">The industry sells you<br/>an <em>access</em> account.</h2>
+    <p class="reveal">We give you the file itself. The vendor sequence. The bureau cadence. The dashboard. And in nine months, you walk out holding all of it — never again paying for the privilege of seeing your own data.</p>
+  </div>
+</section>
+
+<!-- ============ METHOD — pinned, folder fills ============ -->
+<section class="method-pin" id="methodPin">
+  <div class="method-progress">
+    <div class="step-pip" data-step="0"></div>
+    <div class="step-pip" data-step="1"></div>
+    <div class="step-pip" data-step="2"></div>
+    <div class="step-pip" data-step="3"></div>
+  </div>
+  <div class="method-stick">
+    <div class="method-copy">
+      <span class="file-tag">File 03 · Method</span>
+      <div class="method-frames">
+        <div class="method-frame is-active" data-frame="0">
+          <h3><em>Foundation</em> &<br/>filing.</h3>
+          <p>EIN. Entity hygiene. Address compliance. D&amp;B file opened. The boring parts done correctly so the rest works.</p>
+          <ul>
+            <li>EIN verification</li>
+            <li>D&amp;B file + DUNS</li>
+            <li>Bureau enrollment</li>
+          </ul>
+        </div>
+        <div class="method-frame" data-frame="1">
+          <h3><em>Tier I</em><br/>vendors.</h3>
+          <p>Six Net-30 accounts placed in the order the bureaus reward. Reporting verified. First Paydex captured.</p>
+          <ul>
+            <li>Uline · placed &amp; reporting</li>
+            <li>Quill · placed &amp; reporting</li>
+            <li>Grainger · placed &amp; reporting</li>
+          </ul>
+        </div>
+        <div class="method-frame" data-frame="2">
+          <h3><em>Tier II</em><br/>&amp; III.</h3>
+          <p>Revolving accounts, fleet cards, store credit. File depth and utilization tuned. <strong>Paydex 80 lands.</strong></p>
+          <ul>
+            <li>Fleet card placed</li>
+            <li>Store credit · Lowe's, HD</li>
+            <li>Paydex 80 confirmed</li>
+          </ul>
+        </div>
+        <div class="method-frame" data-frame="3">
+          <h3><em>Funding</em><br/>&amp; hand-off.</h3>
+          <p>Lender matching. SBA-ready packet. Application sequencing. You finish holding the file, not renting it.</p>
+          <ul>
+            <li>Marketplace match</li>
+            <li>SBA-ready packet</li>
+            <li>Hand-off · file is yours</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="method-folder-wrap" id="methodFolder">
+      <!-- folder rendered here via JS — same DOM as hero, repositioned -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ BUREAU SYNC ============ -->
+<section class="block bureaus">
+  <div class="wrap">
+    <span class="file-tag reveal">File 04 · Three bureaus, one cadence</span>
+    <h2 class="reveal">D&amp;B. Experian. Equifax.<br/>Moving <em>together</em>.</h2>
+    <p class="lede reveal">Every Tier I vendor placement, every cadence beat, mirrored across all three files at the same time. Catch reporting gaps before they cost you a tier.</p>
+
+    <div class="ring-row" id="ringRow">
+      <div class="ring">
+        <svg viewBox="0 0 200 200">
+          <circle class="track" cx="100" cy="100" r="80"/>
+          <circle class="fill"  cx="100" cy="100" r="80"/>
+        </svg>
+        <div class="ring-center">
+          <div class="n" data-ring="82">0</div>
+          <div class="label">D&amp;B Paydex</div>
+        </div>
+      </div>
+      <div class="ring">
+        <svg viewBox="0 0 200 200">
+          <circle class="track" cx="100" cy="100" r="80"/>
+          <circle class="fill"  cx="100" cy="100" r="80"/>
+        </svg>
+        <div class="ring-center">
+          <div class="n" data-ring="76">0</div>
+          <div class="label">Experian</div>
+        </div>
+      </div>
+      <div class="ring">
+        <svg viewBox="0 0 200 200">
+          <circle class="track" cx="100" cy="100" r="80"/>
+          <circle class="fill"  cx="100" cy="100" r="80"/>
+        </svg>
+        <div class="ring-center">
+          <div class="n" data-ring="71">0</div>
+          <div class="label">Equifax</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARISON ============ -->
+<section class="block">
+  <div class="wrap">
+    <div style="text-align:center; margin-bottom: 64px;">
+      <span class="file-tag reveal">File 05 · The difference</span>
+      <h2 class="reveal" style="font-family:var(--display); font-weight:800; font-size:clamp(40px,6vw,72px); line-height:1.05; letter-spacing:-0.03em; margin: 18px 0;">
+        Two ways to <em style="font-style:normal; background:linear-gradient(120deg,var(--indigo),var(--sage)); -webkit-background-clip:text; background-clip:text; color:transparent;">build credit</em>.
+      </h2>
+    </div>
+
+    <div class="compare-stage">
+      <div class="compare-panel them reveal" id="comparePanelThem">
+        <h3>The outsourced shop</h3>
+        <div class="sub">$400–500 / month · indefinitely</div>
+        <div class="wheel-stage">
+          <div class="wheel">
+            <div class="center-dot">$ in<br/>forever</div>
+          </div>
+        </div>
+        <p class="meta">You pay every month. You learn <strong>nothing</strong>. You never see the method. When you stop paying, your access stops too — and the file isn't yours.</p>
+      </div>
+
+      <div class="compare-panel us reveal" id="comparePanelUs">
+        <h3>Credit Workshop</h3>
+        <div class="sub">$1,000 · once · 9 months · done</div>
+        <div class="path-stage">
+          <svg viewBox="0 0 400 200" preserveAspectRatio="none">
+            <path class="path-line" d="M 20 160 Q 80 60, 140 100 T 260 80 T 380 40"/>
+            <circle class="milestone" cx="20"  cy="160" r="8"/>
+            <circle class="milestone" cx="140" cy="100" r="8"/>
+            <circle class="milestone" cx="260" cy="80"  r="8"/>
+            <circle class="milestone" cx="380" cy="40"  r="10"/>
+          </svg>
+        </div>
+        <p class="meta">You walk the program. You finish. You leave with the <strong>file, the method, the relationships</strong>. There is no perpetual invoice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VENDOR LADDER ============ -->
+<section class="ladder-sec">
+  <div class="wrap ladder-grid">
+    <div class="ladder-copy reveal">
+      <span class="file-tag">File 06 · Vendor sequence</span>
+      <h2>Forty-plus vendors. Placed in the <em>right order</em>.</h2>
+      <p>The bureaus reward a specific cadence. We've mapped it. You climb tier by tier — and each lock-in lifts your Paydex.</p>
+    </div>
+    <div class="ladder-stage" id="ladderStage">
+      <div class="ladder-tier t1" data-tier="0">
+        <div>
+          <div class="name">Tier I — Foundation</div>
+          <div class="vendors">Uline · Quill · Grainger · 3 more</div>
+        </div>
+        <div class="check">✓</div>
+      </div>
+      <div class="ladder-tier t2" data-tier="1">
+        <div>
+          <div class="name">Tier II — Fleet &amp; Store</div>
+          <div class="vendors">WEX · Shell · Lowe's · HD</div>
+        </div>
+        <div class="check">✓</div>
+      </div>
+      <div class="ladder-tier t3" data-tier="2">
+        <div>
+          <div class="name">Tier III — Revolving</div>
+          <div class="vendors">Bank cards · vendor lines</div>
+        </div>
+        <div class="check">✓</div>
+      </div>
+      <div class="ladder-tier t4" data-tier="3">
+        <div>
+          <div class="name">Tier IV — Funding</div>
+          <div class="vendors">Lender match · SBA-ready</div>
+        </div>
+        <div class="check">✓</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FUNDING FLOW ============ -->
+<section class="funding-sec">
+  <div class="wrap">
+    <span class="file-tag reveal">File 07 · Funding marketplace</span>
+    <h2 class="reveal">Five processors. <em>One pipeline</em>.</h2>
+    <p class="lede reveal">When your file is fundable, five integrated processors compete for your business. Lender matching the moment you cross the line.</p>
+
+    <div class="flow-stage reveal">
+      <div class="pipe p1"><div class="pipe-dot"></div>Tailored Pay</div>
+      <div class="pipe p2"><div class="pipe-dot"></div>NMA</div>
+      <div class="pipe p3"><div class="pipe-dot"></div>Payarc</div>
+      <div class="pipe p4"><div class="pipe-dot"></div>PAS</div>
+      <div class="pipe p5"><div class="pipe-dot"></div>Nuvei</div>
+      <svg viewBox="0 0 920 360" preserveAspectRatio="none" style="position:absolute; inset:0;">
+        <path class="flow-line" d="M 85 50 Q 200 200, 460 270"/>
+        <path class="flow-line" d="M 270 50 Q 320 200, 460 270"/>
+        <path class="flow-line" d="M 460 50 L 460 270"/>
+        <path class="flow-line" d="M 650 50 Q 600 200, 460 270"/>
+        <path class="flow-line" d="M 835 50 Q 720 200, 460 270"/>
+      </svg>
+      <div class="flow-vault">$</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="pricing">
+  <div class="wrap">
+    <span class="file-tag reveal">File 08 · One price · one outcome</span>
+    <h2 class="reveal">Nine months of method,<br/>not subscription.</h2>
+    <p class="lede reveal">You buy the program. You finish the program. You leave with the file. There is no perpetual invoice.</p>
+
+    <div class="price-mega" id="priceMega">
+      <span class="currency">$</span><span class="digit">1</span><span class="digit">,</span><span class="digit">0</span><span class="digit">0</span><span class="digit">0</span>
+    </div>
+    <div class="price-meta reveal">Full program · One-time · 14-day refund</div>
+
+    <div class="timeline-ribbon" id="timelineRibbon">
+      <div class="stops">
+        <div class="stop"><div class="dot"></div><span class="label">M.1 Foundation</span></div>
+        <div class="stop"><div class="dot"></div><span class="label">M.3 Tier I</span></div>
+        <div class="stop"><div class="dot"></div><span class="label">M.5 Paydex 80</span></div>
+        <div class="stop"><div class="dot"></div><span class="label">M.9 Funded</span></div>
+      </div>
+    </div>
+
+    <div class="trust-pills">
+      <span class="trust-pill">14-day refund</span>
+      <span class="trust-pill">Cancel anytime</span>
+      <span class="trust-pill">Transferable</span>
+      <span class="trust-pill">CPA-ready records</span>
+    </div>
+
+    <a href="#" class="cta-mega" id="ctaMega">
+      <span>Begin the file →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ============ FINAL ============ -->
+<footer class="demo">
+  <div class="wrap">
+    <span class="meta">Credit Workshop · Vol I · Issue 0001</span>
+    <div class="h">Begin the <span class="grad">file</span>.</div>
+    <span class="meta">Quietly excellent software for serious operators.</span>
+  </div>
+</footer>
+
+<!-- ============ SCRIPTS ============ -->
+<!-- Lenis smooth scroll -->
+<script
+  src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.42/bundled/lenis.min.js"
+  integrity="sha384-qrU6Z917j57nzQ/B4uCsNHyHWcXTVajUBd0KzCCv09EbKphPFHtnoPmyiMR8I+jE"
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<!-- GSAP + ScrollTrigger (cdnjs published SRI) -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+  integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+  integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+
+<script>
+  // ============ Lenis smooth scroll ============
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+  });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ============ Custom cursor + ambient spot ============
+  const cdot = document.getElementById('cdot');
+  const cring = document.getElementById('cring');
+  let mx = innerWidth / 2, my = innerHeight / 2;
+  let rx = mx, ry = my;
+  addEventListener('mousemove', (e) => {
+    mx = e.clientX; my = e.clientY;
+    document.documentElement.style.setProperty('--mx', mx + 'px');
+    document.documentElement.style.setProperty('--my', my + 'px');
+    cdot.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%,-50%)`;
+  });
+  (function loop(){
+    rx += (mx - rx) * 0.18;
+    ry += (my - ry) * 0.18;
+    cring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a, button, .ladder-tier, .compare-panel').forEach(el => {
+    el.addEventListener('mouseenter', () => cring.classList.add('is-active'));
+    el.addEventListener('mouseleave', () => cring.classList.remove('is-active'));
+  });
+
+  // ============ Scroll progress rail ============
+  const rail = document.getElementById('rail');
+  const rnum = document.getElementById('rnum');
+  const files = ['FILE 01', 'FILE 02', 'FILE 03', 'FILE 04', 'FILE 05', 'FILE 06', 'FILE 07', 'FILE 08'];
+  lenis.on('scroll', (e) => {
+    const progress = e.scroll / (document.documentElement.scrollHeight - innerHeight);
+    rail.style.height = (progress * 100) + '%';
+    const idx = Math.min(files.length - 1, Math.floor(progress * files.length));
+    rnum.textContent = files[idx];
+  });
+
+  // ============ Split-text on hero H1 ============
+  (function(){
+    const h = document.querySelector('[data-split]');
+    if (!h) return;
+    const walk = (node) => {
+      if (node.nodeType === 3) {
+        const text = node.textContent;
+        const frag = document.createDocumentFragment();
+        text.split(/(\s+)/).forEach(word => {
+          if (/^\s+$/.test(word)) {
+            frag.appendChild(document.createTextNode(word));
+            return;
+          }
+          const w = document.createElement('span');
+          w.className = 'split-word';
+          [...word].forEach(ch => {
+            const c = document.createElement('span');
+            c.className = 'split-char';
+            c.textContent = ch;
+            w.appendChild(c);
+          });
+          frag.appendChild(w);
+        });
+        node.replaceWith(frag);
+      } else if (node.nodeType === 1 && node.tagName !== 'BR') {
+        [...node.childNodes].forEach(walk);
+      }
+    };
+    [...h.childNodes].forEach(walk);
+    const chars = h.querySelectorAll('.split-char');
+    gsap.to(chars, {
+      opacity: 1, y: 0, rotate: 0,
+      duration: 1.1,
+      stagger: 0.03,
+      ease: 'expo.out',
+      delay: 0.2,
+    });
+  })();
+
+  // ============ Folder rotation drift ============
+  const folder = document.getElementById('folder');
+  gsap.to(folder, {
+    rotateY: -10,
+    duration: 6,
+    repeat: -1,
+    yoyo: true,
+    ease: 'sine.inOut',
+  });
+
+  // ============ Reveal on enter viewport ============
+  document.querySelectorAll('.reveal').forEach(el => {
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 88%',
+      onEnter: () => el.classList.add('in'),
+    });
+  });
+
+  // ============ Pinned method section — folder fills as you scroll ============
+  const methodPin = document.getElementById('methodPin');
+  const folderEl = document.getElementById('folder');
+  const heroFolder = document.getElementById('heroFolder');
+  const methodFolder = document.getElementById('methodFolder');
+  const papers = [
+    document.getElementById('paper1'),
+    document.getElementById('paper2'),
+    document.getElementById('paper3'),
+    document.getElementById('paper4'),
+  ];
+  const frames = document.querySelectorAll('.method-frame');
+  const pips   = document.querySelectorAll('.step-pip');
+
+  // Set initial paper positions (out of folder, above)
+  gsap.set(papers, { y: -200, x: 0, rotate: 0, opacity: 0, scale: 0.9 });
+
+  // Move folder from hero stage to method stage on scroll start of method section
+  let folderInMethod = false;
+  ScrollTrigger.create({
+    trigger: methodPin,
+    start: 'top 80%',
+    onEnter: () => {
+      if (!folderInMethod) {
+        methodFolder.appendChild(folderEl);
+        gsap.set(folderEl, { scale: 0.85 });
+        folderInMethod = true;
+      }
+    },
+    onLeaveBack: () => {
+      if (folderInMethod) {
+        heroFolder.appendChild(folderEl);
+        gsap.set(folderEl, { scale: 1 });
+        folderInMethod = false;
+      }
+    },
+  });
+
+  // Scroll-pinned method: 4 frames + paper drops
+  ScrollTrigger.create({
+    trigger: methodPin,
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 0.8,
+    onUpdate: (self) => {
+      const p = self.progress; // 0..1
+      const idx = Math.min(3, Math.floor(p * 4));
+      frames.forEach((f, i) => f.classList.toggle('is-active', i === idx));
+      pips.forEach((pp, i) => {
+        pp.classList.remove('is-active', 'is-done');
+        if (i < idx) pp.classList.add('is-done');
+        else if (i === idx) pp.classList.add('is-active');
+      });
+    },
+  });
+
+  // Each paper drops into the folder at a specific scroll offset
+  papers.forEach((paper, i) => {
+    gsap.to(paper, {
+      y: 20 + i * 4,
+      x: (i - 1.5) * 6,
+      rotate: (i - 1.5) * 3,
+      opacity: 1,
+      scale: 1,
+      ease: 'expo.out',
+      scrollTrigger: {
+        trigger: methodPin,
+        start: `top+=${i * 25}% top`,
+        end:   `top+=${i * 25 + 20}% top`,
+        scrub: 0.5,
+      },
+    });
+  });
+
+  // ============ Bureau rings — counter + fill ============
+  const ringRow = document.getElementById('ringRow');
+  const ringNumbers = ringRow.querySelectorAll('.n');
+  ScrollTrigger.create({
+    trigger: ringRow,
+    start: 'top 75%',
+    onEnter: () => {
+      ringRow.classList.add('is-synced');
+      ringNumbers.forEach(el => {
+        const target = parseInt(el.dataset.ring, 10);
+        const obj = { v: 0 };
+        gsap.to(obj, {
+          v: target,
+          duration: 2.4,
+          ease: 'expo.out',
+          onUpdate: () => { el.textContent = Math.round(obj.v); },
+        });
+      });
+    },
+  });
+
+  // ============ Comparison panels ============
+  const compUs = document.getElementById('comparePanelUs');
+  ScrollTrigger.create({
+    trigger: compUs,
+    start: 'top 75%',
+    onEnter: () => compUs.classList.add('in-view'),
+  });
+
+  // ============ Vendor ladder — sequential reveal + light up ============
+  const tiers = document.querySelectorAll('.ladder-tier');
+  ScrollTrigger.create({
+    trigger: '#ladderStage',
+    start: 'top 75%',
+    onEnter: () => {
+      tiers.forEach((t, i) => {
+        setTimeout(() => {
+          t.classList.add('is-visible');
+          setTimeout(() => t.classList.add('lit'), 400);
+        }, i * 220);
+      });
+    },
+  });
+
+  // ============ Pricing — digit reveal + timeline ribbon ============
+  const digits = document.querySelectorAll('#priceMega .digit, #priceMega .currency');
+  ScrollTrigger.create({
+    trigger: '#priceMega',
+    start: 'top 75%',
+    onEnter: () => {
+      gsap.to(digits, {
+        opacity: 1, y: 0,
+        duration: 0.9,
+        stagger: 0.10,
+        ease: 'expo.out',
+      });
+    },
+  });
+  gsap.set(digits, { opacity: 0, y: '50%' });
+
+  const ribbon = document.getElementById('timelineRibbon');
+  ScrollTrigger.create({
+    trigger: ribbon,
+    start: 'top 80%',
+    onEnter: () => ribbon.classList.add('in-view'),
+  });
+
+  // ============ Magnetic CTA button ============
+  const cta = document.getElementById('ctaMega');
+  cta.addEventListener('mousemove', (e) => {
+    const r = cta.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width / 2;
+    const y = e.clientY - r.top - r.height / 2;
+    gsap.to(cta, { x: x * 0.25, y: y * 0.35, duration: 0.4, ease: 'power3.out' });
+  });
+  cta.addEventListener('mouseleave', () => {
+    gsap.to(cta, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
+  });
+
+</script>
+
+</body>
+</html>
