@@ -250,6 +250,90 @@
   }
   .split-word{ display: inline-block; white-space: nowrap; }
 
+  .hero-context{
+    position: absolute;
+    top: 18vh; left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    opacity: 0;
+    animation: fadeIn .8s ease 1.4s forwards;
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+  .ctx-pill{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--sage);
+    border-radius: 999px;
+  }
+  .ctx-pill::before{
+    content: ""; width: 6px; height: 6px;
+    background: var(--sage); border-radius: 50%;
+    box-shadow: 0 0 12px var(--sage);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{ 50% { opacity: .5; transform: scale(1.4); } }
+
+  .hero-lede{
+    position: absolute;
+    bottom: 160px; left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-family: var(--display);
+    font-size: clamp(18px, 1.8vw, 22px);
+    font-weight: 500;
+    color: var(--ink-mute);
+    max-width: 52ch;
+    line-height: 1.4;
+    z-index: 4;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.8s forwards;
+  }
+  @keyframes fadeUp{ from { transform: translateX(-50%) translateY(20px);} to { opacity: 1; transform: translateX(-50%) translateY(0);} }
+
+  /* floating context icons - drift around the folder */
+  .float-icons{
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .ficon{
+    position: absolute;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--hair);
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    color: var(--ink-soft);
+    box-shadow: 0 4px 12px rgba(10,37,64,0.06);
+    opacity: 0;
+    will-change: transform;
+    animation: ficonFloat 10s ease-in-out infinite, ficonAppear .8s ease forwards;
+  }
+  @keyframes ficonAppear{ to { opacity: 1; } }
+  @keyframes ficonFloat{
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(0, -16px); }
+  }
+  .ficon-1{ top: 22%; left: 14%; animation-delay: 1.6s, 0s; }
+  .ficon-2{ top: 38%; left: 8%;  animation-delay: 1.8s, -2s; }
+  .ficon-3{ top: 58%; left: 18%; animation-delay: 2.0s, -4s; }
+  .ficon-4{ top: 28%; right: 12%; animation-delay: 1.7s, -1s; color: var(--sage-deep); border-color: var(--sage); }
+  .ficon-5{ top: 50%; right: 8%; animation-delay: 1.9s, -3s; }
+  .ficon-6{ top: 68%; right: 16%; animation-delay: 2.1s, -5s; color: var(--sage-deep); border-color: var(--sage); }
+
   .hero-sub{
     position: absolute;
     bottom: 80px; left: 50%;
@@ -1226,9 +1310,27 @@
     </div>
   </div>
 
+  <!-- floating context icons in the hero -->
+  <div class="float-icons" aria-hidden="true">
+    <div class="ficon ficon-1">D&amp;B</div>
+    <div class="ficon ficon-2">EXP</div>
+    <div class="ficon ficon-3">EFX</div>
+    <div class="ficon ficon-4">$</div>
+    <div class="ficon ficon-5">SBA</div>
+    <div class="ficon ficon-6">Net-30</div>
+  </div>
+
+  <div class="hero-context">
+    <span class="ctx-pill">Business credit · 9-month program · No subscription</span>
+  </div>
+
   <h1 class="hero-h" data-split>
     The file <span class="grad">you own</span>
   </h1>
+
+  <p class="hero-lede" id="heroLede">
+    Build business credit methodically — Paydex 80, Tier-I vendor file, funding-ready — and walk out holding all of it.
+  </p>
 
   <div class="hero-sub">
     Scroll to begin
@@ -1295,7 +1397,31 @@
       </div>
     </div>
     <div class="method-folder-wrap" id="methodFolder">
-      <!-- folder rendered here via JS — same DOM as hero, repositioned -->
+      <div class="folder method-folder-self" id="methodFolderEl">
+        <div class="folder-back"></div>
+        <div class="folder-tab"></div>
+        <div class="paper p1" id="mp1">
+          <span class="row r1"></span><span class="row r2"></span><span class="row r3"></span><span class="row r4"></span>
+        </div>
+        <div class="paper p2" id="mp2">
+          <span class="row r1"></span><span class="row r2"></span><span class="row r3"></span><span class="row r4"></span>
+        </div>
+        <div class="paper p3 has-stamp" id="mp3">
+          <span class="row r1"></span><span class="row r2"></span><span class="row r3"></span>
+          <span class="stamp">PAYDEX<br/><small>80</small></span>
+        </div>
+        <div class="paper p4" id="mp4">
+          <span class="row r1"></span><span class="row r2"></span><span class="row r3"></span><span class="row r4"></span>
+        </div>
+        <div class="folder-front">
+          <div class="folder-label">
+            File · Operator
+            <span class="line w-60"></span>
+            <span class="line w-80"></span>
+            <span class="line w-40"></span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1616,39 +1742,28 @@
   // ============ Pinned method section — folder fills as you scroll ============
   const methodPin = document.getElementById('methodPin');
   const folderEl = document.getElementById('folder');
-  const heroFolder = document.getElementById('heroFolder');
-  const methodFolder = document.getElementById('methodFolder');
+  // The dedicated method-section folder (separate from hero) — always visible there
+  const methodFolderEl = document.getElementById('methodFolderEl');
   const papers = [
-    document.getElementById('paper1'),
-    document.getElementById('paper2'),
-    document.getElementById('paper3'),
-    document.getElementById('paper4'),
+    document.getElementById('mp1'),
+    document.getElementById('mp2'),
+    document.getElementById('mp3'),
+    document.getElementById('mp4'),
   ];
   const frames = document.querySelectorAll('.method-frame');
   const pips   = document.querySelectorAll('.step-pip');
+  let folderInMethod = false; // kept for the hero parallax conditional
 
   // Set initial paper positions (out of folder, above)
-  gsap.set(papers, { y: -200, x: 0, rotate: 0, opacity: 0, scale: 0.9 });
+  gsap.set(papers, { y: -260, x: 0, rotate: 0, opacity: 0, scale: 0.85 });
 
-  // Move folder from hero stage to method stage on scroll start of method section
-  let folderInMethod = false;
-  ScrollTrigger.create({
-    trigger: methodPin,
-    start: 'top 80%',
-    onEnter: () => {
-      if (!folderInMethod) {
-        methodFolder.appendChild(folderEl);
-        gsap.set(folderEl, { scale: 0.85 });
-        folderInMethod = true;
-      }
-    },
-    onLeaveBack: () => {
-      if (folderInMethod) {
-        heroFolder.appendChild(folderEl);
-        gsap.set(folderEl, { scale: 1 });
-        folderInMethod = false;
-      }
-    },
+  // The method folder has its own gentle drift
+  gsap.to(methodFolderEl, {
+    rotateY: -10,
+    duration: 6,
+    repeat: -1,
+    yoyo: true,
+    ease: 'sine.inOut',
   });
 
   // Scroll-pinned method: 4 frames + paper drops
@@ -1669,19 +1784,19 @@
     },
   });
 
-  // Each paper drops into the folder at a specific scroll offset
+  // Each paper drops into the method folder at a specific scroll offset
   papers.forEach((paper, i) => {
     gsap.to(paper, {
-      y: 20 + i * 4,
-      x: (i - 1.5) * 6,
-      rotate: (i - 1.5) * 3,
+      y: 24 + i * 4,
+      x: (i - 1.5) * 8,
+      rotate: (i - 1.5) * 4,
       opacity: 1,
       scale: 1,
       ease: 'expo.out',
       scrollTrigger: {
         trigger: methodPin,
-        start: `top+=${i * 25}% top`,
-        end:   `top+=${i * 25 + 20}% top`,
+        start: `top+=${i * 22}% top`,
+        end:   `top+=${i * 22 + 18}% top`,
         scrub: 0.5,
       },
     });
@@ -1690,22 +1805,47 @@
   // ============ Bureau rings — counter + fill ============
   const ringRow = document.getElementById('ringRow');
   const ringNumbers = ringRow.querySelectorAll('.n');
+  let ringFired = false;
   ScrollTrigger.create({
     trigger: ringRow,
-    start: 'top 75%',
+    start: 'top 85%',
+    once: true,
     onEnter: () => {
+      if (ringFired) return;
+      ringFired = true;
       ringRow.classList.add('is-synced');
-      ringNumbers.forEach(el => {
+      ringNumbers.forEach((el, i) => {
         const target = parseInt(el.dataset.ring, 10);
-        const obj = { v: 0 };
-        gsap.to(obj, {
-          v: target,
-          duration: 2.4,
-          ease: 'expo.out',
-          onUpdate: () => { el.textContent = Math.round(obj.v); },
-        });
+        gsap.fromTo(el,
+          { innerText: 0 },
+          {
+            innerText: target,
+            duration: 2.2,
+            delay: i * 0.15,
+            ease: 'expo.out',
+            snap: { innerText: 1 },
+            onUpdate: function () {
+              el.textContent = Math.round(this.targets()[0].innerText || 0);
+            },
+          });
       });
     },
+  });
+
+  // mouse parallax on bureau rings
+  ringRow.addEventListener('mousemove', (e) => {
+    const r = ringRow.getBoundingClientRect();
+    const x = (e.clientX - r.left - r.width / 2) / r.width;
+    const y = (e.clientY - r.top - r.height / 2) / r.height;
+    ringRow.querySelectorAll('.ring').forEach((ring, i) => {
+      const depth = 12 + i * 4;
+      gsap.to(ring, { x: x * depth, y: y * depth, duration: 0.8, ease: 'power3.out' });
+    });
+  });
+  ringRow.addEventListener('mouseleave', () => {
+    ringRow.querySelectorAll('.ring').forEach((ring) => {
+      gsap.to(ring, { x: 0, y: 0, duration: 1.2, ease: 'elastic.out(1, 0.5)' });
+    });
   });
 
   // ============ Comparison panels ============
@@ -1765,6 +1905,67 @@
   cta.addEventListener('mouseleave', () => {
     gsap.to(cta, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
   });
+
+  // ============ Folder mouse-parallax (subtle 3D tilt) ============
+  const hero = document.querySelector('.hero');
+  if (hero && folderEl) {
+    hero.addEventListener('mousemove', (e) => {
+      if (folderInMethod) return; // only in hero
+      const r = hero.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width / 2) / r.width;
+      const y = (e.clientY - r.top - r.height / 2) / r.height;
+      gsap.to(folderEl, {
+        rotateY: -18 + x * 14,
+        rotateX: 8 - y * 10,
+        duration: 0.9,
+        ease: 'power3.out',
+        overwrite: 'auto',
+      });
+    });
+  }
+
+  // ============ Ladder tile tilt on hover ============
+  document.querySelectorAll('.ladder-tier').forEach((tier) => {
+    tier.addEventListener('mousemove', (e) => {
+      const r = tier.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width / 2) / r.width;
+      const y = (e.clientY - r.top - r.height / 2) / r.height;
+      gsap.to(tier, {
+        rotateY: x * 6,
+        rotateX: -y * 4,
+        scale: 1.02,
+        duration: 0.4,
+        ease: 'power3.out',
+        transformPerspective: 1000,
+      });
+    });
+    tier.addEventListener('mouseleave', () => {
+      gsap.to(tier, { rotateY: 0, rotateX: 0, scale: 1, duration: 0.5, ease: 'power3.out' });
+    });
+  });
+
+  // ============ Comparison panels — tilt on hover ============
+  document.querySelectorAll('.compare-panel').forEach((panel) => {
+    panel.addEventListener('mousemove', (e) => {
+      const r = panel.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width / 2) / r.width;
+      const y = (e.clientY - r.top - r.height / 2) / r.height;
+      gsap.to(panel, {
+        rotateY: x * 4,
+        rotateX: -y * 3,
+        duration: 0.5,
+        ease: 'power3.out',
+        transformPerspective: 1400,
+      });
+    });
+    panel.addEventListener('mouseleave', () => {
+      gsap.to(panel, { rotateY: 0, rotateX: 0, duration: 0.6 });
+    });
+  });
+
+  // ============ Final refresh so all ScrollTriggers recompute after layout ============
+  ScrollTrigger.refresh();
+  setTimeout(() => ScrollTrigger.refresh(), 500);
 
 </script>
 
