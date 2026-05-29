@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useAuth } from './auth.jsx';
+import { useBrand, BRANDS } from './brand.js';
 
 // Public marketing pages that should never render the auth'd app shell.
 const PUBLIC_FULLSCREEN_PATHS = ['/login', '/register', '/fundability-score', '/credit-builder/sso', '/credit-workshop'];
@@ -22,26 +24,26 @@ function Protected({ children }) {
   return auth ? children : <Navigate to="/login" replace />;
 }
 
-// Hostname-aware root: thecreditworkshop.biz (and www) serves the public
-// marketing landing at /. dashboard.incomeacademy.biz still serves the
-// authenticated dashboard at /. Single React build, two product surfaces.
-const PUBLIC_LANDING_HOSTS = /^(www\.)?thecreditworkshop\.(biz|com)$/i;
+// Hostname-aware root. See brand.js — thecreditworkshop.biz serves the
+// public landing at /; dashboard.incomeacademy.biz serves the dashboard.
 function RootRoute() {
-  if (typeof window !== 'undefined' && PUBLIC_LANDING_HOSTS.test(window.location.hostname)) {
-    return <CreditWorkshopLanding />;
-  }
+  const brand = useBrand();
+  if (brand.id === 'credit-workshop') return <CreditWorkshopLanding />;
   return <Protected><Dashboard /></Protected>;
 }
 
 function Shell({ children }) {
   const { auth } = useAuth();
   const location = useLocation();
+  const brand = useBrand();
+  // Keep the browser tab title aligned with the active brand.
+  useEffect(() => { document.title = brand.titleSuffix; }, [brand]);
   const isPublicFullscreen = PUBLIC_FULLSCREEN_PATHS.some(p =>
     location.pathname === p || location.pathname.startsWith(p + '/')
   );
   if (!auth || isPublicFullscreen) return <>{children}</>;
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-brand={brand.id}>
       <Sidebar />
       <main className="app-main">{children}</main>
     </div>

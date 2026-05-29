@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth.jsx';
+import { useBrand } from '../brand.js';
 import AuthLayout from '../components/AuthLayout.jsx';
 
 export default function Login() {
   const { login } = useAuth();
+  const brand = useBrand();
   const nav = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,7 +19,7 @@ export default function Login() {
     setLoading(true);
     try {
       await login(email, password);
-      nav('/');
+      nav(brand.postAuthRedirect);
     } catch (e) {
       setErr(e.message);
       setLoading(false);

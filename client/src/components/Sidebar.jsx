@@ -1,19 +1,22 @@
 import { useState, useEffect, useCallback } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth.jsx';
+import { useBrand } from '../brand.js';
 
+// `cwOnly` items are the ones a Credit Workshop customer should see.
+// `iaOnly` items are internal Income Academy ops (CRM-only, not for customers).
 const NAV_ITEMS = [
-  { label: 'Dashboard', path: '/', icon: '🏠', enabled: true },
-  { label: 'Leads', path: '/leads', icon: '👤', enabled: true },
-  { label: 'Clients', path: '/clients', icon: '👥', enabled: true },
-  { label: 'Contracts', path: '/contracts', icon: '📄', enabled: false, note: 'Phase 5' },
-  { label: 'Invoices', path: '/invoices', icon: '💵', enabled: false, note: 'Phase 6' },
-  { label: 'Campaigns', path: '/campaigns', icon: '📧', enabled: false, note: 'Phase 12' },
-  { label: 'Credit Builder', path: '/credit-builder', icon: '📊', enabled: true },
-  { label: 'Workshop Site', path: '/credit-workshop', icon: '🌐', enabled: true, external: true },
-  { label: 'Expenses', path: '/expenses', icon: '💰', enabled: true },
-  { label: 'Admin', path: '/admin', icon: '🛡️', enabled: true, adminOnly: true },
-  { label: 'Settings', path: '/settings', icon: '⚙️', enabled: false, note: 'Later' },
+  { label: 'Dashboard',      path: '/',                icon: '🏠', enabled: true, iaOnly: true },
+  { label: 'Leads',          path: '/leads',           icon: '👤', enabled: true, iaOnly: true },
+  { label: 'Clients',        path: '/clients',         icon: '👥', enabled: true, iaOnly: true },
+  { label: 'Contracts',      path: '/contracts',       icon: '📄', enabled: false, note: 'Phase 5', iaOnly: true },
+  { label: 'Invoices',       path: '/invoices',        icon: '💵', enabled: false, note: 'Phase 6', iaOnly: true },
+  { label: 'Campaigns',      path: '/campaigns',       icon: '📧', enabled: false, note: 'Phase 12', iaOnly: true },
+  { label: 'Credit Builder', path: '/credit-builder',  icon: '📊', enabled: true, cwOnly: true },
+  { label: 'Workshop Site',  path: '/credit-workshop', icon: '🌐', enabled: true, external: true, iaOnly: true },
+  { label: 'Expenses',       path: '/expenses',        icon: '💰', enabled: true, iaOnly: true },
+  { label: 'Admin',          path: '/admin',           icon: '🛡️', enabled: true, adminOnly: true, iaOnly: true },
+  { label: 'Settings',       path: '/settings',        icon: '⚙️', enabled: false, note: 'Later', iaOnly: true },
 ];
 
 const COLLAPSED_STORAGE_KEY = 'ia_sidebar_collapsed';
@@ -44,6 +47,7 @@ function exitFullscreenSafe() {
 
 export default function Sidebar() {
   const { auth, logout } = useAuth();
+  const brand = useBrand();
   const nav = useNavigate();
   const [open, setOpen] = useState(false); // mobile drawer
   const [collapsed, setCollapsed] = useState(() => {
@@ -161,8 +165,8 @@ export default function Sidebar() {
 
       <aside className={`sidebar ${open ? 'sidebar-open' : ''} ${collapsed ? 'sidebar-collapsed' : ''}`}>
         <div className="sidebar-brand">
-          <span className="brand-mark">💼</span>
-          <span className="brand-text">Income Academy</span>
+          <span className="brand-mark">{brand.id === 'credit-workshop' ? 'CW' : '💼'}</span>
+          <span className="brand-text">{brand.name}</span>
           <button
             className="sidebar-collapse-btn"
             onClick={toggleCollapsed}
@@ -174,7 +178,11 @@ export default function Sidebar() {
         </div>
 
         <nav className="sidebar-nav">
-          {NAV_ITEMS.filter(item => !item.adminOnly || auth.user?.is_admin).map((item) =>
+          {NAV_ITEMS
+            .filter(item => !item.adminOnly || auth.user?.is_admin)
+            // CW customers see only customer-facing items; IA users see everything not marked cwOnly.
+            .filter(item => brand.id === 'credit-workshop' ? !item.iaOnly : !item.cwOnly)
+            .map((item) =>
             item.enabled && item.external ? (
               <a
                 key={item.path}

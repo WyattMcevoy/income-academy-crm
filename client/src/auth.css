@@ -458,3 +458,302 @@
   .auth-brand-divider { width: 24px; }
   .auth-form-frame::before, .auth-form-frame::after { display: none; }
 }
+
+/* ==========================================================================
+   Credit Workshop brand override
+   When AuthLayout sets data-brand="credit-workshop" (visitor came in via
+   thecreditworkshop.biz), repaint the auth shell in v4 Stripe-flavored
+   style: white bg, Inter sans, sage + navy accents, no grain, no Fraunces.
+   ========================================================================== */
+
+.auth-page[data-brand="credit-workshop"]{
+  --paper:        #FFFFFF;
+  --paper-deep:   #F6F9FC;
+  --ink:          #0A2540;
+  --ink-soft:     #1A2B47;
+  --ink-mute:     #425466;
+  --ink-faint:    #697386;
+  --hair:         #E3E8EE;
+  --hair-strong:  #CBD2DA;
+  --accent:       #4A9D7C;
+  --accent-deep:  #2F6952;
+  --accent-soft:  rgba(74,157,124,0.10);
+  --gold:         #635BFF;
+
+  --font-display: "Inter Tight", "Inter", -apple-system, system-ui, sans-serif;
+  --font-body:    "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono:    "Geist Mono", ui-monospace, Menlo, monospace;
+
+  background:
+    radial-gradient(circle at 18% 0%, rgba(99,91,255,0.08), transparent 45%),
+    radial-gradient(circle at 82% 100%, rgba(0,212,255,0.06), transparent 50%),
+    var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* Kill the grain layer for the CW brand */
+.auth-page[data-brand="credit-workshop"] .auth-grain{ display: none; }
+
+/* Brand block */
+.auth-page[data-brand="credit-workshop"] .auth-brand{
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.auth-page[data-brand="credit-workshop"] .auth-brand-mark{
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--gold) 100%);
+  color: #fff;
+  display: grid; place-items: center;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0;
+  border: 0;
+}
+.auth-page[data-brand="credit-workshop"] .auth-brand-divider{
+  background: var(--hair);
+  width: 1px; height: 22px;
+}
+.auth-page[data-brand="credit-workshop"] .auth-brand-name{
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  color: var(--ink-mute);
+}
+
+/* Headline block */
+.auth-page[data-brand="credit-workshop"] .auth-headline-eyebrow{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  text-transform: none;
+  color: var(--accent-deep);
+  background: var(--accent-soft);
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin: 0 0 22px;
+}
+.auth-page[data-brand="credit-workshop"] .auth-headline{
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(38px, 4.6vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin: 0 0 18px;
+}
+.auth-page[data-brand="credit-workshop"] .auth-headline em{
+  font-style: normal;
+  font-weight: 700;
+  background: linear-gradient(120deg, var(--gold) 0%, var(--accent) 60%, #00D4FF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.auth-page[data-brand="credit-workshop"] .auth-headline-sub{
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--ink-mute);
+  font-style: normal;
+  font-weight: 400;
+  max-width: 44ch;
+  margin: 0;
+}
+
+/* Feature list */
+.auth-page[data-brand="credit-workshop"] .auth-features{ list-style: none; padding: 0; margin: 36px 0 0; }
+.auth-page[data-brand="credit-workshop"] .auth-feature{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  padding: 20px 0;
+  border-top: 1px solid var(--hair);
+}
+.auth-page[data-brand="credit-workshop"] .auth-feature:last-child{ border-bottom: 1px solid var(--hair); }
+.auth-page[data-brand="credit-workshop"] .auth-feature-num{
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: .12em;
+  color: var(--accent-deep);
+  font-weight: 500;
+  padding-top: 2px;
+}
+.auth-page[data-brand="credit-workshop"] .auth-feature-label{
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+.auth-page[data-brand="credit-workshop"] .auth-feature-text{
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink-mute);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Footer pill */
+.auth-page[data-brand="credit-workshop"] .auth-footer-note{
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink-faint);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.auth-page[data-brand="credit-workshop"] .auth-pill{
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: .06em;
+}
+
+/* Form panel: remove the editorial frame & paper */
+.auth-page[data-brand="credit-workshop"] .auth-marketing{
+  background: transparent;
+}
+.auth-page[data-brand="credit-workshop"] .auth-marketing::after,
+.auth-page[data-brand="credit-workshop"] .auth-marketing::before{ display: none; }
+
+.auth-page[data-brand="credit-workshop"] .auth-form-panel{
+  background: transparent;
+}
+.auth-page[data-brand="credit-workshop"] .auth-form-frame{
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 16px;
+  box-shadow:
+    0 1px 2px rgba(10,37,64,0.04),
+    0 12px 32px -8px rgba(10,37,64,0.12);
+  padding: 44px 40px;
+}
+.auth-page[data-brand="credit-workshop"] .auth-form-frame::before,
+.auth-page[data-brand="credit-workshop"] .auth-form-frame::after{ display: none; }
+
+/* Form copy */
+.auth-page[data-brand="credit-workshop"] .auth-eyebrow{
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--accent-deep);
+  text-transform: none;
+  background: var(--accent-soft);
+  padding: 5px 11px;
+  border-radius: 999px;
+  display: inline-block;
+  margin: 0 0 18px;
+}
+.auth-page[data-brand="credit-workshop"] .auth-form-title{
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0 0 28px;
+}
+.auth-page[data-brand="credit-workshop"] .auth-form-title em{
+  font-style: normal;
+  font-weight: 700;
+  background: linear-gradient(120deg, var(--gold) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Form fields */
+.auth-page[data-brand="credit-workshop"] .auth-form{ gap: 18px; }
+.auth-page[data-brand="credit-workshop"] .auth-field{ gap: 6px; }
+.auth-page[data-brand="credit-workshop"] .auth-label{
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-mute);
+}
+.auth-page[data-brand="credit-workshop"] .auth-hint{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-faint);
+  margin-left: 6px;
+}
+.auth-page[data-brand="credit-workshop"] .auth-input{
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  padding: 13px 16px;
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 10px;
+  color: var(--ink);
+  transition: border-color .2s, box-shadow .2s;
+}
+.auth-page[data-brand="credit-workshop"] .auth-input:focus{
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(74,157,124,0.12);
+  outline: 0;
+}
+.auth-page[data-brand="credit-workshop"] .auth-error{
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: #DE3618;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.auth-page[data-brand="credit-workshop"] .auth-submit{
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  padding: 14px 22px;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 999px;
+  border: 0;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 4px 14px rgba(10,37,64,0.18);
+  transition: transform .18s, box-shadow .25s;
+}
+.auth-page[data-brand="credit-workshop"] .auth-submit:hover:not(:disabled){
+  transform: translateY(-1px);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.08), 0 10px 24px rgba(10,37,64,0.25);
+}
+.auth-page[data-brand="credit-workshop"] .auth-submit-arrow{ font-size: 14px; }
+
+.auth-page[data-brand="credit-workshop"] .auth-switch{
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink-mute);
+  letter-spacing: 0;
+  text-transform: none;
+  margin-top: 24px;
+}
+.auth-page[data-brand="credit-workshop"] .auth-link{
+  color: var(--accent-deep);
+  font-weight: 600;
+  border-bottom: 1px solid currentColor;
+}
+.auth-page[data-brand="credit-workshop"] .auth-link:hover{ color: var(--ink); }

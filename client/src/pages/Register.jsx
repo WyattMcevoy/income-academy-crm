@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth.jsx';
+import { useBrand } from '../brand.js';
 import AuthLayout from '../components/AuthLayout.jsx';
 
 export default function Register() {
   const { register } = useAuth();
+  const brand = useBrand();
   const nav = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,7 +20,7 @@ export default function Register() {
     setLoading(true);
     try {
       await register(email, password, name);
-      nav('/');
+      nav(brand.postAuthRedirect);
     } catch (e) {
       setErr(e.message);
       setLoading(false);
