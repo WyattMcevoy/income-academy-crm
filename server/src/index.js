@@ -35,12 +35,15 @@ app.use((req, res, next) => {
   next();
 });
 
-// CORS: production locked to dashboard.incomeacademy.biz; dev allows configured client origin.
-// EXTRA_ORIGIN is an optional extra allowed origin for initial deploy (Vercel preview URL)
-// until DNS cutover. Unset in steady state.
+// CORS: production allows all live brand surfaces. dev allows configured client origin.
+// EXTRA_ORIGIN is an optional extra allowed origin (Vercel preview URL, partner host, etc.)
 const allowedOrigins = isProd
   ? [
       'https://dashboard.incomeacademy.biz',
+      'https://thecreditworkshop.biz',
+      'https://www.thecreditworkshop.biz',
+      'https://thecreditworkshop.com',
+      'https://www.thecreditworkshop.com',
       ...(process.env.EXTRA_ORIGIN ? [process.env.EXTRA_ORIGIN] : []),
     ]
   : [process.env.CLIENT_ORIGIN || 'http://localhost:5173'];
