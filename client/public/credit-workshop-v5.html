@@ -1,0 +1,1850 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Credit Workshop — Business credit, methodically.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ============ PLAID-FLAVORED TOKENS ============ */
+  :root{
+    --black:    #0A0A0A;
+    --jet:      #131313;
+    --ink:      #1A1A1A;
+    --paper:    #FFFFFF;
+    --bone:     #F4F1EB;        /* warm off-white sections */
+    --mint:     #00E177;        /* electric green */
+    --mint-deep:#00B364;
+    --mint-soft:#D7FBE7;
+    --gray:     #6F6F6F;
+    --gray-2:   #9A9A9A;
+    --rule:     rgba(255,255,255,0.10);
+    --rule-dark:#E6E6E1;
+
+    --display:  "Manrope", -apple-system, system-ui, sans-serif;
+    --sans:     "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono:     "Geist Mono", ui-monospace, Menlo, monospace;
+
+    --maxw:     1240px;
+    --gutter:   clamp(20px, 4vw, 56px);
+  }
+
+  *,*::before,*::after{ box-sizing: border-box;}
+  html{ scroll-behavior: smooth; -webkit-text-size-adjust: 100%;}
+  body{
+    margin: 0;
+    background: var(--black);
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  ::selection{ background: var(--mint); color: var(--black);}
+  a{ color: inherit; text-decoration: none;}
+  button{ font: inherit; cursor: pointer; border: 0; background: transparent;}
+  img{ max-width: 100%; display: block;}
+
+  h1,h2,h3,h4{
+    font-family: var(--display);
+    margin: 0;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+  }
+  h1{ font-weight: 800;}
+  p{ margin: 0;}
+
+  /* ============ LAYOUT ============ */
+  .wrap{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    position: relative;
+  }
+  .light{ background: var(--paper); color: var(--ink);}
+  .bone { background: var(--bone);  color: var(--ink);}
+  .dark { background: var(--black); color: var(--paper);}
+  .mint { background: var(--mint);  color: var(--black);}
+
+  /* ============ NAV ============ */
+  .nav{
+    position: sticky; top: 0;
+    z-index: 50;
+    background: rgba(10,10,10,0.78);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-inner{
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+    gap: 24px;
+  }
+  .brand{
+    display:flex; align-items:center; gap: 10px;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+  }
+  .brand-mark{
+    width: 32px; height: 32px;
+    background: var(--mint);
+    color: var(--black);
+    display:grid; place-items:center;
+    border-radius: 6px;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+  .nav-links{
+    display:flex; gap: 32px;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+  }
+  .nav-links a{ transition: color .2s;}
+  .nav-links a:hover{ color: var(--paper);}
+  .nav-cta{ display:flex; gap: 10px; align-items: center;}
+  @media (max-width: 760px){ .nav-links{ display:none;} }
+
+  /* ============ BUTTONS ============ */
+  .btn{
+    display:inline-flex; align-items: center; gap: 10px;
+    padding: 12px 22px;
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 6px;
+    transition: transform .15s, background .2s, color .2s;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+  }
+  .btn .arr{ width: 14px; height: 14px;}
+  .btn--mint{
+    background: var(--mint);
+    color: var(--black);
+  }
+  .btn--mint:hover{
+    background: var(--mint-deep);
+    transform: translateY(-1px);
+  }
+  .btn--white{
+    background: var(--paper);
+    color: var(--black);
+  }
+  .btn--white:hover{ transform: translateY(-1px);}
+  .btn--dark{
+    background: var(--black);
+    color: var(--paper);
+  }
+  .btn--dark:hover{ transform: translateY(-1px); background: var(--ink);}
+  .btn--ghost-light{
+    color: rgba(255,255,255,0.85);
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+  }
+  .btn--ghost-light:hover{ background: rgba(255,255,255,0.06); color: var(--paper);}
+  .btn--ghost{
+    color: var(--ink);
+    border: 1px solid var(--rule-dark);
+  }
+  .btn--ghost:hover{ background: var(--ink); color: var(--paper); border-color: var(--ink);}
+
+  /* ============ HERO ============ */
+  .hero{
+    padding: clamp(80px, 14vh, 160px) 0 clamp(64px, 11vh, 120px);
+    position: relative;
+    overflow: hidden;
+  }
+  /* abstract layered shapes — Plaid's signature illustration vibe */
+  .hero-art{
+    position: absolute;
+    top: 0; right: 0;
+    width: 50%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: .88;
+  }
+  .hero-art svg{ width: 100%; height: 100%;}
+  .float-shape{
+    transform-origin: center;
+    will-change: transform;
+    animation: float 14s ease-in-out infinite;
+  }
+  .float-shape.b{ animation-delay: -3s; animation-duration: 18s;}
+  .float-shape.c{ animation-delay: -7s; animation-duration: 22s;}
+  .float-shape.d{ animation-delay: -10s; animation-duration: 16s;}
+  @keyframes float{
+    0%,100% { transform: translate(0,0) rotate(0deg);}
+    50%     { transform: translate(4%,-6%) rotate(8deg);}
+  }
+
+  .hero-inner{
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-copy{ position: relative; z-index: 3;}
+  .hero-eyebrow{
+    display:inline-flex; align-items:center; gap: 10px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--mint);
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    padding: 8px 14px;
+    border: 1px solid rgba(0,225,119,0.3);
+    background: rgba(0,225,119,0.06);
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .hero-eyebrow .dot{
+    width: 6px; height: 6px;
+    background: var(--mint);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--mint);
+  }
+  h1.hero-h{
+    font-family: var(--display);
+    font-size: clamp(48px, 7.8vw, 104px);
+    line-height: 0.96;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    margin: 0 0 28px;
+    color: var(--paper);
+  }
+  h1.hero-h .mint-word{ color: var(--mint);}
+  h1.hero-h .underline{
+    position: relative;
+    display: inline-block;
+  }
+  h1.hero-h .underline::after{
+    content: "";
+    position: absolute;
+    left: -2%; right: -2%; bottom: 6%;
+    height: 11px;
+    background: var(--mint);
+    z-index: -1;
+    border-radius: 2px;
+  }
+  .hero-sub{
+    font-size: 20px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.72);
+    max-width: 48ch;
+    margin: 0 0 36px;
+  }
+  .hero-cta{ display:flex; gap: 12px; flex-wrap: wrap;}
+
+  .hero-stats{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 56px;
+    padding-top: 36px;
+    border-top: 1px solid var(--rule);
+  }
+  .hero-stat .n{
+    font-family: var(--display);
+    font-size: 44px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--paper);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .hero-stat .n .accent{ color: var(--mint);}
+  .hero-stat .l{
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+  @media (max-width: 920px){
+    .hero-inner{ grid-template-columns: 1fr;}
+    .hero-art{ display:none;}
+  }
+
+  /* ============ DATA FLOW DIAGRAM (Plaid's signature visual) ============ */
+  .flow{
+    background: var(--jet);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    padding: 36px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .flow-grid{
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr 60px 1fr;
+    gap: 14px;
+    align-items: center;
+  }
+  .flow-col{
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .flow-node{
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display:flex; align-items: center; gap: 12px;
+    transition: border-color .25s, background .25s;
+  }
+  .flow-node:hover{
+    border-color: var(--mint);
+    background: rgba(0,225,119,0.06);
+  }
+  .flow-node .ic{
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--mint);
+    color: var(--black);
+    display:grid; place-items:center;
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .flow-node .ic.alt{ background: rgba(0,225,119,0.18); color: var(--mint);}
+  .flow-node-text{
+    flex: 1;
+    min-width: 0;
+  }
+  .flow-node-text .t{
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--paper);
+    letter-spacing: -0.01em;
+  }
+  .flow-node-text .s{
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gray-2);
+    margin-top: 2px;
+    letter-spacing: .04em;
+  }
+  .flow-arrow{
+    display:flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .flow-arrow svg{ width: 100%; height: 24px;}
+  .flow-arrow .line{
+    stroke: var(--mint);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+    fill: none;
+    animation: dash 1.5s linear infinite;
+  }
+  @keyframes dash{ to{ stroke-dashoffset: -16;} }
+  .flow-arrow .tip{
+    fill: var(--mint);
+  }
+  .flow-center{
+    background: var(--mint);
+    color: var(--black);
+    border-radius: 12px;
+    padding: 22px 18px;
+    text-align: center;
+    border: 0;
+  }
+  .flow-center .pill{
+    display:inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    background: rgba(0,0,0,0.18);
+    color: var(--black);
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .flow-center .h{
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  .flow-center .s{
+    font-size: 12.5px;
+    margin-top: 6px;
+    line-height: 1.35;
+    color: rgba(0,0,0,0.7);
+  }
+  @media (max-width: 920px){
+    .flow-grid{ grid-template-columns: 1fr; gap: 16px;}
+    .flow-arrow{ transform: rotate(90deg); height: 30px;}
+  }
+
+  /* ============ MARQUEE BAR ============ */
+  .logos-bar{
+    padding: 32px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .logos-inner{
+    display: flex; align-items:center; justify-content: space-between; gap: 28px;
+    flex-wrap: wrap;
+  }
+  .logos-label{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--gray-2);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .logos-row{
+    display:flex; gap: 40px; flex-wrap: wrap; align-items: center;
+  }
+  .logo-mark{
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 18px;
+    color: rgba(255,255,255,0.5);
+    transition: color .25s;
+    letter-spacing: -0.01em;
+  }
+  .logo-mark:hover{ color: var(--paper);}
+
+  /* ============ SECTION SHELLS ============ */
+  section.block{
+    padding: clamp(80px, 11vh, 140px) 0;
+  }
+  .sec-head{
+    max-width: 760px;
+    margin: 0 auto clamp(40px, 6vh, 64px);
+    text-align: center;
+  }
+  .sec-head .tag{
+    display:inline-flex; align-items:center; gap: 8px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+  }
+  .light .sec-head .tag, .bone .sec-head .tag{
+    background: var(--black);
+    color: var(--mint);
+  }
+  .dark .sec-head .tag, .mint .sec-head .tag{
+    background: rgba(0,225,119,0.14);
+    color: var(--mint);
+  }
+  .mint .sec-head .tag{ background: rgba(10,10,10,0.12); color: var(--black);}
+  .sec-head h2{
+    font-size: clamp(40px, 6vw, 76px);
+    line-height: 1.02;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    margin: 0 0 16px;
+  }
+  .sec-head h2 .mint-word{ color: var(--mint-deep);}
+  .dark .sec-head h2 .mint-word{ color: var(--mint);}
+  .sec-head p{
+    font-size: 19px;
+    color: var(--gray);
+    line-height: 1.55;
+  }
+  .dark .sec-head p{ color: rgba(255,255,255,0.65);}
+  .mint .sec-head p{ color: rgba(10,10,10,0.75);}
+
+  /* ============ NUMBERED STATS ROW ============ */
+  .big-stats{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--rule-dark);
+    border-bottom: 1px solid var(--rule-dark);
+  }
+  .bone .big-stats{ border-color: rgba(10,10,10,0.10);}
+  .big-stat{
+    padding: 48px 32px;
+    border-right: 1px solid var(--rule-dark);
+    display:flex; flex-direction:column; gap: 10px;
+  }
+  .big-stat:last-child{ border-right: 0;}
+  .big-stat .n{
+    font-family: var(--display);
+    font-size: 88px;
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+  .big-stat .n .u{
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--gray);
+    margin-left: 4px;
+  }
+  .big-stat .l{
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--gray);
+    margin-top: 12px;
+    max-width: 28ch;
+  }
+  @media (max-width: 760px){
+    .big-stats{ grid-template-columns: 1fr;}
+    .big-stat{ border-right: 0; border-bottom: 1px solid var(--rule-dark);}
+    .big-stat:last-child{ border-bottom: 0;}
+  }
+
+  /* ============ METHOD GRID (4 cards) ============ */
+  .method{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .m-card{
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 32px 28px;
+    border: 1px solid rgba(10,10,10,0.06);
+    display:flex; flex-direction:column;
+    transition: transform .22s, box-shadow .25s;
+    color: var(--ink);
+  }
+  .m-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 24px 50px -20px rgba(10,10,10,0.18);
+  }
+  .m-card.dark{
+    background: var(--black);
+    color: var(--paper);
+    border-color: var(--rule);
+  }
+  .m-card.dark .m-num{ background: var(--mint); color: var(--black);}
+  .m-card.dark p{ color: rgba(255,255,255,0.6);}
+  .m-num{
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: var(--mint-soft);
+    color: var(--mint-deep);
+    display:grid; place-items:center;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 18px;
+    margin-bottom: 22px;
+  }
+  .m-card .ph{
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 6px;
+  }
+  .m-card.dark .ph{ color: var(--mint);}
+  .m-card h3{
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 10px;
+    letter-spacing: -0.02em;
+  }
+  .m-card p{
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--gray);
+    margin: 0 0 18px;
+  }
+  .m-card ul{
+    list-style: none; padding: 0; margin: auto 0 0;
+    border-top: 1px solid var(--rule-dark);
+    padding-top: 14px;
+    display:grid; gap: 8px;
+    font-size: 13px;
+    font-family: var(--mono);
+    color: var(--gray);
+  }
+  .m-card.dark ul{ border-color: var(--rule);}
+  .m-card ul li{
+    display:flex; gap: 10px; align-items: baseline;
+  }
+  .m-card ul li::before{
+    content: "";
+    width: 5px; height: 5px;
+    background: var(--mint);
+    border-radius: 50%;
+    flex-shrink: 0;
+    transform: translateY(-2px);
+  }
+  @media (max-width: 920px){ .method{ grid-template-columns: 1fr 1fr;} }
+  @media (max-width: 540px){ .method{ grid-template-columns: 1fr;} }
+
+  /* ============ DASHBOARD PREVIEW ============ */
+  .dash{
+    background: var(--paper);
+    border: 1px solid var(--rule-dark);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px -30px rgba(10,10,10,0.4);
+    color: var(--ink);
+  }
+  .dash-head{
+    display:flex; align-items:center; gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--rule-dark);
+    background: var(--bone);
+  }
+  .dash-head .d{ width: 10px; height: 10px; border-radius: 50%; background: rgba(10,10,10,0.18);}
+  .dash-body{
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 380px;
+  }
+  .dash-side{
+    background: var(--bone);
+    border-right: 1px solid var(--rule-dark);
+    padding: 22px 18px;
+    display:flex; flex-direction:column; gap: 4px;
+  }
+  .dash-side-h{
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--gray);
+    margin: 18px 8px 8px;
+  }
+  .dash-side-h:first-child{ margin-top: 0;}
+  .dash-side-item{
+    display:flex; align-items: center; gap: 10px;
+    padding: 9px 10px;
+    border-radius: 6px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .dash-side-item .tk{ font-family: var(--mono); font-size: 11px; color: var(--gray); margin-left: auto;}
+  .dash-side-item.active{ background: var(--ink); color: var(--paper);}
+  .dash-side-item.active .tk{ color: var(--mint);}
+  .dash-side-item.done{ color: var(--gray);}
+  .dash-main{
+    padding: 28px;
+    display: grid; gap: 22px;
+  }
+  .dash-row{
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .dash-row h4{
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .dash-pill{
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 4px 10px;
+    background: var(--mint-soft);
+    color: var(--mint-deep);
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+  .dash-score-card{
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 12px;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 24px;
+    align-items: center;
+  }
+  .dash-ring{
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background: conic-gradient(var(--mint) 0% 74%, rgba(255,255,255,0.08) 74% 100%);
+    position: relative;
+    display:grid; place-items:center;
+  }
+  .dash-ring::before{
+    content:""; position: absolute; inset: 6px; border-radius:50%;
+    background: var(--ink);
+  }
+  .dash-ring .n{
+    position: relative;
+    font-family: var(--display);
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--paper);
+  }
+  .dash-score-body .lbl{
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--mint);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .dash-score-body .h{
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 22px;
+    margin-top: 4px;
+    letter-spacing: -0.015em;
+  }
+  .dash-score-body .sub{
+    color: rgba(255,255,255,0.55);
+    font-size: 13.5px;
+    margin-top: 6px;
+  }
+  .dash-delta{
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--mint);
+  }
+  .dash-delta .big{
+    display: block;
+    font-family: var(--display);
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--paper);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .dash-bars{ display:grid; gap: 12px;}
+  .dash-bar{
+    display:grid; grid-template-columns: 120px 1fr 50px; gap: 14px; align-items: center;
+  }
+  .dash-bar .l{ font-size: 13.5px; font-weight: 500; color: var(--ink);}
+  .dash-bar .t{
+    height: 8px; background: var(--rule-dark); border-radius: 999px; overflow: hidden;
+  }
+  .dash-bar .f{
+    height: 100%; background: var(--ink); border-radius: 999px;
+  }
+  .dash-bar .f.mint{ background: var(--mint);}
+  .dash-bar .v{
+    font-family: var(--mono); font-size: 12px; text-align: right; color: var(--ink); font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 760px){
+    .dash-body{ grid-template-columns: 1fr;}
+    .dash-side{ display:none;}
+  }
+
+  /* ============ FEATURE GRID (dark cards) ============ */
+  .features{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .f-card{
+    background: var(--jet);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    padding: 32px;
+    color: var(--paper);
+    transition: border-color .25s, transform .22s;
+    display:flex; flex-direction:column; gap: 14px;
+    position: relative;
+  }
+  .f-card:hover{
+    border-color: var(--mint);
+    transform: translateY(-3px);
+  }
+  .f-card .f-ic{
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    background: rgba(0,225,119,0.10);
+    color: var(--mint);
+    display:grid; place-items:center;
+    margin-bottom: 4px;
+  }
+  .f-card .f-ic svg{ width: 22px; height: 22px;}
+  .f-card h3{
+    font-family: var(--display);
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .f-card p{
+    font-size: 15px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.6);
+    margin: 0;
+  }
+  .f-card .f-meta{
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--mint);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 920px){ .features{ grid-template-columns: 1fr 1fr;} }
+  @media (max-width: 540px){ .features{ grid-template-columns: 1fr;} }
+
+  /* ============ COMPARE BIG ============ */
+  .compare{
+    background: var(--paper);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--rule-dark);
+  }
+  .c-row{
+    display:grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    border-bottom: 1px solid var(--rule-dark);
+  }
+  .c-row:last-child{ border-bottom: 0;}
+  .c-cell{
+    padding: 22px 26px;
+    font-size: 16px;
+    color: var(--ink);
+    border-right: 1px solid rgba(10,10,10,0.06);
+  }
+  .c-cell:last-child{ border-right: 0;}
+  .c-row.head .c-cell{
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    padding: 18px 26px;
+    border-right-color: rgba(255,255,255,0.1);
+  }
+  .c-row.head .us{ color: var(--mint);}
+  .c-row.head .them{ color: rgba(255,255,255,0.6);}
+  .c-cell.lbl{ font-family: var(--display); font-weight: 700; font-size: 17px;}
+  .c-cell.them{ color: var(--gray); font-size: 15px;}
+  .c-cell.us{
+    background: var(--mint-soft);
+    font-weight: 500;
+  }
+  .chip{
+    display:inline-flex; width: 22px; height: 22px;
+    border-radius: 50%; align-items:center; justify-content:center;
+    margin-right: 12px;
+    font-weight: 800;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .chip.yes{ background: var(--mint); color: var(--black);}
+  .chip.no { background: rgba(10,10,10,0.08); color: var(--ink);}
+  @media (max-width: 760px){
+    .c-row, .c-row.head{ grid-template-columns: 1fr;}
+    .c-cell{ border-right: 0; border-bottom: 1px solid rgba(10,10,10,0.06);}
+  }
+
+  /* ============ TESTIMONIALS ============ */
+  .voices{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .voice{
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 16px;
+    padding: 32px 28px;
+    display:flex; flex-direction: column; gap: 22px;
+    border: 1px solid rgba(10,10,10,0.05);
+  }
+  .voice-q{
+    font-family: var(--display);
+    font-size: 19px;
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .voice-q .accent{ color: var(--mint-deep); }
+  .voice-metric{
+    align-self: flex-start;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--mint-deep);
+    padding: 6px 12px;
+    background: var(--mint-soft);
+    border-radius: 999px;
+    letter-spacing: .04em;
+  }
+  .voice-foot{
+    margin-top: auto;
+    display:flex; align-items: center; gap: 12px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(10,10,10,0.06);
+  }
+  .voice-av{
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--mint);
+    display:grid; place-items:center;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .voice-name{
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .voice-meta{
+    font-size: 13px;
+    color: var(--gray);
+    margin-top: 2px;
+  }
+  @media (max-width: 920px){ .voices{ grid-template-columns: 1fr;} }
+
+  /* ============ PRICING (mint block, Plaid CTA energy) ============ */
+  .pricing-wrap{ position: relative; padding: 0;}
+  .pricing{
+    background: var(--mint);
+    color: var(--black);
+    border-radius: 24px;
+    padding: clamp(48px, 7vw, 80px);
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  /* abstract pattern */
+  .pricing::before{
+    content:"";
+    position:absolute;
+    right: -80px; top: -80px;
+    width: 380px; height: 380px;
+    background:
+      repeating-conic-gradient(rgba(10,10,10,0.06) 0deg 10deg, transparent 10deg 20deg);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .pricing > *{ position: relative; z-index: 1;}
+  .p-tag{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    background: rgba(10,10,10,0.10);
+    padding: 7px 14px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+    font-weight: 500;
+  }
+  .pricing h2{
+    font-size: clamp(38px, 5.5vw, 60px);
+    line-height: 1.02;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--black);
+    margin: 0 0 16px;
+  }
+  .p-sub{
+    font-size: 18.5px;
+    line-height: 1.5;
+    color: rgba(10,10,10,0.76);
+    max-width: 44ch;
+    margin: 0 0 28px;
+  }
+  .p-list{
+    list-style: none; padding: 0; margin: 0;
+    display:grid; gap: 12px;
+  }
+  .p-list li{
+    display: flex; gap: 12px; align-items:flex-start;
+    font-size: 15.5px;
+    color: var(--black);
+    font-weight: 500;
+  }
+  .p-list li svg{
+    width: 20px; height: 20px;
+    background: var(--black);
+    color: var(--mint);
+    border-radius: 50%;
+    padding: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .p-card{
+    background: var(--black);
+    color: var(--paper);
+    border-radius: 14px;
+    padding: 36px 30px;
+    align-self: start;
+  }
+  .p-card-tag{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--mint);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-weight: 500;
+  }
+  .p-n{
+    font-family: var(--display);
+    font-size: 72px;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--paper);
+    margin: 14px 0 8px;
+    font-variant-numeric: tabular-nums;
+  }
+  .p-n .cur{
+    font-family: var(--display);
+    font-size: 28px;
+    vertical-align: top;
+    margin-right: 4px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 700;
+  }
+  .p-foot{
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    margin: 0 0 22px;
+    line-height: 1.5;
+  }
+  .p-alt{
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 22px;
+  }
+  .p-alt b{ color: var(--mint); font-weight: 700;}
+  .p-cta{
+    width: 100%;
+    justify-content: center;
+    background: var(--mint);
+    color: var(--black);
+    padding: 16px;
+  }
+  .p-cta:hover{ background: var(--paper);}
+  .p-trust{
+    margin-top: 16px;
+    display:flex; gap: 14px; flex-wrap: wrap;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .p-trust span{ display:inline-flex; align-items:center; gap: 6px;}
+  .p-trust span::before{ content: "✓"; color: var(--mint); font-weight: 700;}
+  @media (max-width: 920px){
+    .pricing{ grid-template-columns: 1fr; gap: 36px;}
+  }
+
+  /* ============ FAQ ============ */
+  .faq{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .faq details{
+    background: var(--jet);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 22px 26px;
+    transition: border-color .2s, background .2s;
+  }
+  .faq details[open]{
+    border-color: var(--mint);
+    background: rgba(0,225,119,0.05);
+  }
+  .faq summary{
+    list-style: none; cursor: pointer;
+    display:flex; justify-content: space-between; align-items: center;
+    gap: 18px;
+    font-family: var(--display);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--paper);
+    letter-spacing: -0.01em;
+  }
+  .faq summary::-webkit-details-marker{ display: none;}
+  .faq summary::after{
+    content: "+"; color: var(--mint);
+    font-size: 22px; font-weight: 400;
+    transition: transform .25s;
+    flex-shrink: 0;
+  }
+  .faq details[open] summary::after{ content: "−";}
+  .faq .ans{
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.65);
+  }
+  @media (max-width: 760px){ .faq{ grid-template-columns: 1fr;} }
+
+  /* ============ FINAL CTA ============ */
+  .final{
+    background: var(--mint);
+    color: var(--black);
+    padding: clamp(80px, 13vh, 160px) 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-inner{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 56px;
+    align-items: end;
+  }
+  .final h2{
+    font-size: clamp(48px, 8vw, 124px);
+    line-height: 0.94;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    margin: 0;
+    color: var(--black);
+  }
+  .final h2 em{ font-style: italic;}
+  .final-right{
+    display:flex; flex-direction: column; gap: 22px;
+    align-items: flex-start;
+  }
+  .final-right p{
+    font-size: 17px;
+    color: rgba(10,10,10,0.78);
+    margin: 0;
+    max-width: 36ch;
+    line-height: 1.5;
+  }
+  .final-actions{
+    display:flex; gap: 12px; flex-wrap: wrap;
+  }
+  @media (max-width: 760px){
+    .final-inner{ grid-template-columns: 1fr;}
+  }
+
+  /* ============ FOOTER ============ */
+  footer{
+    padding: 72px 0 36px;
+    background: var(--black);
+    color: rgba(255,255,255,0.65);
+    border-top: 1px solid var(--rule);
+  }
+  .foot{
+    display:grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 36px;
+  }
+  .foot-brand p{
+    font-size: 14.5px;
+    color: rgba(255,255,255,0.55);
+    max-width: 32ch;
+    line-height: 1.55;
+    margin-top: 12px;
+  }
+  .foot h4{
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--paper);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin: 0 0 14px;
+  }
+  .foot ul{
+    list-style: none; padding: 0; margin: 0;
+    display:flex; flex-direction:column; gap: 8px;
+    font-size: 14.5px;
+  }
+  .foot a:hover{ color: var(--mint);}
+  .foot-bottom{
+    display:flex; justify-content: space-between; align-items:center;
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    flex-wrap: wrap; gap: 12px;
+  }
+  @media (max-width: 760px){
+    .foot{ grid-template-columns: 1fr 1fr; gap: 28px;}
+    .foot-brand{ grid-column: 1 / -1;}
+  }
+
+  /* ============ REVEAL ============ */
+  .reveal{ opacity: 0; transform: translateY(20px);
+    transition: opacity 0.9s cubic-bezier(.2,.7,.2,1), transform 0.9s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in{ opacity: 1; transform: none;}
+  .stagger > *{ opacity: 0; transform: translateY(16px);
+    transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);}
+  .stagger.in > *{ opacity: 1; transform: none;}
+  .stagger.in > *:nth-child(2){ transition-delay: .07s;}
+  .stagger.in > *:nth-child(3){ transition-delay: .14s;}
+  .stagger.in > *:nth-child(4){ transition-delay: .21s;}
+  .stagger.in > *:nth-child(5){ transition-delay: .28s;}
+  .stagger.in > *:nth-child(6){ transition-delay: .35s;}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">CW</span>
+      Credit Workshop
+    </a>
+    <nav class="nav-links">
+      <a href="#method">Method</a>
+      <a href="#product">Product</a>
+      <a href="#operators">Operators</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#" class="btn btn--ghost-light">Sign in</a>
+      <a href="#pricing" class="btn btn--mint">
+        Get started
+        <svg class="arr" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h8M8 4l3 3-3 3"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero dark">
+  <div class="hero-art" aria-hidden="true">
+    <svg viewBox="0 0 600 700" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="m1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#00E177"/>
+          <stop offset="100%" stop-color="#00B364"/>
+        </linearGradient>
+      </defs>
+      <!-- Layered abstract shapes -->
+      <circle class="float-shape a" cx="450" cy="140" r="120" fill="#00E177" opacity=".85"/>
+      <rect class="float-shape b" x="320" y="280" width="220" height="220" rx="24" fill="#131313" stroke="#00E177" stroke-width="2"/>
+      <circle class="float-shape c" cx="220" cy="420" r="80" fill="none" stroke="#00E177" stroke-width="2"/>
+      <rect class="float-shape d" x="420" y="500" width="140" height="140" rx="18" fill="url(#m1)" opacity=".5"/>
+      <!-- decorative dots grid -->
+      <g opacity=".4">
+        <circle cx="100" cy="200" r="2" fill="#00E177"/>
+        <circle cx="140" cy="200" r="2" fill="#00E177"/>
+        <circle cx="180" cy="200" r="2" fill="#00E177"/>
+        <circle cx="100" cy="240" r="2" fill="#00E177"/>
+        <circle cx="140" cy="240" r="2" fill="#00E177"/>
+        <circle cx="180" cy="240" r="2" fill="#00E177"/>
+        <circle cx="100" cy="280" r="2" fill="#00E177"/>
+        <circle cx="140" cy="280" r="2" fill="#00E177"/>
+        <circle cx="180" cy="280" r="2" fill="#00E177"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="wrap hero-inner">
+    <div class="hero-copy reveal">
+      <span class="hero-eyebrow"><span class="dot"></span>9-month program · No subscription</span>
+      <h1 class="hero-h">
+        Business credit, <span class="mint-word">methodically.</span>
+      </h1>
+      <p class="hero-sub">
+        Paydex 80, a Tier-I vendor file, and funding-ready in nine months. Built for operators who own the system, not rent it.
+      </p>
+      <div class="hero-cta">
+        <a href="#pricing" class="btn btn--mint">
+          Get started — $1,000
+          <svg class="arr" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h8M8 4l3 3-3 3"/></svg>
+        </a>
+        <a href="/fundability-score" class="btn btn--ghost-light">Take the free quiz</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="n">9<span class="accent">.</span></div>
+          <div class="l">Total months. Then you're done.</div>
+        </div>
+        <div class="hero-stat">
+          <div class="n">3<span class="accent">.</span></div>
+          <div class="l">Bureaus synced. D&amp;B, Experian, Equifax.</div>
+        </div>
+        <div class="hero-stat">
+          <div class="n">40<span class="accent">+</span></div>
+          <div class="l">Vendor placements in the right order.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-flow reveal">
+      <div class="flow">
+        <div class="flow-grid">
+          <div class="flow-col">
+            <div class="flow-node">
+              <span class="ic alt">L</span>
+              <div class="flow-node-text">
+                <div class="t">LLC / Entity</div>
+                <div class="s">EIN · D&amp;B file</div>
+              </div>
+            </div>
+            <div class="flow-node">
+              <span class="ic alt">V</span>
+              <div class="flow-node-text">
+                <div class="t">Vendor sequence</div>
+                <div class="s">Tier I → III</div>
+              </div>
+            </div>
+            <div class="flow-node">
+              <span class="ic alt">B</span>
+              <div class="flow-node-text">
+                <div class="t">Bureau cadence</div>
+                <div class="s">3 files synced</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-arrow">
+            <svg viewBox="0 0 60 24" preserveAspectRatio="none">
+              <path class="line" d="M2 12 L52 12"/>
+              <polygon class="tip" points="50,7 58,12 50,17"/>
+            </svg>
+          </div>
+
+          <div class="flow-center">
+            <span class="pill">Workshop</span>
+            <div class="h">Credit Workshop</div>
+            <div class="s">Method · Dashboard · Funding</div>
+          </div>
+
+          <div class="flow-arrow">
+            <svg viewBox="0 0 60 24" preserveAspectRatio="none">
+              <path class="line" d="M2 12 L52 12"/>
+              <polygon class="tip" points="50,7 58,12 50,17"/>
+            </svg>
+          </div>
+
+          <div class="flow-col">
+            <div class="flow-node">
+              <span class="ic">P</span>
+              <div class="flow-node-text">
+                <div class="t">Paydex 80</div>
+                <div class="s">Month 4–5</div>
+              </div>
+            </div>
+            <div class="flow-node">
+              <span class="ic">F</span>
+              <div class="flow-node-text">
+                <div class="t">Fundable file</div>
+                <div class="s">Month 7–9</div>
+              </div>
+            </div>
+            <div class="flow-node">
+              <span class="ic">O</span>
+              <div class="flow-node-text">
+                <div class="t">Operator owns it</div>
+                <div class="s">Hand-off complete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LOGOS ============ -->
+<div class="logos-bar dark">
+  <div class="wrap logos-inner">
+    <span class="logos-label">Reports to and integrates with</span>
+    <div class="logos-row">
+      <span class="logo-mark">Dun &amp; Bradstreet</span>
+      <span class="logo-mark">Experian</span>
+      <span class="logo-mark">Equifax</span>
+      <span class="logo-mark">Stripe</span>
+      <span class="logo-mark">SBA</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ BIG STATS BAND ============ -->
+<section class="block bone">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">By the numbers</span>
+      <h2>What we ship — <span class="mint-word">measured</span>.</h2>
+      <p>The program produces specific, observable outcomes on a known timeline.</p>
+    </div>
+    <div class="big-stats stagger">
+      <div class="big-stat">
+        <div class="n">80<span class="u">paydex</span></div>
+        <div class="l">Average target by month 4–5 on the standard cadence.</div>
+      </div>
+      <div class="big-stat">
+        <div class="n">$0<span class="u">/mo after</span></div>
+        <div class="l">Zero subscription. You finish, you stop paying.</div>
+      </div>
+      <div class="big-stat">
+        <div class="n">14<span class="u">day refund</span></div>
+        <div class="l">Full refund window, no questions asked.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ METHOD ============ -->
+<section class="block dark" id="method">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">The method</span>
+      <h2>Nine months. Four <span class="mint-word">movements</span>.</h2>
+      <p>Each phase has a defined start, measurable outcome, and a hand-off to the next. No mystery.</p>
+    </div>
+
+    <div class="method stagger">
+      <div class="m-card">
+        <div class="m-num">01</div>
+        <div class="ph">Month 1</div>
+        <h3>Foundation</h3>
+        <p>The boring parts done correctly, so the rest of the system actually works.</p>
+        <ul>
+          <li>EIN &amp; entity hygiene</li>
+          <li>Commercial address compliance</li>
+          <li>D&amp;B file opened</li>
+        </ul>
+      </div>
+      <div class="m-card dark">
+        <div class="m-num">02</div>
+        <div class="ph">Months 2–3</div>
+        <h3>Tier I vendors</h3>
+        <p>Six Net-30 accounts placed in the order the bureaus reward.</p>
+        <ul>
+          <li>Uline · Quill · Grainger</li>
+          <li>Reporting cadence verified</li>
+          <li>First Paydex captured</li>
+        </ul>
+      </div>
+      <div class="m-card">
+        <div class="m-num">03</div>
+        <div class="ph">Months 4–6</div>
+        <h3>Tier II &amp; III</h3>
+        <p>Revolving accounts, fleet cards, store credit. File depth and Paydex 80.</p>
+        <ul>
+          <li>WEX or Shell fleet</li>
+          <li>Lowe's, Home Depot</li>
+          <li>Tier III revolving line</li>
+        </ul>
+      </div>
+      <div class="m-card dark">
+        <div class="m-num">04</div>
+        <div class="ph">Months 7–9</div>
+        <h3>Funding &amp; hand-off</h3>
+        <p>Lender matching, SBA-ready packet. You finish holding the file.</p>
+        <ul>
+          <li>Funding marketplace match</li>
+          <li>SBA-ready packet</li>
+          <li>Operator hand-off</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DASHBOARD PREVIEW ============ -->
+<section class="block bone" id="product">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">The product</span>
+      <h2>One operating surface. <span class="mint-word">No tabs.</span></h2>
+      <p>The dashboard your CPA can read without translation. Live progress, bureau cadence, vendor sequence, funding readiness.</p>
+    </div>
+
+    <div class="dash reveal">
+      <div class="dash-head">
+        <span class="d"></span><span class="d"></span><span class="d"></span>
+      </div>
+      <div class="dash-body">
+        <div class="dash-side">
+          <div class="dash-side-h">Credit Workshop</div>
+          <div class="dash-side-item done">📋 Foundation <span class="tk">12/12</span></div>
+          <div class="dash-side-item active">🏛 Tier I <span class="tk">5/6</span></div>
+          <div class="dash-side-item">🏢 Tier II <span class="tk">0/4</span></div>
+          <div class="dash-side-item">📈 Bureau Sync <span class="tk">2/3</span></div>
+          <div class="dash-side-item">💰 Funding <span class="tk">M.7</span></div>
+
+          <div class="dash-side-h">Tools</div>
+          <div class="dash-side-item">📊 Score history</div>
+          <div class="dash-side-item">📁 Evidence log</div>
+        </div>
+
+        <div class="dash-main">
+          <div class="dash-row">
+            <h4>Credit Readiness</h4>
+            <span class="dash-pill">On track</span>
+          </div>
+
+          <div class="dash-score-card">
+            <div class="dash-ring"><span class="n">74</span></div>
+            <div class="dash-score-body">
+              <div class="lbl">Readiness Score</div>
+              <div class="h">On track for Paydex 80</div>
+              <div class="sub">Tier I active · 5/6 reporting · Bureau sync 2/3</div>
+            </div>
+            <div class="dash-delta">
+              <span class="big">+12</span>
+              this week
+            </div>
+          </div>
+
+          <div class="dash-bars">
+            <div class="dash-bar">
+              <span class="l">Foundation</span>
+              <span class="t"><span class="f mint" style="width:100%"></span></span>
+              <span class="v">12/12</span>
+            </div>
+            <div class="dash-bar">
+              <span class="l">Tier I vendors</span>
+              <span class="t"><span class="f mint" style="width:83%"></span></span>
+              <span class="v">5/6</span>
+            </div>
+            <div class="dash-bar">
+              <span class="l">Bureau verified</span>
+              <span class="t"><span class="f" style="width:66%"></span></span>
+              <span class="v">2/3</span>
+            </div>
+            <div class="dash-bar">
+              <span class="l">Funding ready</span>
+              <span class="t"><span class="f" style="width:24%"></span></span>
+              <span class="v">M.7</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURES (dark) ============ -->
+<section class="block dark">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Capabilities</span>
+      <h2>Built for <span class="mint-word">serious</span> operators.</h2>
+      <p>Every tool is in service of moving your file forward. No bloat.</p>
+    </div>
+
+    <div class="features stagger">
+      <div class="f-card">
+        <div class="f-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </div>
+        <h3>Bureau cadence</h3>
+        <p>D&amp;B, Experian, Equifax — all three synced, mismatches flagged before they cost you a tier.</p>
+        <div class="f-meta">Realtime · 3 bureaus</div>
+      </div>
+
+      <div class="f-card">
+        <div class="f-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg>
+        </div>
+        <h3>Vendor library</h3>
+        <p>40+ Net-30 vendors ranked by tier and reporting reliability. Placed in bureau-rewarded order.</p>
+        <div class="f-meta">40+ vendors · 4 tiers</div>
+      </div>
+
+      <div class="f-card">
+        <div class="f-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 17l4-8 5 4 4-10 5 14"/></svg>
+        </div>
+        <h3>Score history</h3>
+        <p>Rolling 90-day Credit Readiness sparkline. Progress, visualized, not narrated.</p>
+        <div class="f-meta">Daily · 90 days</div>
+      </div>
+
+      <div class="f-card">
+        <div class="f-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 5H9.5C8.12 5 7 6.12 7 7.5S8.12 10 9.5 10h5c1.38 0 2.5 1.12 2.5 2.5S15.88 15 14.5 15H6"/></svg>
+        </div>
+        <h3>Funding match</h3>
+        <p>Five integrated processors. Lender matching the moment your file is ready, not before.</p>
+        <div class="f-meta">5 processors · SBA-ready</div>
+      </div>
+
+      <div class="f-card">
+        <div class="f-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+        </div>
+        <h3>Evidence log</h3>
+        <p>Every action signed and timestamped. CPA-ready compliance-grade activity record.</p>
+        <div class="f-meta">Audit-grade · 7yr retained</div>
+      </div>
+
+      <div class="f-card">
+        <div class="f-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        </div>
+        <h3>Claude concierge</h3>
+        <p>Direct access to the method via an AI concierge trained on every page of the program.</p>
+        <div class="f-meta">24/7 · Personalized</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARE ============ -->
+<section class="block bone">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">The difference</span>
+      <h2>What outsourced shops <span class="mint-word">won't tell you</span>.</h2>
+      <p>The industry sells access. We sell a finish line.</p>
+    </div>
+    <div class="compare reveal">
+      <div class="c-row head">
+        <div class="c-cell">Item</div>
+        <div class="c-cell them">Outsourced shop</div>
+        <div class="c-cell us">Credit Workshop</div>
+      </div>
+      <div class="c-row">
+        <div class="c-cell lbl">Pricing</div>
+        <div class="c-cell them"><span class="chip no">✕</span>$400–500 / mo forever</div>
+        <div class="c-cell us"><span class="chip yes">✓</span>$1,000 once · 9 months · done</div>
+      </div>
+      <div class="c-row">
+        <div class="c-cell lbl">What you learn</div>
+        <div class="c-cell them"><span class="chip no">✕</span>"Proprietary" method</div>
+        <div class="c-cell us"><span class="chip yes">✓</span>Full sequence &amp; cadence</div>
+      </div>
+      <div class="c-row">
+        <div class="c-cell lbl">Dashboard</div>
+        <div class="c-cell them"><span class="chip no">✕</span>Generic checklist</div>
+        <div class="c-cell us"><span class="chip yes">✓</span>Tier · bureau · score · history</div>
+      </div>
+      <div class="c-row">
+        <div class="c-cell lbl">When you finish</div>
+        <div class="c-cell them"><span class="chip no">✕</span>Still paying</div>
+        <div class="c-cell us"><span class="chip yes">✓</span>You own the file</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPERATORS ============ -->
+<section class="block light" id="operators">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Operators</span>
+      <h2>Finished with the <span class="mint-word">method</span>.</h2>
+      <p>Real numbers from real businesses that walked the program.</p>
+    </div>
+    <div class="voices stagger">
+      <article class="voice">
+        <p class="voice-q">"Came in with no file. Month four I hit <span class="accent">Paydex 80</span>. The vendor sequence is the whole game."</p>
+        <span class="voice-metric">Paydex 80 · Month 4</span>
+        <div class="voice-foot">
+          <div class="voice-av">M</div>
+          <div>
+            <div class="voice-name">Marcus T.</div>
+            <div class="voice-meta">Logistics · Dallas, TX</div>
+          </div>
+        </div>
+      </article>
+      <article class="voice">
+        <p class="voice-q">"My CPA actually read the dashboard. <span class="accent">System, not a portal.</span>"</p>
+        <span class="voice-metric">Funded · Month 8</span>
+        <div class="voice-foot">
+          <div class="voice-av">S</div>
+          <div>
+            <div class="voice-name">Sarah K.</div>
+            <div class="voice-meta">E-commerce · Austin, TX</div>
+          </div>
+        </div>
+      </article>
+      <article class="voice">
+        <p class="voice-q">"Paid two shops $500/mo and learned <span class="accent">nothing</span>. One quarter here and I own it."</p>
+        <span class="voice-metric">$30k Net-30 · Month 5</span>
+        <div class="voice-foot">
+          <div class="voice-av">D</div>
+          <div>
+            <div class="voice-name">Devon R.</div>
+            <div class="voice-meta">Contracting · Phoenix, AZ</div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="block dark" id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Pricing</span>
+      <h2>One price. <span class="mint-word">One outcome.</span></h2>
+      <p>No upsells. No "premium tier." No subscription that never ends.</p>
+    </div>
+
+    <div class="pricing reveal">
+      <div>
+        <span class="p-tag">Full Program · One-time</span>
+        <h2>Nine months. <em style="font-style: italic;">Then you're done.</em></h2>
+        <p class="p-sub">You buy the program, you finish it, you leave with the file. There is no perpetual invoice.</p>
+        <ul class="p-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>Full 9-month curriculum with vendor sequencing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>Live dashboard · tier, bureau, score tracking</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>Funding marketplace — 5 processors</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>15-minute onboarding with a specialist</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>Compliance-grade evidence log (CPA-ready)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>Claude-assisted method concierge</li>
+        </ul>
+      </div>
+      <aside class="p-card">
+        <div class="p-card-tag">Full Program · One-time</div>
+        <div class="p-n"><span class="cur">$</span>1,000</div>
+        <p class="p-foot">Nine months · vendor placements · bureau coordination · funding match · dashboard.</p>
+        <div class="p-alt">Or <b>$100 setup</b> + <b>$100/mo</b> · 9 months</div>
+        <a href="#" class="btn p-cta">
+          Begin program
+          <svg class="arr" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h8M8 4l3 3-3 3"/></svg>
+        </a>
+        <div class="p-trust">
+          <span>14-day refund</span>
+          <span>Cancel anytime</span>
+          <span>Transferable</span>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="block dark" id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">FAQ</span>
+      <h2>Answers, briefly.</h2>
+    </div>
+    <div class="faq reveal">
+      <details open>
+        <summary>How is this different from the $400/mo providers?</summary>
+        <div class="ans">They sell ongoing access. We sell the method itself — vendor sequence, bureau cadence, dashboard, finish line. After nine months you own the file.</div>
+      </details>
+      <details>
+        <summary>What score can I expect?</summary>
+        <div class="ans">Most operators reach Paydex 80 by month 4–5 and a strong Intelliscore by month 7 if the cadence is followed.</div>
+      </details>
+      <details>
+        <summary>Does the funding piece really work?</summary>
+        <div class="ans">Yes. Five integrated processors. Lender matching happens in months 7–9 once your file is fundable.</div>
+      </details>
+      <details>
+        <summary>Refund policy?</summary>
+        <div class="ans">Full refund within 14 days. After day 14, transferable to another entity you control.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final">
+  <div class="wrap final-inner">
+    <h2>Begin the file.<br/>Finish the <em>method</em>.</h2>
+    <div class="final-right">
+      <p>Nine months. One price. The file is yours when you're done — not ours.</p>
+      <div class="final-actions">
+        <a href="#pricing" class="btn btn--dark">
+          Get started — $1,000
+          <svg class="arr" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h8M8 4l3 3-3 3"/></svg>
+        </a>
+        <a href="/fundability-score" class="btn btn--white">Take the free quiz</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="foot-brand">
+        <a href="#" class="brand"><span class="brand-mark">CW</span> Credit Workshop</a>
+        <p>Quietly excellent software for operators building real business credit.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#method">Method</a></li>
+          <li><a href="#product">Dashboard</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="/fundability-score">Readiness quiz</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@thecreditworkshop.com">hello@thecreditworkshop.com</a></li>
+          <li><a href="#">Schedule a call</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Credit Workshop</span>
+      <span>Not legal or financial advice</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal, .stagger').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
