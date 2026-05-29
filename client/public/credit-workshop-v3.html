@@ -1006,6 +1006,226 @@
     margin-top: 24px;
   }
 
+  /* ============ TRUST PILLBAR (research: +10-20% near CTA) ============ */
+  .trust-pills{
+    display:flex; flex-wrap:wrap; gap: 10px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(245,241,232,0.16);
+  }
+  .trust-pill{
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(245,241,232,0.85);
+    padding: 7px 12px;
+    border: 1px solid rgba(245,241,232,0.22);
+    border-radius: 999px;
+    display:inline-flex; align-items:center; gap: 8px;
+  }
+  .trust-pill::before{
+    content:"✓";
+    color: var(--sage);
+    font-weight: 600;
+    font-size: 11px;
+  }
+
+  /* ============ TRUST STRIP (above pricing) ============ */
+  .trust-strip{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 20px 26px;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background: var(--paper-2);
+    margin-bottom: 32px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .trust-strip span{ display:inline-flex; align-items:center; gap: 8px; }
+  .trust-strip span::before{
+    content:""; width:8px; height:8px; border-radius:50%;
+    background: var(--sage); flex-shrink:0;
+  }
+
+  /* ============ TESTIMONIALS (named operators) ============ */
+  .voices{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .voice{
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 32px 30px;
+    border-radius: 4px;
+    display:flex; flex-direction: column; gap: 22px;
+    position: relative;
+  }
+  .voice::before{
+    content:"“";
+    position: absolute;
+    top: 12px; right: 22px;
+    font-family: var(--serif);
+    font-size: 80px;
+    line-height: 1;
+    color: var(--copper);
+    opacity: .25;
+    font-style: italic;
+  }
+  .voice-quote{
+    font-family: var(--serif);
+    font-size: 21px;
+    line-height: 1.35;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .voice-quote em{ color: var(--copper-deep); font-style: italic; font-weight: 500; }
+  .voice-foot{
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+    display:flex; align-items:center; gap: 14px;
+  }
+  .voice-avatar{
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sage), var(--ink-soft));
+    color: var(--paper);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 18px;
+    display:grid; place-items:center;
+    flex-shrink:0;
+  }
+  .voice-name{
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.2;
+  }
+  .voice-meta{
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-top: 3px;
+  }
+  .voice-metric{
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
+    padding: 5px 10px;
+    border: 1px solid var(--sage);
+    border-radius: 999px;
+    display:inline-flex; align-items:center;
+    align-self: flex-start;
+  }
+  @media (max-width: 920px){ .voices{ grid-template-columns: 1fr; } }
+
+  /* ============ FOUNDER LETTER ============ */
+  .founder{
+    display:grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .founder-portrait{
+    aspect-ratio: 4/5;
+    background:
+      linear-gradient(135deg, rgba(14,26,43,0.85), rgba(14,26,43,0.65)),
+      radial-gradient(circle at 30% 30%, rgba(190,90,30,0.25), transparent 70%);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    display:flex;
+    align-items: flex-end;
+    padding: 28px;
+    color: var(--paper);
+  }
+  .founder-portrait::after{
+    content:"";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: .35;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .founder-portrait-meta{
+    position: relative; z-index: 1;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(245,241,232,0.85);
+    border-top: 1px solid rgba(245,241,232,0.3);
+    padding-top: 14px;
+    width: 100%;
+  }
+  .founder-portrait-meta b{
+    display:block;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+    text-transform: none;
+    margin-bottom: 4px;
+  }
+  .founder-body{ display:flex; flex-direction: column; gap: 22px; }
+  .founder-eyebrow{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--copper-deep);
+  }
+  .founder-h{
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(30px, 3.6vw, 46px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--ink);
+  }
+  .founder-h em{ font-style: italic; color: var(--copper-deep); }
+  .founder-body p{
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 56ch;
+  }
+  .founder-sig{
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 28px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    padding-top: 8px;
+  }
+  @media (max-width: 760px){
+    .founder{ grid-template-columns: 1fr; gap: 32px; }
+    .founder-portrait{ aspect-ratio: 16/10; }
+  }
+
   /* ============ FOOT ============ */
   footer{
     border-top: 1px solid var(--rule);
@@ -1125,9 +1345,9 @@
       <span>Credit Workshop</span>
     </a>
     <nav class="mast-meta" aria-label="Primary">
+      <a href="#voices">Operators</a>
       <a href="#method">Method</a>
       <a href="#ledger">Comparison</a>
-      <a href="#features">Capabilities</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </nav>
@@ -1164,7 +1384,7 @@
     <h1 class="display" data-split>
       Business credit,<br/>
       <em>methodically</em> built.
-      <span class="small">A 9-month program for operators who'd rather own the system than rent it.</span>
+      <span class="small">Paydex 80, a Tier-I vendor file, and funding-ready — in 9 months. For operators who'd rather own the system than rent it.</span>
     </h1>
 
     <div class="hero-foot stagger">
@@ -1228,11 +1448,56 @@
   </div>
 </section>
 
-<!-- ============ FILE 03 — HORIZONTAL SCROLL METHOD ============ -->
+<!-- ============ FILE 03 — OPERATORS (research: named testimonials w/ metrics, +34% conversions) ============ -->
+<section class="block" id="voices">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="file">File 03 — Operators</span>
+      <h2 class="sec-title">What real operators <em>finished with</em>.</h2>
+    </div>
+    <div class="voices stagger">
+      <article class="voice">
+        <p class="voice-quote">"I came in with a brand-new LLC and no file. Month four I hit <em>Paydex 80</em>. The vendor sequence is the whole game — and nobody else gives you the order."</p>
+        <span class="voice-metric">Paydex 80 · Month 4</span>
+        <div class="voice-foot">
+          <div class="voice-avatar">M</div>
+          <div>
+            <p class="voice-name">Marcus T.</p>
+            <p class="voice-meta">Logistics · Dallas, TX</p>
+          </div>
+        </div>
+      </article>
+      <article class="voice">
+        <p class="voice-quote">"My CPA actually read the dashboard without asking me to translate. That's how I knew it was different — these guys treat business credit like <em>a system, not a portal</em>."</p>
+        <span class="voice-metric">Funded · Month 8</span>
+        <div class="voice-foot">
+          <div class="voice-avatar">S</div>
+          <div>
+            <p class="voice-name">Sarah K.</p>
+            <p class="voice-meta">E-commerce · Austin, TX</p>
+          </div>
+        </div>
+      </article>
+      <article class="voice">
+        <p class="voice-quote">"I'd paid two outsourced shops $500/mo for nine months combined and learned <em>nothing</em>. Credit Workshop ran me through the method in one quarter and I own the file now."</p>
+        <span class="voice-metric">$30k Net-30 · Month 5</span>
+        <div class="voice-foot">
+          <div class="voice-avatar">D</div>
+          <div>
+            <p class="voice-name">Devon R.</p>
+            <p class="voice-meta">Contracting · Phoenix, AZ</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FILE 04 — HORIZONTAL SCROLL METHOD ============ -->
 <section class="hjack" id="method">
   <div class="hjack-rail"><div class="hjack-rail-fill" id="rail"></div></div>
   <div class="hjack-meta">
-    <span>File 03 · Method</span>
+    <span>File 04 · Method</span>
     <span><span class="cur" id="hjackCur">01</span> / 04</span>
   </div>
   <div class="hjack-sticky">
@@ -1317,7 +1582,7 @@
 <section class="block" id="ledger">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="file">File 04 — Comparison</span>
+      <span class="file">File 05 — Comparison</span>
       <h2 class="sec-title">A ledger of <em>what you actually get</em>.</h2>
     </div>
     <div class="ledger reveal">
@@ -1364,7 +1629,7 @@
 <section class="block" id="features">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="file">File 05 — Capabilities</span>
+      <span class="file">File 06 — Capabilities</span>
       <h2 class="sec-title">A workspace built for <em>serious operators</em>.</h2>
     </div>
     <div class="features stagger">
@@ -1406,8 +1671,15 @@
 <section class="block" id="pricing">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="file">File 06 — Terms</span>
+      <span class="file">File 07 — Terms</span>
       <h2 class="sec-title">One price. <em>One outcome.</em></h2>
+    </div>
+    <div class="trust-strip reveal">
+      <span>SSL · Bank-grade</span>
+      <span>Stripe-secured checkout</span>
+      <span>CPA-ready records</span>
+      <span>14-day full refund</span>
+      <span>Records retained 7 yrs</span>
     </div>
     <div class="price-shell reveal">
       <div>
@@ -1432,6 +1704,11 @@
           <span>Begin Program</span>
           <svg class="arr" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 7h8M8 4l3 3-3 3"/></svg>
         </a>
+        <div class="trust-pills">
+          <span class="trust-pill">14-day refund</span>
+          <span class="trust-pill">Cancel anytime</span>
+          <span class="trust-pill">Transferable</span>
+        </div>
       </aside>
     </div>
   </div>
@@ -1441,7 +1718,7 @@
 <section class="block" id="faq">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="file">File 07 — Questions</span>
+      <span class="file">File 08 — Questions</span>
       <h2 class="sec-title">Anticipated <em>and answered</em>.</h2>
     </div>
     <div class="faq reveal">
@@ -1469,10 +1746,36 @@
   </div>
 </section>
 
+<!-- ============ FILE 09 — FOUNDER (research: authority/transparency for high-ticket) ============ -->
+<section class="block" id="founder">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="file">File 09 — Letter</span>
+      <h2 class="sec-title">From the <em>desk</em>.</h2>
+    </div>
+    <div class="founder reveal">
+      <div class="founder-portrait">
+        <div class="founder-portrait-meta">
+          <b>Wyatt Mcevoy</b>
+          Founder · Income Academy
+        </div>
+      </div>
+      <div class="founder-body">
+        <span class="founder-eyebrow">A note from the founder</span>
+        <h3 class="founder-h">I built this because the <em>outsourced shops</em> made me angry.</h3>
+        <p>I paid one of them $450 a month for nine months. I learned nothing. My file moved slowly. When I asked for the method, they told me it was "proprietary."</p>
+        <p>Credit Workshop is the opposite of that. You buy the program once. You finish it in nine months. You leave with the actual system — vendor sequence, bureau cadence, dashboard, the relationships — and you never owe me another dollar.</p>
+        <p>If it's not the most disciplined nine months of business credit work you've ever seen, ask for your money back inside fourteen days. I'd rather you walk than be unsure.</p>
+        <div class="founder-sig">— Wyatt</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ FINAL ============ -->
 <section class="block final" id="cta">
   <div class="wrap">
-    <span class="file reveal">File 08 — Action</span>
+    <span class="file reveal">File 10 — Action</span>
     <h2 class="reveal" data-split>Begin the <em>file</em>.<br/>Finish the <em>method</em>.</h2>
     <div class="final-actions stagger">
       <a href="#pricing" class="btn" data-magnetic>
