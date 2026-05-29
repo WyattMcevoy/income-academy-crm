@@ -473,20 +473,16 @@
   .marquee-track{
     display:flex; gap: 72px;
     width: max-content;
-    animation: scroll calc(38s / var(--vel, 1)) linear infinite;
     font-family: var(--mono);
     font-size: 13.5px;
     letter-spacing: .18em;
     text-transform: uppercase;
     color: var(--ink-mute);
+    will-change: transform;
   }
   .marquee-track span{ display:inline-flex; align-items:center; gap:14px; }
   .marquee-track span::before{
     content:""; width:6px; height:6px; background: var(--copper); border-radius: 50%;
-  }
-  @keyframes scroll{
-    from{ transform: translateX(0); }
-    to  { transform: translateX(-50%); }
   }
 
   /* ============ SECTION SHELL ============ */
@@ -1716,23 +1712,43 @@
     update();
   })();
 
-  /* ============ MARQUEE VELOCITY ============ */
+  /* ============ MARQUEE (JS-driven, smooth velocity) ============ */
   (function(){
-    let last = window.scrollY;
+    const track = document.querySelector('.marquee-track');
+    if (!track) return;
+
+    // Position-based loop. Velocity changes blend smoothly because we're
+    // mutating a translate value each frame, not restarting a CSS animation.
+    let pos = 0;
+    let halfWidth = 0;
+    const measure = () => { halfWidth = track.scrollWidth / 2; };
+    measure();
+    window.addEventListener('resize', measure);
+
+    // Base speed in px / second. Velocity multiplier modulates it.
+    const BASE = 38;     // px/s — slow, editorial pace
+    let v = 1;           // current speed multiplier
+    let lastScroll = window.scrollY;
     let lastT = performance.now();
-    let v = 1;
-    function tick(){
-      const now = performance.now();
-      const dy  = Math.abs(window.scrollY - last);
-      const dt  = Math.max(1, now - lastT);
-      const inst = Math.min(4, 1 + dy / dt * 0.4);
-      v += (inst - v) * 0.15;
-      last = window.scrollY;
+
+    function tick(now){
+      const dt = Math.min(48, now - lastT);   // clamp frame delta
       lastT = now;
-      document.documentElement.style.setProperty('--vel', v.toFixed(2));
+
+      // Compute instantaneous scroll velocity, fold into multiplier
+      const dy = Math.abs(window.scrollY - lastScroll);
+      lastScroll = window.scrollY;
+      const instant = Math.min(3.5, 1 + (dy / Math.max(1, dt)) * 0.35);
+      // Heavy ease so velocity glides up and down (kills the "buggy" jumps)
+      v += (instant - v) * 0.08;
+
+      pos -= (BASE * v * dt) / 1000;
+      if (halfWidth && pos <= -halfWidth) pos += halfWidth;
+      track.style.transform = `translate3d(${pos.toFixed(2)}px, 0, 0)`;
+
       requestAnimationFrame(tick);
     }
-    tick();
+    requestAnimationFrame(tick);
   })();
 
   /* ============ LIVE CLOCK ============ */
