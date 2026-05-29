@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../auth.css';
 import './fundability-quiz.css';
 
 const QUIZ_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000';

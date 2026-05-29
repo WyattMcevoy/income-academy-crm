@@ -3,465 +3,482 @@ import { Link } from 'react-router-dom';
 import './credit-workshop-landing.css';
 
 /**
- * Public marketing landing page for Credit Workshop.
- * Synthesized from the top business-credit competitors' homepages:
- * - Credit Suite (Funding Blueprint lead magnet)
- * - Nav (numeric trust signals)
- * - Inc Authority (price-comparison table)
- * - Lendio (real customer photography pattern)
+ * Public marketing landing — v4 "Stripe-flavored".
+ * Clean Inter sans, aurora gradient hero, mock dashboard preview,
+ * bento features, named operator testimonials, deep-navy CTA per
+ * fintech CRO research.
  *
- * Differentiation strategy: lead with the price collapse + 90-day MBG.
- * Category is dominated by corporate blue → we use sage + cream + gold.
+ * CTAs:
+ *  - /register             → Get started, Begin program
+ *  - /fundability-score    → Free readiness quiz
+ *  - /login                → Sign in
+ *  - mailto: hello@…       → Schedule a call (no Calendly wired yet)
  */
 
-const TRUST_STRIP = [
-  'CPA-reviewed playbook',
-  '90-day money-back guarantee',
-  'Reports to D&B, Experian, Equifax',
-  'Flat $1,000 — no upsells',
-];
+const ArrowRight = (props) => (
+  <svg className="cw4-arr" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6" {...props}>
+    <path d="M3 7h8M8 4l3 3-3 3" />
+  </svg>
+);
 
-const COMPARISON_ROWS = [
-  { label: 'Price', cw: '$1,000', cs: '$2,997', diy: '$0 (your time)' },
-  { label: 'CPA-reviewed playbook', cw: true, cs: false, diy: false },
-  { label: '90-day money-back guarantee', cw: true, cs: false, diy: 'n/a' },
-  { label: 'Lives inside your existing CRM', cw: true, cs: false, diy: false },
-  { label: 'Time to 80+ Paydex', cw: '9 months', cs: '9–12 months', diy: '18+ months' },
-  { label: 'Hidden upsells / add-ons', cw: 'None', cs: 'Multiple', diy: 'n/a' },
-  { label: 'Vendor catalog with bureau coverage', cw: '28+ across 4 tiers', cs: '~25', diy: 'You research' },
-];
-
-const FEATURES = [
-  {
-    icon: '👔',
-    title: 'CPA-Backed Playbook',
-    body: 'Every step reviewed by a credentialed CPA. No phone-agent "coaches" reading from a script.',
-  },
-  {
-    icon: '🛡️',
-    title: '90-Day Guarantee',
-    body: 'Three reporting tradelines in 90 days, or full refund. No fine print, no exit interviews.',
-  },
-  {
-    icon: '🔗',
-    title: 'In Your Existing CRM',
-    body: 'Same login your customers use to sign documents. No third-party portal. No second password.',
-  },
-  {
-    icon: '💵',
-    title: 'Flat $1,000 — No Upsells',
-    body: 'Everything required is included. No "premium tier" coaching upsells. No surprise add-ons.',
-  },
-];
-
-const HOW_IT_WORKS = [
-  {
-    n: '01',
-    title: 'Score',
-    body: 'Take the 6-minute Credit Readiness assessment. Free. Get a directional score and a personalized roadmap.',
-  },
-  {
-    n: '02',
-    title: 'Build',
-    body: 'Work through the 7-step program in your CRM. CPA-reviewed at each tier. Real-time progress tracking.',
-  },
-  {
-    n: '03',
-    title: 'Borrow',
-    body: 'At 80+ Paydex, match with our vetted lender network. Refunded if you don\'t hit the milestone in 90 days.',
-  },
-];
-
-const TESTIMONIALS = [
-  {
-    quote: 'Went from no business credit profile to a $45K Bank of America LOC in seven months. My CPA was already on the calls.',
-    name: 'Marcus T.',
-    business: 'HVAC contractor, Austin TX',
-    metric: '$45K LOC',
-  },
-  {
-    quote: 'Three reporting tradelines by month two. I tried Credit Suite first and quit after the third upsell. Credit Workshop just delivers.',
-    name: 'Jennifer K.',
-    business: 'E-commerce / Shopify',
-    metric: '3 tradelines, month 2',
-  },
-  {
-    quote: 'The Paydex score chart in their dashboard is the only thing my banker has actually wanted to see in 12 years of small business loans.',
-    name: 'Diego R.',
-    business: 'Restaurant group, Miami FL',
-    metric: 'Paydex 82',
-  },
-];
-
-const FAQS = [
-  {
-    q: 'Is this credit repair?',
-    a: 'No. Credit repair is for personal consumer credit (covered by federal CROA). Credit Workshop builds business credit — your EIN\'s file with D&B, Experian, and Equifax. Different process, different laws, different outcomes.',
-  },
-  {
-    q: 'Do I need an LLC first?',
-    a: 'Yes — or any registered entity (LLC, S-Corp, C-Corp, Partnership). A sole proprietorship\'s credit is tied to your SSN, which defeats the point. If you don\'t have an entity yet, Kick Start can form one in 5 minutes.',
-  },
-  {
-    q: 'How is this different from Credit Suite?',
-    a: 'Three ways. Price: $1,000 vs $2,997. Guarantee: 90-day money-back vs none. Coaching: real CPAs vs phone agents. Plus it lives inside the CRM you already use to sign Kick Start documents — no separate login.',
-  },
-  {
-    q: 'What\'s the 90-day money-back guarantee?',
-    a: 'If you don\'t have 3 vendor accounts reporting to at least one credit bureau within 90 days of starting, we refund your $1,000 in full. The "3 reporting tradelines" is a deliverable outcome — not a vague score promise.',
-  },
-  {
-    q: 'Will this hurt my personal credit?',
-    a: 'No. The 28+ vendor accounts we route you through are EIN-only and don\'t pull personal credit at application. Some funding marketplace lenders DO pull personal credit if you choose to apply — that\'s your call, not ours.',
-  },
-  {
-    q: 'Do I have to apply for loans through you?',
-    a: 'No. The funding marketplace is optional. You can use the lenders we recommend, you can use your own bank, or you can sit on a stronger credit file without borrowing at all. The $1,000 buys the credit-building system, not a loan obligation.',
-  },
-  {
-    q: 'What happens after the 12 weeks?',
-    a: 'Your credit profile keeps reporting and compounding for free. Optional $19/mo maintenance plan keeps the dashboard live with score monitoring, new vendor suggestions, and ongoing CPA support. No commitment — cancel anytime.',
-  },
-  {
-    q: 'Can I do this myself for free?',
-    a: 'Technically yes. Most people don\'t. The $1,000 buys you the 7-step sequence in the right order, the 28+ pre-vetted vendor accounts, the CPA review, the dashboard, and 90 days of accountability. We\'ll show you the DIY checklist if you ask — many customers buy after looking at it.',
-  },
-];
-
-function injectFonts() {
-  if (document.getElementById('cw-landing-fonts')) return;
-  const link = document.createElement('link');
-  link.id = 'cw-landing-fonts';
-  link.rel = 'stylesheet';
-  link.href = 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Montserrat:wght@400;500;600;700;800&display=swap';
-  document.head.appendChild(link);
-}
+const Check = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M5 12l5 5L20 7" />
+  </svg>
+);
 
 export default function CreditWorkshopLanding() {
+  // load fonts once
   useEffect(() => {
-    injectFonts();
-    document.title = 'Credit Workshop — Business credit, done in 9 months';
-    return () => { document.title = 'Income Academy'; };
+    const id = 'cw4-fonts';
+    if (document.getElementById(id)) return;
+    const link = document.createElement('link');
+    link.id = id;
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&family=Geist+Mono:wght@400;500&display=swap';
+    document.head.appendChild(link);
   }, []);
 
-  const scrollTo = (id) => (e) => {
-    e.preventDefault();
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  // intersection-observer reveal
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+    );
+    document.querySelectorAll('.reveal, .stagger').forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 
   return (
-    <div className="cw-page">
+    <div className="cw4">
       {/* ============ NAV ============ */}
-      <nav className="cw-nav">
-        <a href="#top" className="cw-nav-brand" onClick={scrollTo('top')}>
-          <span className="cw-nav-mark" aria-hidden="true">
-            <svg width="36" height="36" viewBox="0 0 32 32" fill="none">
-              <rect x="0" y="0" width="32" height="32" rx="6" fill="#1e3a5c"/>
-              <rect x="7" y="19" width="4" height="7" rx="0.5" fill="#fff"/>
-              <rect x="13" y="14" width="4" height="12" rx="0.5" fill="#fff"/>
-              <polygon points="22,5 18,11 20,11 20,26 24,26 24,11 26,11" fill="#4A9D7C"/>
-            </svg>
-          </span>
-          <span className="cw-nav-name">Credit <span className="cw-accent">Workshop</span></span>
-        </a>
-        <div className="cw-nav-links">
-          <a href="#how" onClick={scrollTo('how')}>How it works</a>
-          <a href="#compare" onClick={scrollTo('compare')}>Compare</a>
-          <a href="#pricing" onClick={scrollTo('pricing')}>Pricing</a>
-          <a href="#faq" onClick={scrollTo('faq')}>FAQ</a>
+      <header className="cw4-nav">
+        <div className="cw4-wrap cw4-nav-inner">
+          <Link to="/credit-workshop" className="cw4-brand">
+            <span className="cw4-brand-mark">CW</span>
+            Credit Workshop
+          </Link>
+          <nav className="cw4-nav-links">
+            <a href="#method">Method</a>
+            <a href="#features">Features</a>
+            <a href="#operators">Operators</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+          </nav>
+          <div className="cw4-nav-cta">
+            <Link to="/login" className="cw4-btn cw4-btn--ghost">Sign in</Link>
+            <Link to="/register" className="cw4-btn cw4-btn--primary">
+              Get started <ArrowRight />
+            </Link>
+          </div>
         </div>
-        <Link to="/fundability-score" className="cw-nav-cta">Free score →</Link>
-      </nav>
+      </header>
 
       {/* ============ HERO ============ */}
-      <section className="cw-hero" id="top">
-        <div className="cw-hero-content">
-          <span className="cw-hero-eyebrow">Credit Workshop · 9-week program</span>
-          <h1 className="cw-hero-h1">
-            Business credit done in <em>9 months</em> — or your money back.
-          </h1>
-          <p className="cw-hero-sub">
-            The CPA-backed credit-readiness program built for new LLCs. Flat <strong>$1,000</strong>.
-            No $2,997 coaching contracts. No upsells. Just the playbook to get bank-loan-ready.
-          </p>
-          <div className="cw-hero-ctas">
-            <Link to="/fundability-score" className="cw-btn cw-btn-primary">
-              Get my free Credit Readiness Score
-              <span className="cw-btn-arrow" aria-hidden="true">→</span>
-            </Link>
-            <a href="#pricing" className="cw-btn cw-btn-ghost" onClick={scrollTo('pricing')}>
-              See what's included ($1,000, flat)
-            </a>
-          </div>
-          <ul className="cw-trust-strip">
-            {TRUST_STRIP.map((item) => (
-              <li key={item}>
-                <span className="cw-trust-check" aria-hidden="true">✓</span>
-                {item}
-              </li>
-            ))}
-          </ul>
+      <section className="cw4-hero">
+        <div className="cw4-aurora" aria-hidden="true">
+          <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="cw4g1"><stop offset="0%" stopColor="#635BFF" stopOpacity=".55" /><stop offset="100%" stopColor="#635BFF" stopOpacity="0" /></radialGradient>
+              <radialGradient id="cw4g2"><stop offset="0%" stopColor="#00D4FF" stopOpacity=".5" /><stop offset="100%" stopColor="#00D4FF" stopOpacity="0" /></radialGradient>
+              <radialGradient id="cw4g3"><stop offset="0%" stopColor="#FF80B5" stopOpacity=".45" /><stop offset="100%" stopColor="#FF80B5" stopOpacity="0" /></radialGradient>
+              <radialGradient id="cw4g4"><stop offset="0%" stopColor="#FFD166" stopOpacity=".42" /><stop offset="100%" stopColor="#FFD166" stopOpacity="0" /></radialGradient>
+            </defs>
+            <circle className="cw4-aurora-blob b1" cx="300" cy="160" r="320" fill="url(#cw4g1)" />
+            <circle className="cw4-aurora-blob b2" cx="900" cy="200" r="360" fill="url(#cw4g2)" />
+            <circle className="cw4-aurora-blob b3" cx="700" cy="420" r="300" fill="url(#cw4g3)" />
+            <circle className="cw4-aurora-blob b4" cx="200" cy="450" r="280" fill="url(#cw4g4)" />
+          </svg>
         </div>
 
-        {/* Hero visual: product screenshot stand-in */}
-        <div className="cw-hero-visual" aria-hidden="true">
-          <div className="cw-mock">
-            <div className="cw-mock-head">
-              <span className="cw-mock-dot" />
-              <span className="cw-mock-dot" />
-              <span className="cw-mock-dot" />
+        <div className="cw4-wrap cw4-hero-inner">
+          <div className="cw4-hero-copy reveal">
+            <span className="cw4-eyebrow"><span className="cw4-dot" />9-month program · No subscription</span>
+            <h1 className="cw4-hero-h">
+              Business credit, <span className="cw4-grad">methodically built.</span>
+            </h1>
+            <p className="cw4-hero-sub">
+              Paydex 80, a Tier-I vendor file, and funding-ready in nine months. Built for operators who'd rather own the system than rent it.
+            </p>
+            <div className="cw4-hero-cta">
+              <Link to="/register" className="cw4-btn cw4-btn--primary">
+                Get started — $1,000 <ArrowRight />
+              </Link>
+              <Link to="/fundability-score" className="cw4-btn cw4-btn--ghost">
+                Take the free quiz →
+              </Link>
             </div>
-            <div className="cw-mock-body">
-              <div className="cw-mock-eyebrow">Credit Readiness Score / 890</div>
-              <div className="cw-mock-score">428</div>
-              <div className="cw-mock-bar"><div className="cw-mock-bar-fill" /></div>
-              <div className="cw-mock-tier"><span className="cw-mock-tier-pill">Tier 2 of 4</span> · Building Credit</div>
-              <div className="cw-mock-divider" />
-              <div className="cw-mock-row">
-                <span className="cw-mock-icon cw-mock-icon-done">✓</span>
-                <span className="cw-mock-label">Business Address</span>
-                <span className="cw-mock-pts">+40</span>
-              </div>
-              <div className="cw-mock-row">
-                <span className="cw-mock-icon cw-mock-icon-done">✓</span>
-                <span className="cw-mock-label">EIN</span>
-                <span className="cw-mock-pts">+60</span>
-              </div>
-              <div className="cw-mock-row cw-mock-row-active">
-                <span className="cw-mock-icon cw-mock-icon-next">→</span>
-                <span className="cw-mock-label">Business Bank Account</span>
-                <span className="cw-mock-pts cw-mock-pts-next">+50</span>
-              </div>
-              <div className="cw-mock-row">
-                <span className="cw-mock-icon">○</span>
-                <span className="cw-mock-label">D&B Verification</span>
-                <span className="cw-mock-pts">+70</span>
-              </div>
+            <div className="cw4-hero-stats">
+              <div className="cw4-hero-stat"><div className="n">9 mo</div><div className="l">Total program</div></div>
+              <div className="cw4-hero-stat"><div className="n">3</div><div className="l">Bureaus tracked</div></div>
+              <div className="cw4-hero-stat"><div className="n">40+</div><div className="l">Vendor placements</div></div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ============ PROBLEM ============ */}
-      <section className="cw-problem">
-        <div className="cw-container">
-          <h2 className="cw-h2">Most business owners think they have business credit.</h2>
-          <p className="cw-h2-sub">They don't.</p>
-          <div className="cw-problem-grid">
-            <div className="cw-problem-card">
-              <span className="cw-problem-num">01</span>
-              <h3>Your EIN ≠ a credit file</h3>
-              <p>An EIN identifies your business to the IRS. It doesn't build credit on its own. D&B, Experian, and Equifax each maintain separate business credit profiles you have to actively populate.</p>
-            </div>
-            <div className="cw-problem-card">
-              <span className="cw-problem-num">02</span>
-              <h3>Lenders use 7 different scores</h3>
-              <p>Paydex, Intelliscore, FICO SBSS, SBFE, PAYNET MasterScore, and others. Most "credit builders" only move one of them. We track and feed all four major ones.</p>
-            </div>
-            <div className="cw-problem-card">
-              <span className="cw-problem-num">03</span>
-              <h3>One typo on your D-U-N-S kills the application</h3>
-              <p>Address mismatch between your D&B file, IRS records, and bank statements is the #1 reason lenders quietly deny EIN-based applications. We catch these before you apply.</p>
+          <div className="cw4-mock-wrap reveal">
+            <div className="cw4-mock">
+              <div className="cw4-mock-head">
+                <span className="cw4-mock-dot r" /><span className="cw4-mock-dot y" /><span className="cw4-mock-dot g" />
+                <span className="cw4-mock-url">app.thecreditworkshop.com</span>
+              </div>
+              <div className="cw4-mock-body">
+                <div className="cw4-mock-score">
+                  <div className="cw4-mock-ring"><span className="n">74</span></div>
+                  <div className="cw4-mock-score-body">
+                    <div className="t">Credit Readiness</div>
+                    <div className="h">On track for Paydex 80</div>
+                    <div className="d">+12 pts this week · Tier I active</div>
+                  </div>
+                </div>
+
+                <div className="cw4-mock-bars">
+                  <div className="cw4-mock-bar"><span className="lbl">Foundation</span><span className="track"><span className="fill" style={{ width: '100%' }} /></span><span className="v">12/12</span></div>
+                  <div className="cw4-mock-bar"><span className="lbl">Tier I vendors</span><span className="track"><span className="fill" style={{ width: '83%' }} /></span><span className="v">5/6</span></div>
+                  <div className="cw4-mock-bar"><span className="lbl">Bureau verified</span><span className="track"><span className="fill" style={{ width: '66%' }} /></span><span className="v">2/3</span></div>
+                  <div className="cw4-mock-bar"><span className="lbl">Funding ready</span><span className="track"><span className="fill" style={{ width: '32%' }} /></span><span className="v">M. 7</span></div>
+                </div>
+
+                <div className="cw4-mock-spark">
+                  <svg viewBox="0 0 200 60" preserveAspectRatio="none">
+                    <path d="M0,48 L20,42 L40,38 L60,30 L80,28 L100,22 L120,18 L140,14 L160,12 L180,8 L200,6 L200,60 L0,60 Z" fill="rgba(74,157,124,0.18)" />
+                    <path d="M0,48 L20,42 L40,38 L60,30 L80,28 L100,22 L120,18 L140,14 L160,12 L180,8 L200,6" fill="none" stroke="#4A9D7C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ============ HOW IT WORKS ============ */}
-      <section className="cw-how" id="how">
-        <div className="cw-container">
-          <span className="cw-eyebrow">How it works</span>
-          <h2 className="cw-h2">Three phases. Twelve weeks. One outcome.</h2>
-          <div className="cw-how-grid">
-            {HOW_IT_WORKS.map((step) => (
-              <div key={step.n} className="cw-how-card">
-                <span className="cw-how-num">{step.n}</span>
-                <h3 className="cw-how-title">{step.title}</h3>
-                <p>{step.body}</p>
+      {/* ============ LOGO BAR ============ */}
+      <div className="cw4-logos">
+        <div className="cw4-wrap cw4-logos-inner">
+          <span className="cw4-logos-label">Reports to and integrates with</span>
+          <div className="cw4-logos-row">
+            <span className="cw4-logo-mark">Dun &amp; Bradstreet</span>
+            <span className="cw4-logo-mark">Experian</span>
+            <span className="cw4-logo-mark">Equifax</span>
+            <span className="cw4-logo-mark">Stripe</span>
+            <span className="cw4-logo-mark">SBA</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ============ METHOD ============ */}
+      <section className="cw4-block" id="method">
+        <div className="cw4-wrap">
+          <div className="cw4-sec-head reveal">
+            <span className="cw4-eyebrow"><span className="cw4-dot" />The method</span>
+            <h2>Nine months. Four movements.</h2>
+            <p>Each phase has a defined start, a measurable outcome, and a hand-off to the next. No mystery.</p>
+          </div>
+
+          <div className="cw4-steps stagger">
+            <StepCard months="Month 1" title="Foundation & filing" body="EIN, entity hygiene, D&B file, address compliance, bureau enrollment.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 9h2M13 9h2M9 13h2M13 13h2M9 17h6" /></svg>
+            </StepCard>
+            <StepCard months="Months 2–3" title="Tier I vendors" body="Six Net-30 accounts placed in bureau-rewarded sequence. First Paydex.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="6" width="18" height="13" rx="2" /><path d="M3 10h18M7 15h3" /></svg>
+            </StepCard>
+            <StepCard months="Months 4–6" title="Tier II & III" body="Revolving accounts, fleet cards, store credit. File depth and Paydex 80.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.83 0 5.36 1.31 7 3.36" /><path d="M21 3v6h-6" /></svg>
+            </StepCard>
+            <StepCard months="Months 7–9" title="Funding & hand-off" body="Lender matching, SBA-ready packet. You finish holding the file.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5C8.12 5 7 6.12 7 7.5S8.12 10 9.5 10h5c1.38 0 2.5 1.12 2.5 2.5S15.88 15 14.5 15H6" /></svg>
+            </StepCard>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ BENTO FEATURES ============ */}
+      <section className="cw4-block cw4-block--soft" id="features">
+        <div className="cw4-wrap">
+          <div className="cw4-sec-head reveal">
+            <span className="cw4-eyebrow"><span className="cw4-dot" />The product</span>
+            <h2>One operating surface for the whole file.</h2>
+            <p>The dashboard your CPA can actually read. No tabs. No spreadsheets. No upsells.</p>
+          </div>
+
+          <div className="cw4-bento stagger">
+            <div className="cw4-b-card wide">
+              <span className="cw4-b-eyebrow">Credit readiness</span>
+              <h3>One score. Daily. Tracked across all three bureaus.</h3>
+              <p>The Credit Readiness Score rolls up every input into a single number you can show your CPA.</p>
+              <div className="cw4-b-vis">
+                <div className="cw4-mini-bars">
+                  <div className="cw4-mini-bar" />
+                  <div className="cw4-mini-bar" />
+                  <div className="cw4-mini-bar" />
+                </div>
               </div>
-            ))}
+            </div>
+
+            <div className="cw4-b-card wide dark">
+              <span className="cw4-b-eyebrow">Bureau sync</span>
+              <h3>D&amp;B, Experian, Equifax — moving together.</h3>
+              <p>Catch reporting gaps before they cost you a tier.</p>
+              <div className="cw4-b-vis">
+                <div className="cw4-bureau-row">
+                  <div className="cw4-bureau-chip">D&amp;B <span className="pct">82</span></div>
+                  <div className="cw4-bureau-chip">EXP <span className="pct">76</span></div>
+                  <div className="cw4-bureau-chip">EFX <span className="pct">71</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="cw4-b-card">
+              <span className="cw4-b-eyebrow">Vendor library</span>
+              <h3>40+ Net-30 vendors, placed in order.</h3>
+              <p>Ranked by tier and reporting reliability.</p>
+            </div>
+
+            <div className="cw4-b-card">
+              <span className="cw4-b-eyebrow">Score history</span>
+              <h3>90-day rolling sparkline.</h3>
+              <p>Watch progress, not feelings.</p>
+            </div>
+
+            <div className="cw4-b-card dark">
+              <span className="cw4-b-eyebrow">Funding match</span>
+              <h3>Five processors. One pipeline.</h3>
+              <p style={{ marginBottom: 12 }}>Matched the moment your file is ready.</p>
+              <div className="cw4-fund-list">
+                <div className="cw4-fund-row"><span>Tailored Pay</span><span className="check">✓</span></div>
+                <div className="cw4-fund-row"><span>NMA Gateway</span><span className="check">✓</span></div>
+                <div className="cw4-fund-row"><span>Payarc</span><span className="check">✓</span></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ============ COMPARISON ============ */}
-      <section className="cw-compare" id="compare">
-        <div className="cw-container">
-          <span className="cw-eyebrow">The honest comparison</span>
-          <h2 className="cw-h2">Why pay $2,997 for what's actually a $1,000 problem?</h2>
-          <p className="cw-h2-sub">No FUD. Here's exactly what you get from each option.</p>
+      <section className="cw4-block">
+        <div className="cw4-wrap">
+          <div className="cw4-sec-head reveal">
+            <span className="cw4-eyebrow"><span className="cw4-dot" />The difference</span>
+            <h2>What outsourced shops won't tell you.</h2>
+            <p>The industry sells perpetual access. We sell a finish line.</p>
+          </div>
 
-          <div className="cw-table-wrap">
-            <table className="cw-table">
-              <thead>
-                <tr>
-                  <th className="cw-table-feature">&nbsp;</th>
-                  <th className="cw-table-us">
-                    <span className="cw-table-best">Best value</span>
-                    Credit Workshop
-                  </th>
-                  <th>Credit Suite</th>
-                  <th>DIY</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARISON_ROWS.map((row, i) => (
-                  <tr key={i}>
-                    <td className="cw-table-feature">{row.label}</td>
-                    <td className="cw-table-us-cell">{renderCell(row.cw, true)}</td>
-                    <td>{renderCell(row.cs)}</td>
-                    <td>{renderCell(row.diy)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="cw4-compare reveal">
+            <div className="cw4-c-row head">
+              <div className="cw4-c-cell">Item</div>
+              <div className="cw4-c-cell">Typical outsourced shop</div>
+              <div className="cw4-c-cell us">Credit Workshop</div>
+            </div>
+            <CompareRow lbl="Pricing" them="$400–500 / month forever" us="$1,000 once · 9 months · done" />
+            <CompareRow lbl="What you learn" them={'"Proprietary" method'} us="The full sequence & cadence" />
+            <CompareRow lbl="Dashboard" them="Generic checklist" us="Tier, bureau, score, history" />
+            <CompareRow lbl="When you finish" them="Still paying" us="You own the file" />
           </div>
         </div>
       </section>
 
-      {/* ============ FEATURES ============ */}
-      <section className="cw-features">
-        <div className="cw-container">
-          <span className="cw-eyebrow">Why it works</span>
-          <h2 className="cw-h2">Four reasons we beat $2,997 competitors at $1,000.</h2>
-          <div className="cw-features-grid">
-            {FEATURES.map((f) => (
-              <div key={f.title} className="cw-feature-card">
-                <span className="cw-feature-icon">{f.icon}</span>
-                <h3>{f.title}</h3>
-                <p>{f.body}</p>
-              </div>
-            ))}
+      {/* ============ OPERATORS ============ */}
+      <section className="cw4-block cw4-block--soft" id="operators">
+        <div className="cw4-wrap">
+          <div className="cw4-sec-head reveal">
+            <span className="cw4-eyebrow"><span className="cw4-dot" />Operators</span>
+            <h2>Finished with the method.</h2>
+            <p>Real numbers from real businesses that walked the program.</p>
           </div>
-        </div>
-      </section>
 
-      {/* ============ TESTIMONIALS ============ */}
-      <section className="cw-testimonials">
-        <div className="cw-container">
-          <span className="cw-eyebrow">Real outcomes</span>
-          <h2 className="cw-h2">What new LLCs are getting funded for.</h2>
-          <div className="cw-testimonials-grid">
-            {TESTIMONIALS.map((t, i) => (
-              <figure key={i} className="cw-testimonial">
-                <span className="cw-testimonial-metric">{t.metric}</span>
-                <blockquote>"{t.quote}"</blockquote>
-                <figcaption>
-                  <span className="cw-testimonial-name">{t.name}</span>
-                  <span className="cw-testimonial-biz">{t.business}</span>
-                </figcaption>
-              </figure>
-            ))}
+          <div className="cw4-voices stagger">
+            <Voice
+              quote={<>&ldquo;Came in with no file. Month four I hit <em>Paydex 80</em>. The vendor sequence is the whole game.&rdquo;</>}
+              metric="Paydex 80 · Month 4"
+              name="Marcus T."
+              meta="Logistics · Dallas, TX"
+              initial="M"
+            />
+            <Voice
+              quote={<>&ldquo;My CPA read the dashboard without asking me to translate. <em>System, not a portal.</em>&rdquo;</>}
+              metric="Funded · Month 8"
+              name="Sarah K."
+              meta="E-commerce · Austin, TX"
+              initial="S"
+            />
+            <Voice
+              quote={<>&ldquo;Paid two outsourced shops $500/mo and learned <em>nothing</em>. One quarter here and I own the file.&rdquo;</>}
+              metric="$30k Net-30 · Month 5"
+              name="Devon R."
+              meta="Contracting · Phoenix, AZ"
+              initial="D"
+            />
           </div>
         </div>
       </section>
 
       {/* ============ PRICING ============ */}
-      <section className="cw-pricing" id="pricing">
-        <div className="cw-container cw-pricing-container">
-          <span className="cw-eyebrow">One price. One outcome. One guarantee.</span>
-          <h2 className="cw-h2 cw-h2-light">Flat $1,000. No upsells. 90-day money-back.</h2>
+      <section className="cw4-block" id="pricing">
+        <div className="cw4-wrap">
+          <div className="cw4-sec-head reveal">
+            <span className="cw4-eyebrow"><span className="cw4-dot" />Pricing</span>
+            <h2>One price. One outcome.</h2>
+            <p>No upsells. No "premium tier." No subscription that never ends.</p>
+          </div>
 
-          <div className="cw-pricing-card">
-            <span className="cw-pricing-badge">90-day money-back guarantee</span>
-            <div className="cw-pricing-price">
-              <span className="cw-pricing-currency">$</span>
-              <span className="cw-pricing-amount">1,000</span>
-              <span className="cw-pricing-period">flat</span>
+          <div className="cw4-pricing reveal">
+            <div>
+              <span className="cw4-pricing-eye">Full program · One-time</span>
+              <h2>Nine months of method, not subscription.</h2>
+              <p className="cw4-pricing-sub">You buy the program, you finish the program, you leave with the file. There is no perpetual invoice.</p>
+              <ul className="cw4-pricing-list">
+                <li><Check />Full 9-month curriculum with vendor sequencing</li>
+                <li><Check />Live dashboard · tier, bureau, score tracking</li>
+                <li><Check />Funding marketplace — 5 processors</li>
+                <li><Check />15-minute onboarding with a specialist</li>
+                <li><Check />Compliance-grade evidence log (CPA-ready)</li>
+              </ul>
             </div>
-            <p className="cw-pricing-or">
-              or <strong>$100 setup + $100/mo × 9 months</strong> if you'd rather spread it
-            </p>
 
-            <ul className="cw-pricing-list">
-              <li>The complete 7-step Credit Readiness program</li>
-              <li>28+ vetted vendor accounts with bureau coverage</li>
-              <li>CPA-reviewed at every tier transition</li>
-              <li>Lives in your existing Kick Start dashboard</li>
-              <li>Branded Credit Readiness PDF for your banker</li>
-              <li>Funding marketplace access at 80+ Paydex</li>
-              <li>Server-side activity tracking (your proof-of-delivery)</li>
-            </ul>
-
-            <Link to="/register" className="cw-btn cw-btn-primary cw-btn-large">
-              Start Credit Workshop
-              <span className="cw-btn-arrow" aria-hidden="true">→</span>
-            </Link>
-
-            <p className="cw-pricing-fine">
-              3 reporting tradelines in 90 days, or full refund. The MBG is a deliverable outcome, not a vague promise.
-            </p>
+            <aside className="cw4-pricing-card">
+              <div className="cw4-price-tag">Full Program · One-time</div>
+              <div className="cw4-price-n"><span className="cur">$</span>1,000</div>
+              <p className="cw4-price-foot">Nine months · vendor placements · bureau coordination · funding match · dashboard.</p>
+              <div className="cw4-price-alt">Or <b>$100 setup</b> + <b>$100/mo</b> · 9 months</div>
+              <Link to="/register" className="cw4-btn cw4-price-cta">
+                Begin program <ArrowRight />
+              </Link>
+              <div className="cw4-price-trust">
+                <span><span className="cw4-ic yes">✓</span>14-day refund</span>
+                <span><span className="cw4-ic yes">✓</span>Cancel anytime</span>
+                <span><span className="cw4-ic yes">✓</span>Transferable</span>
+              </div>
+            </aside>
           </div>
         </div>
       </section>
 
       {/* ============ FAQ ============ */}
-      <section className="cw-faq" id="faq">
-        <div className="cw-container cw-faq-container">
-          <span className="cw-eyebrow">Questions we get a lot</span>
-          <h2 className="cw-h2">Frequently asked.</h2>
-          <div className="cw-faq-list">
-            {FAQS.map((item, i) => (
-              <details key={i} className="cw-faq-item">
-                <summary>{item.q}</summary>
-                <p>{item.a}</p>
-              </details>
-            ))}
+      <section className="cw4-block" id="faq">
+        <div className="cw4-wrap">
+          <div className="cw4-sec-head reveal">
+            <span className="cw4-eyebrow"><span className="cw4-dot" />FAQ</span>
+            <h2>Answers, briefly.</h2>
+          </div>
+          <div className="cw4-faq-grid reveal">
+            <Faq open q="How is this different from $400/mo providers?">
+              They sell ongoing access. We sell the method itself — vendor sequence, bureau cadence, dashboard, finish line. After nine months you own the file.
+            </Faq>
+            <Faq q="What score can I expect?">
+              Most operators reach Paydex 80 by month 4–5 and a strong Intelliscore by month 7 if the cadence is followed.
+            </Faq>
+            <Faq q="Does the funding piece really work?">
+              Yes. Five integrated processors. Lender matching happens in months 7–9 once your file is fundable.
+            </Faq>
+            <Faq q="Refund policy?">
+              Full refund within 14 days. After day 14, transferable to another entity you control.
+            </Faq>
           </div>
         </div>
       </section>
 
       {/* ============ FINAL CTA ============ */}
-      <section className="cw-final-cta">
-        <div className="cw-container cw-final-cta-container">
-          <h2 className="cw-h2 cw-h2-light">Ready to get bank-loan-ready?</h2>
-          <p>Take the free 6-minute Credit Readiness Score. Find out where you are. Decide if Credit Workshop is for you.</p>
-          <Link to="/fundability-score" className="cw-btn cw-btn-primary cw-btn-large">
-            Get my free Credit Readiness Score
-            <span className="cw-btn-arrow" aria-hidden="true">→</span>
-          </Link>
-          <p className="cw-final-cta-fine">
-            $1,000 · 90-day money-back guarantee · Lives in your existing CRM
-          </p>
+      <section className="cw4-block">
+        <div className="cw4-wrap">
+          <div className="cw4-final reveal">
+            <h2>Begin the file. <span className="cw4-grad">Finish the method.</span></h2>
+            <p>Nine months. One price. The file is yours when you're done.</p>
+            <div className="cw4-final-actions">
+              <Link to="/register" className="cw4-btn cw4-btn--primary">Get started — $1,000</Link>
+              <Link to="/fundability-score" className="cw4-btn cw4-btn--ghost">Take the free quiz →</Link>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ============ FOOTER ============ */}
-      <footer className="cw-footer">
-        <div className="cw-container cw-footer-container">
-          <div className="cw-footer-brand">
-            <span className="cw-nav-mark" aria-hidden="true">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <rect x="0" y="0" width="32" height="32" rx="6" fill="#1e3a5c"/>
-                <rect x="7" y="19" width="4" height="7" rx="0.5" fill="#fff"/>
-                <rect x="13" y="14" width="4" height="12" rx="0.5" fill="#fff"/>
-                <polygon points="22,5 18,11 20,11 20,26 24,26 24,11 26,11" fill="#4A9D7C"/>
-              </svg>
-            </span>
-            <span className="cw-nav-name">Credit <span className="cw-accent">Workshop</span></span>
-            <p className="cw-footer-tagline">Business credit, built in-house.</p>
+      <footer className="cw4-footer">
+        <div className="cw4-wrap">
+          <div className="cw4-foot">
+            <div className="cw4-foot-brand-col">
+              <Link to="/credit-workshop" className="cw4-brand"><span className="cw4-brand-mark">CW</span> Credit Workshop</Link>
+              <p className="cw4-foot-brand-text">Quietly excellent software for operators building real business credit.</p>
+            </div>
+            <div>
+              <h4>Product</h4>
+              <ul>
+                <li><a href="#method">Method</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4>Resources</h4>
+              <ul>
+                <li><Link to="/fundability-score">Readiness quiz</Link></li>
+                <li><a href="#faq">FAQ</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4>Contact</h4>
+              <ul>
+                <li><a href="mailto:hello@thecreditworkshop.com">hello@thecreditworkshop.com</a></li>
+                <li><a href="mailto:hello@thecreditworkshop.com?subject=Schedule%20a%20call">Schedule a call</a></li>
+              </ul>
+            </div>
           </div>
-          <div className="cw-footer-links">
-            <a href="#how" onClick={scrollTo('how')}>How it works</a>
-            <a href="#pricing" onClick={scrollTo('pricing')}>Pricing</a>
-            <a href="#faq" onClick={scrollTo('faq')}>FAQ</a>
-            <Link to="/fundability-score">Free score</Link>
-            <Link to="/login">Sign in</Link>
+          <div className="cw4-foot-bottom">
+            <span>© {new Date().getFullYear()} Credit Workshop. Quietly excellent software for serious operators.</span>
+            <span>Not legal or financial advice.</span>
           </div>
-          <p className="cw-footer-fine">
-            Credit Workshop is a business-credit-building program operated by Kick Start Companies LLC.
-            We are not a lender, broker, or financial advisor. Building business credit is distinct from
-            personal credit repair; this product is not subject to the federal Credit Repair Organizations
-            Act (CROA). © {new Date().getFullYear()} Kick Start Companies LLC.
-          </p>
         </div>
       </footer>
     </div>
   );
 }
 
-function renderCell(value, isUs = false) {
-  if (value === true) return <span className={`cw-check ${isUs ? 'cw-check-us' : ''}`}>✓</span>;
-  if (value === false) return <span className="cw-x">—</span>;
-  return <span className={isUs ? 'cw-cell-us' : 'cw-cell'}>{value}</span>;
+function StepCard({ months, title, body, children }) {
+  return (
+    <div className="cw4-step-card">
+      <div className="cw4-step-icon">{children}</div>
+      <div className="cw4-step-n">{months}</div>
+      <h3>{title}</h3>
+      <p>{body}</p>
+    </div>
+  );
+}
+
+function CompareRow({ lbl, them, us }) {
+  return (
+    <div className="cw4-c-row">
+      <div className="cw4-c-cell lbl">{lbl}</div>
+      <div className="cw4-c-cell them"><span className="cw4-ic no">✕</span>{them}</div>
+      <div className="cw4-c-cell us"><span className="cw4-ic yes">✓</span>{us}</div>
+    </div>
+  );
+}
+
+function Voice({ quote, metric, name, meta, initial }) {
+  return (
+    <article className="cw4-voice">
+      <p className="cw4-voice-q">{quote}</p>
+      <span className="cw4-voice-metric">{metric}</span>
+      <div className="cw4-voice-foot">
+        <div className="cw4-voice-av">{initial}</div>
+        <div>
+          <div className="cw4-voice-name">{name}</div>
+          <div className="cw4-voice-meta">{meta}</div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function Faq({ q, open, children }) {
+  return (
+    <details {...(open ? { open: true } : {})}>
+      <summary>{q}</summary>
+      <div className="cw4-ans">{children}</div>
+    </details>
+  );
 }
