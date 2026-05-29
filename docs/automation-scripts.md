@@ -48,6 +48,71 @@ End-to-end smoke test that verifies every critical URL responds correctly. Catch
 **Time saved**: catches broken deploys before members do
 **Exit codes**: 0 = all pass, 1 = at least one failure
 
+### `generate-all-heygen-videos.js` ⭐
+Generates all 36 Linda/Saffron module intro videos (4 courses × 9 modules) via HeyGen API. All scripts embedded — no external files needed.
+
+**Run (preview)**: `node server/src/tools/generate-all-heygen-videos.js --dry-run`
+**Run (one course)**: `node server/src/tools/generate-all-heygen-videos.js --course=ai`
+**Run (all 36)**: `node server/src/tools/generate-all-heygen-videos.js`
+**Run (single module)**: `node server/src/tools/generate-all-heygen-videos.js --module=estate-3`
+**When**: after Wyatt approves Video 1 (Linda look + style approval)
+**Gate**: `marketing/videos/heygen/be490f1bcc8e4f9cbd0f17d16dd2f561.mp4` — Video 1 must be approved first
+**Cost**: ~$0.05-0.10/video, ~$1.80-3.60 for full set
+**Avatar**: Saffron sitting-at-table (avatar_id `7f2bb6c600f34e3699e58d3e8f4a2905`)
+**Voice**: Saffron (voice_id `0258bbc2cd8648cfa357adfb833f6d7b`)
+
+### `download-all-heygen-videos.js`
+Polls the render manifest and downloads any completed HeyGen videos to `marketing/videos/heygen/`.
+
+**Run**: `node server/src/tools/download-all-heygen-videos.js`
+**Run (force re-download)**: `node server/src/tools/download-all-heygen-videos.js --force`
+**When**: after `generate-all-heygen-videos.js` queues videos — HeyGen renders async (3-8 min each)
+
+### `wire-ghl-placeholders.js`
+Wires all GHL-specific IDs across all marketing pages in one command. Handles chat widget (8 pages), eBay apply form, and quiz email capture form.
+
+**Run**: `node server/src/tools/wire-ghl-placeholders.js --chat-widget-id=X --ebay-form-id=Y --quiz-form-id=Z`
+**Dry-run**: add `--dry-run` flag to preview without writing
+**When**: once Wyatt gets the IDs from GHL → Sites → Chat Widget + Forms
+**Time saved**: 10 pages of manual find/replace
+
+### `heygen-fetch-video.js`
+Polls a specific HeyGen video ID and downloads it when ready.
+
+**Run**: `HEYGEN_API_KEY=xxx node server/src/tools/heygen-fetch-video.js <videoId>`
+**When**: to download a single specific video by ID
+
+### `generate-brand-images.js`
+Generates AI hero images for landing pages using OpenAI DALL-E 3.
+
+**Run**: `node server/src/tools/generate-brand-images.js --dry-run`
+**Run (live)**: `OPENAI_API_KEY=sk-xxx node server/src/tools/generate-brand-images.js`
+**Cost**: ~$0.04-0.12/image, ~$0.25-0.50 for full set
+
+### `upload-ghl-thumbnails.js`
+Attempts to upload course thumbnails to GHL via API (or falls back to UI instructions).
+
+**Run**: `node server/src/tools/upload-ghl-thumbnails.js`
+
+### `overnight-runner.js`
+Runs the full autonomous GHL build queue. Sends Telegram updates via OpenClaw. Logs to `overnight-build.log`.
+
+**Run**: `node server/src/tools/overnight-runner.js`
+**When**: for multi-step overnight builds via OpenClaw
+
+### `approval-bridge.js`
+Writes to `/tmp/claude_needs_approval.txt`, sends Telegram notification, polls for APPROVE/SKIP/STOP response. Used by `overnight-runner.js` for gated steps.
+
+### `keep-warm.js`
+Pings the Render API server every 10 min to prevent 15-min idle cold-start spin-down (~50s delay on first request).
+
+**Run**: `node server/src/tools/keep-warm.js` (runs in background)
+
+### `admin-cli.js`
+Direct database access without JWT. Run admin queries against the Neon database.
+
+**Run**: `node server/src/tools/admin-cli.js`
+
 ### `import-leads.js` (pre-existing)
 Imports leads from a CSV file into the Neon database.
 
