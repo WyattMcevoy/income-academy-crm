@@ -24,11 +24,11 @@ Everything that must be TRUE before flipping the site to public-promotion mode (
 - [ ] PayPal Payment Link created and pasted (optional but recommended)
 
 ### Course content
-- [ ] All 4 courses uploaded to GHL with at least text content for every module
-- [ ] Course thumbnails uploaded (1280×720 — generated from `marketing/brand/course-thumbs/*.svg`)
+- [x] ~~All 4 courses uploaded to GHL with at least text content for every module~~ — ✅ all 9 modules × 4 courses done
+- [ ] Course thumbnails uploaded (1280×720 — generated from `marketing/brand/course-thumbs/*.svg`, PNGs at `marketing/brand/png-exports/`)
 - [ ] Member portal custom domain (`portal.incomeacademy.biz`) live + SSL verified
 - [ ] AI Writing Assistant Claude Project created and link in member portal
-- [ ] Course URLs replaced in `marketing/members/index.html` (no more `GHL_COURSE_URL_*` placeholders)
+- [x] ~~Course URLs replaced in `marketing/members/index.html`~~ — ✅ wired via `marketing/members/ghl-config.js` (Apr 29)
 
 ### Email automations
 - [ ] Welcome email sequence (7 emails) loaded into MailerLite or GHL automations
@@ -50,7 +50,7 @@ Everything that must be TRUE before flipping the site to public-promotion mode (
 - [ ] All landing pages render correctly on mobile (test on actual phone, not just desktop responsive mode)
 - [ ] All CTAs lead to working URLs (no `PAYPAL_LINK_PLACEHOLDER` or `GHL_*` placeholder strings deployed)
 - [ ] All images load (no broken `<img>` references)
-- [ ] e2e smoke test passes: `node server/src/tools/e2e-smoke-test.js`
+- [x] ~~e2e smoke test passes~~ — ✅ 14/14 passing (May 29, 2026)
 - [ ] Robots.txt + sitemap.xml deployed and accessible
 - [ ] Subdomain password (`MARKETING_PREVIEW_PASSWORD`) updated for launch (or removed if subdomains are now public)
 
