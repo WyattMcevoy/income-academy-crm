@@ -122,11 +122,11 @@
 }
 .cb-nav-divider { display: none; }
 
-/* ---- Progress bar (v4: one continuous sleek bar) ---- */
+/* ---- Progress bar (v4: pill chips with step labels) ---- */
 
 .cb-progress-bar {
   display: flex;
-  gap: 4px;
+  gap: 6px;
   margin-bottom: 28px;
   background: transparent;
   border-radius: 0;
@@ -135,33 +135,47 @@
 
 .cb-progress-step {
   flex: 1;
-  padding: 0;
-  height: 6px;
-  font-size: 0;            /* hide the "1/7" labels — visual only */
-  color: transparent;
+  padding: 9px 8px;
+  font-family: var(--cb-font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--cb-ink-mute);
   background: var(--cb-bg-elev-2);
-  border: none;
+  border: 1px solid var(--cb-hair);
   border-radius: 999px;
   cursor: pointer;
-  transition: background 250ms ease, transform 180ms ease;
-  font-family: inherit;
-  position: relative;
+  transition: background .2s, color .2s, border-color .2s, transform .15s;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 .cb-progress-step:hover {
-  background: var(--cb-hair-strong);
-  transform: scaleY(1.4);
+  background: #fff;
+  border-color: var(--cb-brand-line);
+  color: var(--cb-ink-dark);
+  transform: translateY(-1px);
 }
 .cb-progress-step-active {
   background: var(--cb-brand);
-  color: transparent;
+  border-color: var(--cb-brand);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(74,157,124,0.30);
 }
-.cb-progress-step-active:hover{ background: var(--cb-brand-deep); }
+.cb-progress-step-active:hover{
+  background: var(--cb-brand-deep);
+  border-color: var(--cb-brand-deep);
+  color: #fff;
+}
 .cb-progress-step-done {
-  background: var(--cb-brand);
-  color: transparent;
-  opacity: .55;
+  background: var(--cb-brand-soft);
+  border-color: var(--cb-brand-line);
+  color: var(--cb-brand-deep);
 }
-.cb-progress-step-done:hover{ opacity: 1; }
+.cb-progress-step-done:hover{
+  background: var(--cb-brand);
+  border-color: var(--cb-brand);
+  color: #fff;
+}
 
 /* ---- Main 3-column layout ---- */
 
@@ -2840,26 +2854,8 @@ body.sidebar-hidden .sidebar-restore { display: flex; }
 /* ---- HEADER ROW / Download Report button row ---- */
 .cb-header-row{ align-items: center; }
 
-/* ---- CREDIT WORKSHOP BRAND BLOCK at top of credit builder ---- */
-.cb-brand-block{
-  background: transparent !important;
-  border: 0 !important;
-  padding: 0 !important;
-}
-.cb-brand-block img,
-.cb-brand-block svg{ display: none; }
-.cb-brand-block::before{
-  content: "";
-  width: 44px; height: 44px;
-  background: linear-gradient(135deg, var(--cb-brand) 0%, var(--cb-accent) 100%);
-  color: #fff;
-  border-radius: 10px;
-  display: inline-grid;
-  place-items: center;
-  font-family: var(--cb-font-body);
-  font-size: 14px;
-  font-weight: 700;
-}
+/* ---- CREDIT WORKSHOP BRAND BLOCK — keep original SVG logo ---- */
+/* (no override — original .cb-brand-mark SVG and .cb-brand-text render as-is) */
 
 /* ---- Smaller numeric values (recent activity time, vendor pct, etc) get
         consistent Geist Mono tabular treatment ---- */
