@@ -716,6 +716,21 @@
   box-shadow: 0 0 0 4px rgba(74,157,124,0.12);
   outline: 0;
 }
+/* Override Chrome's autofill yellow / dark-mode-poisoned background.
+   The 1000px inset shadow is the trick — it visually replaces autofill's
+   built-in background. !important is required to defeat UA styles. */
+.auth-page .auth-input:-webkit-autofill,
+.auth-page .auth-input:-webkit-autofill:hover,
+.auth-page .auth-input:-webkit-autofill:focus,
+.auth-page .auth-input:-webkit-autofill:active{
+  -webkit-text-fill-color: var(--ink, #0A2540) !important;
+  -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+  box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+  caret-color: var(--ink, #0A2540) !important;
+  transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s;
+  border: 1px solid var(--hair, #E3E8EE) !important;
+  border-radius: 10px !important;
+}
 .auth-page .auth-error{
   font-family: var(--font-body);
   font-size: 14px;
