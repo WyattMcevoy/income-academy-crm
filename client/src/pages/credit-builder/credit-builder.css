@@ -1,41 +1,46 @@
-/* ========== Credit Builder — Kick Start palette ==========
-   Light theme, mint-teal brand, Montserrat throughout.
+/* ========== Credit Builder — v4 Stripe-flavored palette ==========
+   White + soft-gray surfaces, deep navy ink, sage brand accent,
+   Inter sans throughout. Matches CreditWorkshopLanding.
    White-label override: change --cb-brand and --cb-bg-* on a parent
    element to retheme the entire surface.
 ================================================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&family=Geist+Mono:wght@400;500&display=swap');
+
 :root,
 .cb-theme-income-academy {
-  /* Surface — light */
+  /* Surface — light, v4-aligned */
   --cb-bg:           #ffffff;
-  --cb-bg-elev:      #f9fafb;
-  --cb-bg-elev-2:    #f3f4f6;
-  --cb-bg-page:      #f5f6f8;
+  --cb-bg-elev:      #F6F9FC;       /* v4 soft section */
+  --cb-bg-elev-2:    #EFF3F8;       /* v4 rule-soft */
+  --cb-bg-page:      #F6F9FC;
   --cb-bg-page-card: #ffffff;
 
-  /* Ink */
-  --cb-ink:          #0b3954;
-  --cb-ink-dim:      #4b5563;
-  --cb-ink-mute:     #6b7280;
-  --cb-ink-dark:     #0b3954;
+  /* Ink — v4 navy */
+  --cb-ink:          #0A2540;
+  --cb-ink-dim:      #425466;
+  --cb-ink-mute:     #697386;
+  --cb-ink-dark:     #0A2540;
 
   /* Hairlines */
-  --cb-hair:         rgba(11, 57, 84, 0.10);
-  --cb-hair-strong:  rgba(11, 57, 84, 0.18);
-  --cb-hair-light:   rgba(11, 57, 84, 0.08);
+  --cb-hair:         #E3E8EE;
+  --cb-hair-strong:  #CBD2DA;
+  --cb-hair-light:   #EFF3F8;
 
-  /* Brand & status — Credit Workshop sage green + supporting colors */
+  /* Brand & status — sage green stays, status hues lightly adjusted */
   --cb-brand:        #4A9D7C;
-  --cb-brand-soft:   rgba(74, 157, 124, 0.12);
+  --cb-brand-deep:   #2F6952;
+  --cb-brand-soft:   rgba(74, 157, 124, 0.10);
   --cb-brand-line:   rgba(74, 157, 124, 0.45);
-  --cb-positive:     #059669;
-  --cb-negative:     #dc3545;
-  --cb-warning:      #f59e0b;
+  --cb-positive:     #00B26D;
+  --cb-negative:     #DE3618;
+  --cb-warning:      #FFB020;
+  --cb-accent:       #635BFF;       /* v4 indigo for gradient highlights */
 
-  /* Type — Montserrat throughout */
-  --cb-font-display: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --cb-font-body:    'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --cb-font-mono:    'SF Mono', Menlo, Consolas, monospace;
+  /* Type — Inter throughout (v4 Stripe-flavored) */
+  --cb-font-display: 'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --cb-font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --cb-font-mono:    'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 }
 
 /* Kick Start tenant override — currently same palette; hook for future tweaks */
@@ -50,8 +55,10 @@
   font-feature-settings: 'ss01', 'cv11';
   color: var(--cb-ink-dark);
   max-width: 1400px;
-  font-variation-settings: 'wght' 460;
+  font-weight: 400;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .cb-loading {
@@ -429,26 +436,39 @@
 }
 
 .cb-btn {
-  padding: 10px 24px;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  border: none;
+  border: 0;
   font-family: inherit;
-  transition: background 150ms;
+  letter-spacing: -0.005em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform .18s ease, background .2s, box-shadow .25s, color .2s;
 }
 .cb-btn-primary {
-  background: #b8e6d0;
-  color: var(--cb-ink-dark);
+  background: var(--cb-ink);
+  color: #fff;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 4px 14px rgba(10,37,64,0.18);
 }
-.cb-btn-primary:hover { background: #9adbb9; }
+.cb-btn-primary:hover {
+  background: var(--cb-ink);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.08), 0 10px 24px rgba(10,37,64,0.25);
+}
 .cb-btn-outline {
   background: transparent;
-  color: #6b7280;
-  border: none;
+  color: var(--cb-ink);
+  border: 1px solid var(--cb-hair);
 }
-.cb-btn-outline:hover { color: var(--cb-ink-dark); }
+.cb-btn-outline:hover {
+  color: var(--cb-brand-deep);
+  border-color: var(--cb-brand);
+  background: var(--cb-brand-soft);
+}
 
 .cb-completed-badge {
   font-size: 14px;
